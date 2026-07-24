@@ -3,132 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Kreator Video - Visualizer Pro</title>
+    <title>Hub Kreator Konten - fGlogneo</title>
     <style>
+        /* Efek Background Gradasi Bergerak */
         body {
-            background-color: #121212;
+            background: linear-gradient(-45deg, #0f0c20, #15102a, #050510, #1a0f30);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-        .container {
-            max-width: 900px;
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
             justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        .control-panel {
-            background-color: #1e1e1e;
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .welcome-container {
+            text-align: center;
+            max-width: 600px;
             padding: 20px;
+            z-index: 2;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin: 10px 0;
+            background: linear-gradient(to right, #00ffcc, #ff3366);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bio {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* Gaya Kotak Menu Pilihan Aplikasi */
+        .menu-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px;
             border-radius: 12px;
-            flex: 1;
-            min-width: 300px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .preview-panel {
+            text-decoration: none;
+            color: white;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-card:hover {
+            background: rgba(0, 255, 204, 0.1);
+            border-color: #00ffcc;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.2);
+        }
+
+        .menu-icon { font-size: 24px; }
+        .menu-info { text-align: left; }
+        .menu-title { font-weight: bold; font-size: 16px; color: #00ffcc; }
+        .menu-desc { font-size: 12px; color: #bbb; margin-top: 3px; }
+
+        /* Gaya Pop-up Modal Saweria */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
             justify-content: center;
+            align-items: center;
+            z-index: 10;
         }
-        canvas {
-            background-color: #000000;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-            max-width: 100%;
-            height: auto;
+
+        .modal-content {
+            background: #151525;
+            border: 2px solid #ff3366;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 340px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
         }
-        h2 { color: #00ffcc; margin-top: 0; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
-        input[type="text"], select, input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #333;
-            background-color: #2a2a2a;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        .btn {
-            background-color: #00ffcc;
-            color: #121212;
+
+        .close-btn {
+            background: #ff3366;
+            color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 8px 20px;
             border-radius: 6px;
+            margin-top: 20px;
             cursor: pointer;
             font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
-            transition: 0.3s;
         }
-        .btn:hover { background-color: #00ccaa; }
-        .btn-export { background-color: #ff3366; color: white; }
-        .btn-export:hover { background-color: #cc2252; }
     </style>
 </head>
 <body>
 
-    <h1 style="color: #00ffcc; text-align: center;">Studio Pembuat Konten Video</h1>
-    <p style="color: #aaa; text-align: center; margin-bottom: 30px;">Buat video visualizer musik & kutipan ayat otomatis untuk Reels atau YouTube</p>
+    <div class="welcome-container">
+        <!-- Anda bisa ganti foto ini nanti -->
+        <img class="avatar" src="https://unsplash.com" alt="Logo">
+        <h1>Dashboard Kreator Pro</h1>
+        <p class="bio">Kumpulan tools gratis bertenaga untuk kebutuhan konten kreator Reels, TikTok, dan YouTube.</p>
 
-    <div class="container">
-        <!-- Panel Kontrol Pengaturan -->
-        <div class="control-panel">
-            <h2>⚙️ Pengaturan Video</h2>
+        <!-- Daftar Menu Aplikasi -->
+        <div class="menu-grid">
             
-            <div class="form-group">
-                <label for="ratioSelect">Pilih Ukuran Rasio Video:</label>
-                <select id="ratioSelect">
-                    <option value="portrait">Portrait (9:16) - Untuk Reels / TikTok</option>
-                    <option value="landscape">Landscape (16:9) - Untuk YouTube / TV</option>
-                </select>
+            <!-- Tombol ke Studio Visualizer Lama (Akan kita pindah linknya nanti) -->
+            <a href="#" class="menu-card" onclick="alert('Studio sedang dikembangkan ke versi Drag & Drop ala CapCut!')">
+                <div class="menu-icon">🎬</div>
+                <div class="menu-info">
+                    <div class="menu-title">Studio Visualizer Video</div>
+                    <div class="menu-desc">Buat video audio visualizer & teks lirik format Reels.</div>
+                </div>
+            </a>
+
+            <!-- Menu Al-Qur'an (Rencana Selanjutnya) -->
+            <div class="menu-card" onclick="alert('Fitur Generator Al-Qur'an Digital sedang disiapkan!')">
+                <div class="menu-icon">📖</div>
+                <div class="menu-info">
+                    <div class="menu-title">Ayat Al-Qur'an & Murottal</div>
+                    <div class="menu-desc">Ambil teks Arab, terjemahan, dan audio murottal otomatis.</div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>1. Unggah Gambar Latar (Background):</label>
-                <input type="file" id="bgInput" accept="image/*">
+            <!-- Tombol Donasi Saweria QRIS -->
+            <div class="menu-card" style="border-color: rgba(255, 51, 102, 0.3);" onclick="openModal()">
+                <div class="menu-icon">☕</div>
+                <div class="menu-info">
+                    <div class="menu-title" style="color: #ff3366;">Dukung Kreator (Saweria)</div>
+                    <div class="menu-desc">Donasi QRIS untuk mendukung pengembangan aplikasi ini.</div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>2. Unggah Audio / Lagu (.mp3):</label>
-                <input type="file" id="audioInput" accept="audio/*">
-            </div>
-
-            <div class="form-group">
-                <label>3. Tulis Teks Kutipan / Lirik:</label>
-                <input type="text" id="textInput" placeholder="Masukkan kutipan ayat atau kata-kata...">
-            </div>
-
-            <div class="form-group">
-                <label for="colorSelect">Warna Gelombang Visualizer:</label>
-                <select id="colorSelect">
-                    <option value="#00ffcc">Hijau Neon</option>
-                    <option value="#ff3366">Pink Elektrik</option>
-                    <option value="#ffff00">Kuning Cerah</option>
-                    <option value="#ffffff">Putih Bersih</option>
-                </select>
-            </div>
-
-            <button class="btn" id="btnPlay">▶️ Putar Musik & Animasi</button>
-            <button class="btn btn-export" id="btnExport">📥 Ekspor Jadi Video (.mp4)</button>
-        </div>
-
-        <!-- Panel Layar Pratinjau -->
-        <div class="preview-panel">
-            <h2 style="align-self: flex-start;">📺 Layar Pratinjau</h2>
-            <canvas id="videoCanvas" width="360" height="640"></canvas>
-            <p style="font-size: 12px; color: #777; margin-top: 10px;">*Proses perekaman video berjalan real-time sesuai durasi lagu</p>
         </div>
     </div>
 
-    <!-- Menghubungkan ke file logika visualizer yang akan kita buat setelah ini -->
-    <script src="visualizer.js"></script>
+    <!-- Wadah Pop-up Saweria -->
+    <div id="saweriaModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color: #ff3366; margin-top:0;">Dukung Proyek Kami 🙏</h3>
+            <p style="font-size: 13px; color: #ccc;">Silakan scan QRIS Saweria di bawah ini untuk memberikan donasi dukungan.</p>
+            
+            <!-- GANTI LINK DI BAWAH INI DENGAN FOTO QRIS SAWERIA ANDA NANTI -->
+            <img src="https://qrserver.com" alt="QRIS Saweria" style="border-radius: 8px; margin: 15px 0; background: white; padding: 10px;">
+            
+            <br>
+            <button class="close-btn" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('saweriaModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('saweriaModal').style.display = 'none'; }
+    </script>
 </body>
 </html>
