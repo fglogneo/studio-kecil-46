@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Konten Al-Qur'an & Murottal</title>
+    <style>
+        body {
+            background: linear-gradient(-45deg, #0f0c20, #15102a, #050510, #1a0f30);
+            background-size: 400% 400%;
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-top: 20px;
+        }
+
+        .back-btn {
+            align-self: flex-start;
+            text-decoration: none;
+            color: #00ffcc;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        h1 {
+            font-size: 24px;
+            background: linear-gradient(to right, #00ffcc, #ff3366);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        select, input, button {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: #151525;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: #00ffcc;
+        }
+
+        input { width: 80px; text-align: center; }
+
+        button {
+            background: #00ffcc;
+            color: #0f0c20;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.4);
+        }
+
+        /* Preview Box Konten Sosmed */
+        .preview-box {
+            background: #111;
+            border: 2px dashed #00ffcc;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 25px;
+            text-align: right;
+            position: relative;
+        }
+
+        .ayat-arab {
+            font-size: 28px;
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            line-height: 2;
+            color: #ffffff;
+            margin-bottom: 20px;
+            direction: rtl;
+        }
+
+        .translation-id, .translation-en {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 12px;
+            text-align: left;
+            border-left: 3px solid;
+            padding-left: 12px;
+        }
+
+        .translation-id { border-color: #00ffcc; color: #e0e0e0; }
+        .translation-en { border-color: #ff3366; color: #b0b0b0; font-style: italic; }
+
+        .meta-info {
+            text-align: left;
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+        }
+
+        /* Audio Player Custom */
+        .audio-container {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        audio { width: 100%; }
+
+        /* Tombol Copy Cepat */
+        .copy-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: flex-start;
+        }
+
+        .copy-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+        .copy-btn:hover { background: #ff3366; color: white; }
+    </style>
+    <!-- Font Arab Agar Tampilan Cantik -->
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Tombol Kembali ke Dashboard Utama -->
+    <a href="../index.html" class="back-btn">⬅ Kembali ke Dashboard</a>
+
+    <div class="container">
+        <h1>📖 Generator Konten Ayat & Murottal</h1>
+        
+        <!-- Input Pemilihan Surah dan Ayat -->
+        <div class="form-group">
+            <select id="surahSelect">
+                <option value="">Memuat Daftar Surah...</option>
+            </select>
+            <input type="number" id="ayatInput" min="1" value="1" placeholder="Ayat">
+            <button onclick="cariAyat()">Ambil Ayat</button>
+        </div>
+
+        <!-- Tempat Menampilkan Hasil Pencarian -->
+        <div id="resultArea" style="display: none;">
+            
+            <div class="preview-box" id="contentToCopy">
+                <div class="ayat-arab" id="txtArab"></div>
+                <div class="translation-id" id="txtIndo"></div>
+                <div class="translation-en" id="txtInggris"></div>
+                <div class="meta-info" id="txtMeta"></div>
+            </div>
+
+            <!-- Tombol Copy Sekali Klik untuk Caption / Bahan Edit -->
+            <div class="copy-btn-group">
+                <button class="copy-btn" onclick="copyText('arab')">📋 Copy Arab</button>
+                <button class="copy-btn" onclick="copyText('indo')">📋 Copy Indo</button>
+                <button class="copy-btn" onclick="copyText('en')">📋 Copy Inggris</button>
+                <button class="copy-btn" onclick="copyText('all')">✨ Copy Semua untuk Sosmed</button>
+            </div>
+
+            <!-- Pemutar Audio Murottal per Ayat -->
+            <div class="audio-container">
+                <p style="text-align:left; font-size:12px; margin:0 0 5px 0; color:#00ffcc;">🎵 Murottal Per Ayat (Syeikh As-Sudais):</p>
+                <audio id="murottalAudio" controls></audio>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Mengambil daftar surah saat halaman dibuka
+        window.onload = function() {
+            fetch('https://equran.id')
+                .then(res => res.json())
+                .then(data => {
+                    let select = document.getElementById('surahSelect');
+                    select.innerHTML = '';
+                    data.data.forEach(surah => {
+                        let opt = document.createElement('option');
+                        opt.value = surah.nomor;
+                        opt.text = `${surah.nomor}. ${surah.namaLatin} (${surah.jumlahAyat} Ayat)`;
+                        select.add(opt);
+                    });
+                }).catch(err => alert('Gagal memuat daftar surah. Periksa koneksi internet.'));
+        };
+
+        // Fungsi utama mencari data ayat beserta murottal dan terjemahan inggris
+        function cariAyat() {
+            let surahNum = document.getElementById('surahSelect').value;
+            let ayatNum = document.getElementById('ayatInput').value;
+
+            if(!ayatNum) return alert('Masukkan nomor ayat!');
+
+            // Ambil data Arab & Indonesia dari API e-Quran ID
+            fetch(`https://equran.id/${surahNum}`)
+                .then(res => res.json())
+                .then(resData => {
+                    let surah = resData.data;
+                    let ayatData = surah.ayat.find(a => a.nomorAyat == ayatNum);
+                    
+                    if(!ayatData) return alert(`Ayat ${ayatNum} tidak ditemukan di Surah ${surah.namaLatin}!`);
+
+                    // Tampilkan teks Arab dan Indonesia
+                    document.getElementById('txtArab').innerText = ayatData.teksArab;
+                    document.getElementById('txtIndo').innerText = `🇮🇩 " ${ayatData.teksIndonesia} "`;
+                    document.getElementById('txtMeta').innerText = `— QS. ${surah.namaLatin} [${surahNum}]: ${ayatNum}`;
+                    
+                    // Set Audio Murottal (Menggunakan audio dari Syeikh Abdurrahman As-Sudais)
+                    document.getElementById('murottalAudio').src = ayatData.audio['01']; 
+
+                    // Ambil Terjemahan Bahasa Inggris dari API Terpisah (alquran.cloud)
+                    return fetch(`https://alquran.cloud{surahNum}:${ayatNum}/en.sahih`);
+                })
+                .then(resEn => resEn.json())
+                .then(enData => {
+                    if(enData && enData.data) {
+                        document.getElementById('txtInggris').innerText = `🇬🇧 " ${enData.data.text} "`;
+                    }
+                    document.getElementById('resultArea').style.display = 'block';
+                })
+                .catch(err => {
+                    console.log(err);
+                    alert('Terjadi kesalahan saat mengambil data.');
+                });
+        }
+
+       function copyText(type) {
+    let text = "";
+    let arab = document.getElementById('txtArab').innerText;
+    let id = document.getElementById('txtIndo').innerText;
+    let en = document.getElementById('txtInggris').innerText;
+    let meta = document.getElementById('txtMeta').innerText;
+
+    if (type === 'arab') text = arab;
+    else if (type === 'indo') text = id;
+    else if (type === 'en') text = en;
+    else if (type === 'all') {
+        text = `${arab}\n\n${id}\n\n${en}\n\n${meta}\n\n#quran #remindermuslim #contentcreator`;
+    }
+
+    // Pastikan teks tidak kosong sebelum disalin
+    if (!text.trim()) {
+        alert('Gagal menyalin: Tidak ada teks yang tersedia.');
+        return;
+    }
+
+    // Metode Utama: Menggunakan Clipboard API modern
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                alert('Teks berhasil disalin! Siap ditempel di CapCut/Premiere/Caption Sosmed. ✨');
+            })
+            .catch(err => {
+                console.error('Gagal menyalin dengan Clipboard API: ', err);
+                fallbackCopyText(text); // Pindah ke cara cadangan jika gagal
+            });
+    } else {
+        // Metode Cadangan: Jika browser jadul atau tidak di lingkungan HTTPS aman
+        fallbackCopyText(text);
+    }
+}
+
+// Fungsi cadangan menggunakan elemen textarea sementara
+function fallbackCopyText(text) {
+    let textArea = document.createElement("textarea");
+    textArea.value = text;
+    
+    // Sembunyikan elemen agar tidak merusak tampilan website
+    textArea.style.position = "fixed";
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.width = "2em";
+    textArea.style.height = "2em";
+    textArea.style.padding = "0";
+    textArea.style.border = "none";
+    textArea.style.outline = "none";
+    textArea.style.boxShadow = "none";
+    textArea.style.background = "transparent";
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        let successful = document.execCommand('copy');
+        if (successful) {
+            alert('Teks berhasil disalin (metode cadangan)! Siap ditempel di CapCut/Premiere/Caption Sosmed. ✨');
+        } else {
+            alert('Gagal menyalin teks. Silakan salin secara manual.');
+        }
+    } catch (err) {
+        alert('Browser Anda memblokir fitur salin otomatis. Silakan salin manual.');
+    }
+
+    document.body.removeChild(textArea);
+}
