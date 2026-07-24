@@ -1,57 +1,72 @@
-// Mengambil daftar surah saat halaman dibuka
+// 1. Mengambil daftar surah saat halaman dibuka (Alamat API Diperbaiki)
 window.onload = function() {
     fetch('https://equran.id')
-        .then(res => res.json())
-        .then(data => {
+        .then(res => {
+            if (!res.ok) throw new Error('Respon API tidak OK');
+            return res.json();
+        })
+        .then(resData => {
             let select = document.getElementById('surahSelect');
             select.innerHTML = '';
-            data.data.forEach(surah => {
+            
+            // Mengambil array data dari API v2
+            let daftarSurah = resData.data;
+            
+            daftarSurah.forEach(surah => {
                 let opt = document.createElement('option');
                 opt.value = surah.nomor;
                 opt.text = `${surah.nomor}. ${surah.namaLatin} (${surah.jumlahAyat} Ayat)`;
                 select.add(opt);
             });
-        }).catch(err => alert('Gagal memuat daftar surah. Periksa koneksi internet.'));
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Gagal memuat daftar surah. Periksa koneksi internet atau coba beberapa saat lagi.');
+        });
 };
 
-// Fungsi utama mencari data ayat beserta murottal dan terjemahan inggris
+// 2. Fungsi utama mencari data ayat beserta murottal dan terjemahan inggris
 function cariAyat() {
     let surahNum = document.getElementById('surahSelect').value;
     let ayatNum = document.getElementById('ayatInput').value;
 
-    if(!ayatNum) return alert('Masukkan nomor ayat!');
+    if (!surahNum) return alert('Daftar surah belum termuat sempurna!');
+    if (!ayatNum) return alert('Masukkan nomor ayat!');
 
-    // Ambil data Arab & Indonesia dari API e-Quran ID
+    // Ambil data Arab & Indonesia dari API v2
     fetch(`https://equran.id/${surahNum}`)
         .then(res => res.json())
         .then(resData => {
             let surah = resData.data;
             let ayatData = surah.ayat.find(a => a.nomorAyat == ayatNum);
             
-            if(!ayatData) return alert(`Ayat ${ayatNum} tidak ditemukan di Surah ${surah.namaLatin}!`);
+            if (!ayatData) return alert(`Ayat ${ayatNum} tidak ditemukan di Surah ${surah.namaLatin}!`);
 
+            // Tampilkan teks Arab dan Indonesia
             document.getElementById('txtArab').innerText = ayatData.teksArab;
             document.getElementById('txtIndo').innerText = `🇮🇩 " ${ayatData.teksIndonesia} "`;
             document.getElementById('txtMeta').innerText = `— QS. ${surah.namaLatin} [${surahNum}]: ${ayatNum}`;
             
+            // Set Audio Murottal (Menggunakan audio dari Syeikh Abdurrahman As-Sudais)
             document.getElementById('murottalAudio').src = ayatData.audio['01']; 
 
+            // Ambil Terjemahan Bahasa Inggris dari API Terpisah
             return fetch(`https://alquran.cloud{surahNum}:${ayatNum}/en.sahih`);
         })
         .then(resEn => resEn.json())
         .then(enData => {
-            if(enData && enData.data) {
+            if (enData && enData.data) {
                 document.getElementById('txtInggris').innerText = `🇬🇧 " ${enData.data.text} "`;
             }
             document.getElementById('resultArea').style.display = 'block';
         })
         .catch(err => {
-            console.log(err);
-            alert('Terjadi kesalahan saat mengambil data.');
+            console.error(err);
+            alert('Terjadi kesalahan saat mengambil data ayat.');
         });
 }
 
-// Fungsi Copy otomatis ke clipboard dengan sistem aman & fallback
+// 3. Fungsi Copy otomatis ke clipboard dengan sistem aman & fallback
 function copyText(type) {
     let text = "";
     let arab = document.getElementById('txtArab').innerText;
