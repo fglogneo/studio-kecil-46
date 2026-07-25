@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub Kreator Konten - fGlogneo</title>
     <style>
-        /* Efek Background Gradasi Bergerak */
+        /* Animasi Background dengan Motion Dinamis */
         body {
             background: linear-gradient(-45deg, #0f0c20, #15102a, #050510, #1a0f30);
             background-size: 400% 400%;
@@ -20,6 +20,37 @@
             justify-content: center;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Elemen Background Bergerak - Orb 1 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 204, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 51, 102, 0.1) 0%, transparent 50%);
+            animation: orbMotion1 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Elemen Background Bergerak - Orb 2 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 60% 20%, rgba(138, 43, 226, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(0, 200, 255, 0.08) 0%, transparent 50%);
+            animation: orbMotion2 25s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
         }
 
         @keyframes gradientBG {
@@ -28,11 +59,34 @@
             100% { background-position: 0% 50%; }
         }
 
+        @keyframes orbMotion1 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -100px) rotate(90deg); }
+            50% { transform: translate(-50px, 100px) rotate(180deg); }
+            75% { transform: translate(-100px, -50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        @keyframes orbMotion2 {
+            0% { transform: translate(0, 0) rotate(360deg); }
+            25% { transform: translate(-80px, 80px) rotate(270deg); }
+            50% { transform: translate(80px, -80px) rotate(180deg); }
+            75% { transform: translate(50px, 100px) rotate(90deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
         .welcome-container {
             text-align: center;
             max-width: 600px;
             padding: 20px;
             z-index: 2;
+            position: relative;
+            animation: floatingContainer 6s ease-in-out infinite;
+        }
+
+        @keyframes floatingContainer {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
         }
 
         .avatar {
@@ -40,22 +94,49 @@
             height: 100px;
             border-radius: 50%;
             border: 3px solid #00ffcc;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5), 
+                        0 0 40px rgba(0, 255, 204, 0.2);
             margin-bottom: 15px;
+            animation: avatarGlow 3s ease-in-out infinite, avatarRotate 8s linear infinite;
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 204, 0.5), 0 0 40px rgba(0, 255, 204, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 204, 0.8), 0 0 60px rgba(0, 255, 204, 0.4); }
+        }
+
+        @keyframes avatarRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         h1 {
             font-size: 28px;
             margin: 10px 0;
-            background: linear-gradient(to right, #00ffcc, #ff3366);
+            background: linear-gradient(90deg, #00ffcc, #ff3366, #00ffcc);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 4s ease infinite;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .bio {
             color: #aaa;
             font-size: 14px;
             margin-bottom: 30px;
+            animation: fadeInOut 4s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
 
         /* Gaya Kotak Menu Pilihan Aplikasi */
@@ -80,30 +161,107 @@
             gap: 15px;
             transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: slideInCard 0.6s ease-out backwards;
+        }
+
+        .menu-card:nth-child(1) { animation-delay: 0.1s; }
+        .menu-card:nth-child(2) { animation-delay: 0.2s; }
+        .menu-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes slideInCard {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Efek glow background pada card */
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 204, 0.2), transparent);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: -100%; }
         }
 
         .menu-card:hover {
             background: rgba(0, 255, 204, 0.1);
             border-color: #00ffcc;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.2);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.2),
+                        inset 0 0 20px rgba(0, 255, 204, 0.1);
         }
 
-        .menu-icon { font-size: 24px; }
+        .menu-card:hover .menu-icon {
+            animation: iconBounce 0.6s ease;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-10deg); }
+            75% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        .menu-icon { 
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
         .menu-info { text-align: left; }
-        .menu-title { font-weight: bold; font-size: 16px; color: #00ffcc; }
-        .menu-desc { font-size: 12px; color: #bbb; margin-top: 3px; }
+        .menu-title { 
+            font-weight: bold; 
+            font-size: 16px; 
+            color: #00ffcc;
+            transition: color 0.3s ease;
+        }
+        .menu-desc { 
+            font-size: 12px; 
+            color: #bbb; 
+            margin-top: 3px;
+            transition: color 0.3s ease;
+        }
+
+        .menu-card:hover .menu-title {
+            color: #ff3366;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+        }
+
+        .menu-card:hover .menu-desc {
+            color: #ddd;
+        }
 
         /* Gaya Pop-up Modal Saweria */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
             z-index: 10;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
@@ -114,18 +272,51 @@
             text-align: center;
             max-width: 340px;
             width: 90%;
-            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.3),
+                        0 0 60px rgba(255, 51, 102, 0.1);
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3) rotateX(360deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+            }
+        }
+
+        .modal-content img {
+            animation: imagePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes imagePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .close-btn {
-            background: #ff3366;
+            background: linear-gradient(135deg, #ff3366, #ff6699);
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 10px 25px;
             border-radius: 6px;
             margin-top: 20px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.5);
+        }
+
+        .close-btn:active {
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -156,7 +347,7 @@
                     <div class="menu-title">Ayat Al-Qur'an & Murottal</div>
                     <div class="menu-desc">Ambil teks Arab, terjemahan, dan audio murottal otomatis.</div>
                 </div>
-            </div>
+            </a>
 
             <!-- Tombol Donasi Saweria QRIS -->
             <div class="menu-card" style="border-color: rgba(255, 51, 102, 0.3);" onclick="openModal()">
@@ -187,6 +378,13 @@
     <script>
         function openModal() { document.getElementById('saweriaModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('saweriaModal').style.display = 'none'; }
+        
+        // Close modal saat klik di luar modal-content
+        document.getElementById('saweriaModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
