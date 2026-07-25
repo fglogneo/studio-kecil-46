@@ -48,7 +48,7 @@
         .cyber-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 10px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -58,7 +58,7 @@
         .cyber-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; height: 2px;
+            top: 0; left: 0; right: 0; height: 1px;
             background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -73,7 +73,7 @@
         }
 
         /* Scrollbar Terminal */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
@@ -94,7 +94,7 @@
 
         /* Modal Overlay */
         #donation-modal {
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(9px);
             background-color: rgba(5, 5, 10, 0.85);
         }
     </style>
@@ -721,12 +721,12 @@
 
         // --- 3. LOG DONATUR (Hacker-Islamic Ticker) ---
         const logDonatur = [
-            "[✓] Hamba Allah (BSI) -- 'Bismillah semoga berkah min'",
-            "[✓] Akhi Fulan (Gopay) -- 'Lanjutkan dakwahnya! 🚀'",
+            "[✓] Hamba Allah (BRI) -- 'Bismillah semoga berkah min'",
+            "[✓] Rachmat (Gopay) -- 'Pahala jariyah insyaAllah 🙏!'",
             "[✓] Hamba Allah (Dana) -- 'Sedekah subuh buat server'",
-            "[✓] Ukhti (BSI) -- 'Semoga dimudahkan rilis fitur barunya'",
-            "[✓] Anonim_77 (OVO) -- 'Titip doa biar skripsi lancar bang'",
-            "[✓] Fulan (Dana) -- 'Pahala jariyah insyaAllah 🙏'"
+            "[✓] Ukhti (BRI) -- 'Semoga dimudahkan rilis fitur barunya 🚀'",
+            "[✓] Anonim_88 (Shopeepay) -- 'Titip doa biar skripsi lancar bang'",
+        
         ];
 
         function initDonaturTicker() {
