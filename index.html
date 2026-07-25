@@ -390,12 +390,13 @@
    <div id="donation-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
         <!-- Panel Modal: max-h-[90vh] overflow-y-auto memastikan konten bisa discroll jika layar pendek -->
         <div class="bg-[#0b0c16] border border-neonMagenta/40 rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto relative shadow-[0_0_15px_rgba(233,255,0,0.2)] flex flex-col transform scale-95 transition-transform duration-300" id="donation-panel">
-            
+                        
             <!-- Top Alert Border -->
             <div class="h-1.5 w-full bg-gradient-to-r from-[#ff0055] via-purple-500 to-[#00f0ff]"></div>
             
-            <button onclick="toggleDonationModal(false)" class="absolute top-4 right-4 text-gray-500 hover:text-white bg-[#1a1c2e] rounded-full w-8 h-8 flex items-center justify-center transition-colors z-10">
-                <i class="fa-solid fa-xmark text-lg"></i>
+            <!-- Tombol Close (Sticky di atas agar tidak hilang saat discroll) -->
+            <button onclick="toggleDonationModal(false)" class="sticky top-0 right-0 float-right m-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-neonMagenta transition z-10">
+                <i class="fa-solid fa-xmark"></i>
             </button>
             
             <div class="p-7 text-center relative">
