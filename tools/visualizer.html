@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Audio Visualizer - Studio Kecil 46</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { cyberGreen: '#00ff66', cyberDark: '#050907', islamicGold: '#fbbf24' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050907; color: #e2e8f0; }
+    </style>
+</head>
+<body class="bg-cyberDark text-slate-200 min-h-screen p-4 md:p-6 font-mono">
+
+    <!-- Header -->
+    <div class="max-w-5xl mx-auto mb-4 flex items-center justify-between border-b border-cyberGreen/30 pb-3">
+        <a href="../index.html" class="text-xs text-cyberGreen border border-cyberGreen/50 px-3 py-1.5 rounded hover:bg-cyberGreen hover:text-black transition">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+        </a>
+        <h1 class="text-base md:text-lg font-bold text-islamicGold">🎨 Audio Visualizer Studio</h1>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Panel Kontrol (Kiri/Atas) -->
+        <div class="space-y-4 bg-black/60 border border-slate-800 p-4 rounded-xl">
+            <h2 class="text-xs font-bold text-cyberGreen border-b border-slate-800 pb-2">1. UNGGAH MEDIA</h2>
+            
+            <!-- Upload Audio -->
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">Pilih File Audio (MP3):</label>
+                <input type="file" id="audio-input" accept="audio/*" class="w-full text-xs text-slate-300 bg-slate-900 border border-slate-700 rounded p-2 focus:outline-none focus:border-cyberGreen">
+            </div>
+
+            <!-- Upload BG Image -->
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">Gambar Background:</label>
+                <input type="file" id="bg-input" accept="image/*" class="w-full text-xs text-slate-300 bg-slate-900 border border-slate-700 rounded p-2 focus:outline-none focus:border-cyberGreen">
+            </div>
+
+            <h2 class="text-xs font-bold text-cyberGreen border-b border-slate-800 pb-2 pt-2">2. KUSTOMISASI TEKS</h2>
+            
+            <!-- Input Teks Kustom -->
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">Teks Overlay / Judul:</label>
+                <input type="text" id="text-input" value="Studio Kecil 46" class="w-full text-xs text-white bg-slate-900 border border-slate-700 rounded p-2 focus:outline-none focus:border-cyberGreen">
+            </div>
+
+            <!-- Gaya Spectrum -->
+            <div>
+                <label class="block text-xs text-slate-400 mb-1">Gaya Spectrum Visualizer:</label>
+                <select id="style-select" class="w-full text-xs text-white bg-slate-900 border border-slate-700 rounded p-2 focus:outline-none">
+                    <option value="bar">Bar / Gelombang Batang</option>
+                    <option value="line">Garis Neon</option>
+                </select>
+            </div>
+
+            <!-- Tombol Play/Pause -->
+            <button id="btn-play" class="w-full bg-cyberGreen text-black py-2.5 rounded font-bold text-xs hover:bg-emerald-400 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play"></i> PUTAR VISUALIZER
+            </button>
+        </div>
+
+        <!-- Area Canvas Preview (Kanan/Bawah) -->
+        <div class="lg:col-span-2 flex flex-col items-center justify-center space-y-3">
+            <div class="w-full aspect-video bg-black rounded-xl border border-cyberGreen/40 overflow-hidden flex items-center justify-center relative shadow-lg shadow-cyberGreen/10">
+                <canvas id="viz-canvas" width="1280" height="720" class="w-full h-full object-contain"></canvas>
+            </div>
+            <p class="text-[10px] text-slate-500 text-center">💡 Tip HP: Putar otomatis memproses animasi frekuensi audio secara real-time via Canvas HTML5.</p>
+        </div>
+
+    </div>
+
+    <!-- Script Web Audio API & Canvas Visualizer -->
+    <script>
+        const canvas = document.getElementById('viz-canvas');
+        const ctx = canvas.getContext('2d');
+        const audioInput = document.getElementById('audio-input');
+        const bgInput = document.getElementById('bg-input');
+        const textInput = document.getElementById('text-input');
+        const styleSelect = document.getElementById('style-select');
+        const btnPlay = document.getElementById('btn-play');
+
+        let audio = new Audio();
+        let audioCtx, analyser, source, bufferLength, dataArray;
+        let bgImage = null;
+        let isPlaying = false;
+
+        // Render Canvas Awal
+        function drawInitialCanvas() {
+            ctx.fillStyle = '#050907';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            if (bgImage) {
+                ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Draw Teks
+            ctx.fillStyle = '#fbbf24';
+            ctx.font = 'bold 42px monospace';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = '#00ff66';
+            ctx.shadowBlur = 10;
+            ctx.fillText(textInput.value || 'Studio Kecil 46', canvas.width / 2, canvas.height / 2);
+            ctx.shadowBlur = 0;
+        }
+        drawInitialCanvas();
+
+        // Handle Upload Background
+        bgInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    bgImage = new Image();
+                    bgImage.onload = () => drawInitialCanvas();
+                    bgImage.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle Update Teks
+        textInput.addEventListener('input', () => {
+            if (!isPlaying) drawInitialCanvas();
+        });
+
+        // Handle Audio Input
+        audioInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                audio.src = URL.createObjectURL(file);
+            }
+        });
+
+        // Inisialisasi Audio Context
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                source = audioCtx.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                analyser.fftSize = 128;
+                bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+            }
+        }
+
+        // Animasi Loop Visualizer
+        function renderFrame() {
+            if (!isPlaying) return;
+
+            requestAnimationFrame(renderFrame);
+            analyser.getByteFrequencyData(dataArray);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Background
+            if (bgImage) {
+                ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = '#050907';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Draw Teks Overlay
+            ctx.fillStyle = '#fbbf24';
+            ctx.font = 'bold 42px monospace';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = '#00ff66';
+            ctx.shadowBlur = 12;
+            ctx.fillText(textInput.value || 'Studio Kecil 46', canvas.width / 2, canvas.height / 2 - 20);
+            ctx.shadowBlur = 0;
+
+            // Draw Spectrum Bars
+            const style = styleSelect.value;
+            const barWidth = (canvas.width / bufferLength) * 1.5;
+            let x = 0;
+
+            if (style === 'bar') {
+                for (let i = 0; i < bufferLength; i++) {
+                    const barHeight = (dataArray[i] / 255) * 220;
+                    
+                    ctx.fillStyle = '#00ff66';
+                    ctx.shadowColor = '#00ff66';
+                    ctx.shadowBlur = 8;
+                    ctx.fillRect(x, canvas.height - barHeight - 40, barWidth - 4, barHeight);
+
+                    x += barWidth;
+                }
+            } else if (style === 'line') {
+                ctx.beginPath();
+                ctx.strokeStyle = '#00ff66';
+                ctx.lineWidth = 4;
+                ctx.shadowColor = '#00ff66';
+                ctx.shadowBlur = 10;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    const v = dataArray[i] / 255.0;
+                    const y = canvas.height - (v * 200) - 50;
+
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+
+                    x += barWidth;
+                }
+                ctx.stroke();
+            }
+        }
+
+        // Tombol Play / Pause
+        btnPlay.addEventListener('click', () => {
+            if (!audio.src) {
+                alert('Silakan pilih file audio MP3 terlebih dahulu!');
+                return;
+            }
+
+            initAudio();
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            if (!isPlaying) {
+                audio.play();
+                isPlaying = true;
+                btnPlay.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE VISUALIZER';
+                renderFrame();
+            } else {
+                audio.pause();
+                isPlaying = false;
+                btnPlay.innerHTML = '<i class="fa-solid fa-play"></i> PUTAR VISUALIZER';
+            }
+        });
+
+        audio.onended = () => {
+            isPlaying = false;
+            btnPlay.innerHTML = '<i class="fa-solid fa-play"></i> PUTAR VISUALIZER';
+        };
+    </script>
+</body>
+</html>
