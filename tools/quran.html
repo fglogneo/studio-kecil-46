@@ -29,7 +29,7 @@
         <a href="../index.html" class="text-xs text-cyberGreen border border-cyberGreen/50 px-3 py-1.5 rounded hover:bg-cyberGreen hover:text-black transition">
             <i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Dashboard
         </a>
-        <h1 class="text-lg font-bold text-islamicGold">📖 Al-Qur'an Digital (Gading API)</h1>
+        <h1 class="text-lg font-bold text-islamicGold">📖 Al-Qur'an Digital Indonesia</h1>
     </div>
 
     <!-- Container Utama -->
@@ -44,7 +44,7 @@
         </div>
 
         <!-- Info Surah -->
-        <div id="surah-info" class="hidden bg-slate-900/80 border border-islamicGold/40 p-4 rounded-xl text-center space-y-2">
+        <div id="surah-info" class="hidden bg-slate-900/80 border border-islamicGold/40 p-4 rounded-xl text-center space-y-1">
             <h2 id="surah-title" class="text-xl font-bold text-islamicGold"></h2>
             <p id="surah-subtitle" class="text-xs text-slate-400"></p>
         </div>
@@ -54,28 +54,29 @@
 
     </div>
 
-    <!-- Script Pengambil Data dari API GadingNST -->
+    <!-- Script Pengambil Data dari API myQuran -->
     <script>
-        // API Base Endpoint dari Repository gadingnst/quran-api
-        const API_BASE = 'https://quran-api-id.vercel.app';
+        // API Resmi dari myQuran Indonesia
+        const API_SURAH = 'https://api.myquran.com/v2/quran/surat/semua';
 
         // 1. Ambil daftar surah saat halaman dibuka
         async function fetchSurahList() {
             const select = document.getElementById('surah-select');
             try {
-                const res = await fetch(`${API_BASE}/surahs`);
-                const data = await res.json();
+                const res = await fetch(API_SURAH);
+                const result = await res.json();
+                const data = result.data;
                 
                 select.innerHTML = '<option value="">-- Pilih Surah --</option>';
                 data.forEach(surah => {
-                    select.innerHTML += `<option value="${surah.number}">${surah.number}. ${surah.name} (${surah.translation})</option>`;
+                    select.innerHTML += `<option value="${surah.id}">${surah.id}. ${surah.nama_latin} (${surah.nama}) - ${surah.arti}</option>`;
                 });
             } catch (err) {
-                select.innerHTML = '<option value="">Gagal memuat daftar surah. Coba refresh halaman.</option>';
+                select.innerHTML = '<option value="">Gagal memuat surah. Coba refresh halaman.</option>';
             }
         }
 
-        // 2. Ambil detail ayat saat Surah dipilih
+        // 2. Ambil detail ayat saat surah dipilih
         async function loadAyat() {
             const surahNo = document.getElementById('surah-select').value;
             const container = document.getElementById('ayat-container');
@@ -90,49 +91,48 @@
             container.innerHTML = '<div class="text-center text-cyberGreen py-8">Memuat ayat-ayat Al-Qur\'an...</div>';
 
             try {
-                const res = await fetch(`${API_BASE}/surahs/${surahNo}`);
-                const resData = await res.json();
-                
-                // Tampilkan Header Info Surah
-                document.getElementById('surah-title').innerText = `${resData.name} (${resData.translation})`;
-                document.getElementById('surah-subtitle').innerText = `Jumlah Ayat: ${resData.numberOfAyahs} | Tempat Turun: ${resData.revelation}`;
+                const res = await fetch(`https://api.myquran.com/v2/quran/surat/${surahNo}`);
+                const result = await res.json();
+                const data = result.data;
+
+                // Header Info Surah
+                document.getElementById('surah-title').innerText = `${data.nama_latin} (${data.nama})`;
+                document.getElementById('surah-subtitle').innerText = `Arti: ${data.arti} | Jumlah Ayat: ${data.jumlah_ayat} | Tempat Turun: ${data.tempat}`;
                 infoBox.classList.remove('hidden');
 
-                // Tampilkan Daftar Ayat
+                // Tampilkan Ayat
                 container.innerHTML = '';
-                resData.ayahs.forEach((ayat) => {
+                data.ayat.forEach((ayat) => {
                     container.innerHTML += `
                         <div class="bg-black/50 border border-slate-800 hover:border-cyberGreen/50 p-5 rounded-xl space-y-4 transition">
-                            <!-- Nomor Ayat & Audio Button -->
+                            <!-- Nomor Ayat & Audio -->
                             <div class="text-xs text-cyberGreen font-bold flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span>AYAT ${ayat.number.inSurah}</span>
+                                <span>AYAT ${ayat.ayat}</span>
                                 <audio controls class="h-7 max-w-[200px]">
-                                    <source src="${ayat.audio.alafasy}" type="audio/mpeg">
-                                    Browser tidak mendukung audio.
+                                    <source src="${ayat.audio}" type="audio/mpeg">
                                 </audio>
                             </div>
                             <!-- Teks Arab -->
-                            <div class="text-right font-serif text-2xl md:text-3xl text-islamicGold leading-loose dir-rtl" style="font-family: 'Amiri', serif;">
+                            <div class="text-right font-serif text-2xl md:text-3xl text-islamicGold leading-loose" style="font-family: 'Amiri', serif;">
                                 ${ayat.arab}
                             </div>
                             <!-- Bacaan Latin -->
                             <div class="text-xs text-cyberGreen/90 italic">
                                 📌 ${ayat.latin}
                             </div>
-                            <!-- Terjemahan Bahasa Indonesia -->
+                            <!-- Terjemahan Indonesia -->
                             <div class="text-xs text-slate-300">
-                                🇮🇩 <span class="font-sans">${ayat.translation}</span>
+                                🇮🇩 <span class="font-sans">${ayat.idn}</span>
                             </div>
                         </div>
                     `;
                 });
 
             </div> catch (err) {
-                container.innerHTML = '<div class="text-center text-red-400 py-8">Gagal mengambil data ayat dari API Gading.</div>';
+                container.innerHTML = '<div class="text-center text-red-400 py-8">Gagal mengambil data ayat. Masalah koneksi API.</div>';
             }
         }
 
-        // Jalankan fungsi pengambil daftar surah pertama kali
         fetchSurahList();
     </script>
 </body>
