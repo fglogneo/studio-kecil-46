@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Music Generator - Studio Kecil 46</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { cyberGreen: '#00ff66', cyberDark: '#050907', islamicGold: '#fbbf24' } } }
+        }
+    </script>
+</head>
+<body class="bg-cyberDark text-slate-200 min-h-screen p-4 md:p-8 font-mono">
+
+    <!-- Header -->
+    <div class="max-w-3xl mx-auto mb-6 flex items-center justify-between border-b border-cyberGreen/30 pb-4">
+        <a href="../index.html" class="text-xs text-cyberGreen border border-cyberGreen/50 px-3 py-1.5 rounded hover:bg-cyberGreen hover:text-black transition">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+        </a>
+        <h1 class="text-base md:text-lg font-bold text-cyberGreen">🎵 AI Music Studio</h1>
+    </div>
+
+    <!-- Form Generator -->
+    <div class="max-w-3xl mx-auto bg-black/60 border border-cyberGreen/40 p-5 rounded-xl space-y-4">
+        
+        <div>
+            <label class="block text-xs text-cyberGreen mb-1">HUGGING FACE API TOKEN (GRATIS):</label>
+            <input type="password" id="hf-token" placeholder="hf_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-slate-900 border border-slate-700 text-white p-2.5 rounded text-xs focus:outline-none focus:border-cyberGreen">
+            <p class="text-[10px] text-slate-400 mt-1">Dapatkan token gratis di <a href="https://huggingface.co/settings/tokens" target="_blank" class="text-cyberGreen underline">huggingface.co/settings/tokens</a></p>
+        </div>
+
+        <div>
+            <label class="block text-xs text-cyberGreen mb-1">DESKRIPSI MUSIK (PROMPT):</label>
+            <textarea id="music-prompt" rows="3" placeholder="Contoh: Upbeat 80s synthwave music with energetic drums, retro synth, high tempo" class="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded text-sm focus:outline-none focus:border-cyberGreen"></textarea>
+        </div>
+
+        <!-- Preset Fast Prompt -->
+        <div class="flex flex-wrap gap-2">
+            <button onclick="setPrompt('Lofi chillhop beat with soft piano and relaxed atmosphere')" class="text-[11px] bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 hover:border-cyberGreen">☕ Lo-Fi</button>
+            <button onclick="setPrompt('Cyberpunk synthwave upbeat fast electronic music')" class="text-[11px] bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 hover:border-cyberGreen">🏙️ Cyberpunk</button>
+            <button onclick="setPrompt('Cinematic epic orchestral music with heavy drums')" class="text-[11px] bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 hover:border-cyberGreen">🎻 Epik Sinematik</button>
+        </div>
+
+        <button onclick="generateMusic()" id="btn-generate" class="w-full bg-cyberGreen text-black font-bold py-3 rounded-lg hover:bg-emerald-400 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Buat Musik AI
+        </button>
+    </div>
+
+    <!-- Hasil Audio -->
+    <div id="result-box" class="max-w-3xl mx-auto mt-6 hidden bg-slate-900 border border-islamicGold/40 p-5 rounded-xl space-y-3">
+        <h3 class="text-sm font-bold text-islamicGold flex items-center gap-2">
+            <i class="fa-solid fa-music"></i> Hasil Audio AI:
+        </h3>
+        <audio id="audio-player" controls class="w-full"></audio>
+        <a id="btn-download" download="ai-music.wav" class="inline-block text-xs text-cyberGreen border border-cyberGreen/50 px-3 py-2 rounded hover:bg-cyberGreen hover:text-black transition">
+            <i class="fa-solid fa-download mr-1"></i> Download WAV
+        </a>
+    </div>
+
+    <script>
+        function setPrompt(val) {
+            document.getElementById('music-prompt').value = val;
+        }
+
+        async function generateMusic() {
+            const token = document.getElementById('hf-token').value.trim();
+            const prompt = document.getElementById('music-prompt').value.trim();
+            const btn = document.getElementById('btn-generate');
+            const resultBox = document.getElementById('result-box');
+            const player = document.getElementById('audio-player');
+            const downloadBtn = document.getElementById('btn-download');
+
+            if (!token) return alert('Silakan masukkan Hugging Face API Token terlebih dahulu!');
+            if (!prompt) return alert('Silakan masukkan deskripsi musik!');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses Musik AI (30-60 detik)...';
+            resultBox.classList.add('hidden');
+
+            try {
+                // Panggil Hugging Face Inference API (MusicGen Small Model)
+                const response = await fetch("https://api-inference.huggingface.co/models/facebook/musicgen-small", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify({ inputs: prompt }),
+                });
+
+                if (!response.ok) {
+                    const err = await response.json().catch(() => ({}));
+                    throw new Error(err.error || `Gagal membuat musik (Status: ${response.status})`);
+                }
+
+                const blob = await response.blob();
+                const audioUrl = URL.createObjectURL(blob);
+
+                player.src = audioUrl;
+                downloadBtn.href = audioUrl;
+                resultBox.classList.remove('hidden');
+
+            } catch (error) {
+                alert("Error: " + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Buat Musik AI';
+            }
+        }
+    </script>
+</body>
+</html>
