@@ -3,272 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Audio Visualizer Studio - Pro VIZ</title>
+    <title>GNR Audio Visualizer Studio - Multi Ratio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { cyberGreen: '#00ff66', cyberDark: '#0a0f0d', islamicGold: '#fbbf24' }
+                    colors: {
+                        GNRDark: '#0a0d0b',
+                        GNRPanel: '#111613',
+                        GNRBorder: '#222d26',
+                        GNRGreen: '#00ff66',
+                        GNRGold: '#fbbf24'
+                    }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #050907; color: #e2e8f0; }
-        canvas { touch-action: none; cursor: crosshair; }
-        /* Custom scrollbar mini ala VIZ */
+        body { background-color: #0a0d0b; color: #e2e8f0; font-family: monospace; user-select: none; }
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #222; rounded: 2px; }
+        ::-webkit-scrollbar-thumb { background: #222d26; border-radius: 2px; }
+        .btn-opt { background: #18201a; border: 1px solid #28362d; font-size: 10px; padding: 3px 8px; border-radius: 4px; color: #94a3b8; transition: all 0.2s; }
+        .btn-opt:hover, .btn-opt.active { background: #00ff66; color: #000; font-weight: bold; border-color: #00ff66; }
+        .slider-GNR { accent-color: #00ff66; height: 3px; background: #28362d; border-radius: 2px; }
+        canvas { touch-action: none; cursor: crosshair; }
     </style>
 </head>
-<body class="bg-cyberDark text-slate-200 min-h-screen p-2 md:p-4 font-mono text-xs">
+<body class="bg-GNRDark text-slate-200 min-h-screen flex flex-col h-screen overflow-hidden">
 
-    <!-- Header Ringkas -->
-    <div class="max-w-7xl mx-auto mb-2 flex items-center justify-between border-b border-slate-800 pb-2">
+    <!-- TOP BAR CONTROL -->
+    <header class="bg-GNRPanel border-b border-GNRBorder px-3 py-2 flex items-center justify-between gap-2 text-xs flex-wrap">
         <div class="flex items-center gap-2">
-            <a href="../index.html" class="text-[11px] text-cyberGreen border border-cyberGreen/40 px-2 py-1 rounded hover:bg-cyberGreen hover:text-black transition">
+            <a href="../index.html" class="text-GNRGreen border border-GNRGreen/40 px-2 py-1 rounded hover:bg-GNRGreen hover:text-black">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <h1 class="font-bold text-islamicGold text-sm">🎨 Studio Visualizer VIZ</h1>
+            <span class="font-bold text-GNRGreen tracking-wider">GNR</span>
+            <span class="text-[10px] text-slate-500 hidden sm:inline">| Studio 46</span>
         </div>
-        
-        <!-- Action Top Bar -->
-        <div class="flex gap-2">
-            <button id="btn-record" class="bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1 rounded flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-circle text-[10px]"></i> <span id="rec-text">Rekam Video</span>
+
+        <!-- Inputs Audio, BG & Ratio Select -->
+        <div class="flex items-center gap-1.5 flex-wrap">
+            <label class="btn-opt cursor-pointer flex items-center gap-1">
+                <i class="fa-solid fa-music text-GNRGreen"></i> Audio
+                <input type="file" id="input-audio" accept="audio/*" class="hidden">
+            </label>
+
+            <label class="btn-opt cursor-pointer flex items-center gap-1">
+                <i class="fa-solid fa-image text-GNRGold"></i> BG
+                <input type="file" id="input-bg" accept="image/*" class="hidden">
+            </label>
+
+            <!-- PILIHAN RASIO VIDEO -->
+            <div class="flex items-center gap-1 bg-black/60 border border-GNRBorder rounded px-2 py-0.5">
+                <span class="text-[10px] text-slate-400"><i class="fa-solid fa-crop text-GNRGreen mr-1"></i>Rasio:</span>
+                <select id="canvas-ratio" class="bg-transparent text-GNRGreen font-bold text-[11px] focus:outline-none cursor-pointer">
+                    <option value="16:9">16:9 (YouTube / PC)</option>
+                    <option value="9:16">9:16 (TikTok / Reels / Shorts)</option>
+                    <option value="1:1">1:1 (IG Feed Square)</option>
+                    <option value="4:5">4:5 (IG Feed Portrait)</option>
+                </select>
+            </div>
+
+            <!-- RENAME FILE SEBELUM DOWNLOAD -->
+            <div class="flex items-center gap-1 bg-black/60 border border-GNRBorder rounded px-2 py-0.5">
+                <span class="text-[10px] text-slate-400">Nama:</span>
+                <input type="text" id="project-name" value="Murottal_Konten" class="bg-transparent text-white w-24 sm:w-28 focus:outline-none text-[11px] font-bold">
+            </div>
+
+            <!-- TOMBOL REKAM & UNDUH -->
+            <button id="btn-record" class="bg-rose-600 hover:bg-rose-500 text-white font-bold px-3 py-1 rounded flex items-center gap-1 text-xs shadow-lg transition">
+                <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> <span id="rec-label">Rekam</span>
             </button>
         </div>
-    </div>
+    </header>
 
-    <!-- Main Container: Panel Kiri, Canvas Kanan -->
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-3">
+    <!-- MAIN WORKSPACE -->
+    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
         
-        <!-- PANEL KONTROL KIRI (Mode Ringkas Menu Kecil) -->
-        <div class="lg:col-span-4 space-y-3 bg-black/80 border border-slate-800 p-3 rounded-xl max-h-[88vh] overflow-y-auto">
+        <!-- SIDEBAR CONTROLS (LEFT) -->
+        <div class="lg:col-span-4 bg-GNRPanel border-r border-GNRBorder p-3 space-y-4 overflow-y-auto max-h-full text-[11px]">
             
-            <!-- 1. MEDIA INPUT -->
-            <div class="space-y-1.5 bg-slate-900/50 p-2 rounded border border-slate-800">
-                <div class="font-bold text-cyberGreen flex justify-between">
-                    <span>1. AUDIO & BACKGROUND</span>
+            <!-- 1. SECTION VISUALIZER -->
+            <div class="space-y-2 border-b border-GNRBorder pb-3">
+                <div class="flex justify-between items-center text-GNRGreen font-bold">
+                    <span>VISUALIZER</span>
+                    <button id="btn-add-GNR" class="btn-opt">+ GNR</button>
                 </div>
+                
+                <div class="grid grid-cols-4 gap-1 pt-1">
+                    <button class="btn-opt" onclick="alignGNR('center')">Tengah</button>
+                    <button class="btn-opt" onclick="alignGNR('bottom')">Bawah</button>
+                    <button class="btn-opt" onclick="alignGNR('full')">Full Width</button>
+                    <button class="btn-opt" onclick="alignGNR('reset')">Reset Posisi</button>
+                </div>
+
                 <div>
-                    <label class="text-[10px] text-slate-400">Audio MP3:</label>
-                    <input type="file" id="audio-input" accept="audio/*" class="w-full text-[11px] text-slate-300 bg-black border border-slate-700 rounded p-1">
+                    <label class="text-[10px] text-slate-400">Bentuk Spektrum:</label>
+                    <select id="GNR-style" class="w-full bg-black border border-GNRBorder rounded p-1 text-white">
+                        <option value="bars-round">Bars Round (Pelangi)</option>
+                        <option value="bars-square">Bars Square</option>
+                        <option value="wave-line">Garis Wave Neon</option>
+                    </select>
                 </div>
+            </div>
+
+            <!-- 2. SECTION TEKS -->
+            <div class="space-y-2 border-b border-GNRBorder pb-3">
+                <div class="flex justify-between items-center text-GNRGold font-bold">
+                    <span>TEKS</span>
+                    <button id="btn-add-text" class="btn-opt">+ Text</button>
+                </div>
+                <input type="text" id="text-content" value="Studio Kecil 46" class="w-full bg-black border border-GNRBorder rounded p-1 text-white font-bold">
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <span class="text-[10px] text-slate-400">Besar Font</span>
+                        <input type="range" id="text-size" min="16" max="120" value="48" class="w-full slider-GNR">
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-400">Opacity</span>
+                        <input type="range" id="text-opacity" min="0" max="1" step="0.1" value="1" class="w-full slider-GNR">
+                    </div>
+                </div>
+
                 <div>
-                    <label class="text-[10px] text-slate-400">Background Image:</label>
-                    <input type="file" id="bg-input" accept="image/*" class="w-full text-[11px] text-slate-300 bg-black border border-slate-700 rounded p-1">
+                    <span class="text-[10px] text-slate-400 block mb-1">Efek Teks:</span>
+                    <div class="flex gap-1 flex-wrap" id="text-effects">
+                        <button class="btn-opt active" data-fx="plain">Normal</button>
+                        <button class="btn-opt" data-fx="shadow">Bayangan</button>
+                        <button class="btn-opt" data-fx="glow">Glow Neon</button>
+                    </div>
                 </div>
+            </div>
+
+            <!-- 3. SECTION BACKGROUND & FX -->
+            <div class="space-y-2 border-b border-GNRBorder pb-3">
+                <div class="text-cyberGreen font-bold">BACKGROUND & FX</div>
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div>
-                        <label class="text-[10px] text-slate-400">Gelap (Overlay):</label>
-                        <input type="range" id="bg-darkness" min="0" max="1" step="0.05" value="0.3" class="w-full accent-cyberGreen">
+                        <span class="text-[10px] text-slate-400">Kegelapan</span>
+                        <input type="range" id="bg-darkness" min="0" max="1" step="0.05" value="0.3" class="w-full slider-GNR">
                     </div>
                     <div>
-                        <label class="text-[10px] text-slate-400">Blur Background:</label>
-                        <input type="range" id="bg-blur" min="0" max="15" value="0" class="w-full accent-cyberGreen">
+                        <span class="text-[10px] text-slate-400">Blur</span>
+                        <input type="range" id="bg-blur" min="0" max="20" value="0" class="w-full slider-GNR">
                     </div>
                 </div>
             </div>
 
-            <!-- 2. VISUALIZER TRANSFORM & COLOR -->
-            <div class="space-y-1.5 bg-slate-900/50 p-2 rounded border border-slate-800">
-                <div class="font-bold text-islamicGold flex justify-between">
-                    <span>2. SETTING VISUALIZER</span>
-                    <span class="text-[9px] text-slate-500">Bisa di-drag di preview</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-[10px] text-slate-400">Gaya Warna:</label>
-                        <select id="viz-color-mode" class="w-full bg-black text-white border border-slate-700 rounded p-1">
-                            <option value="rainbow">Pelangi (Rainbow)</option>
-                            <option value="neon">Neon Cyan/Green</option>
-                            <option value="gold">Gold Islamic</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400">Bentuk Spectrum:</label>
-                        <select id="viz-style" class="w-full bg-black text-white border border-slate-700 rounded p-1">
-                            <option value="bar">Bars Round</option>
-                            <option value="line">Garis Wave</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. TEKS & FONT -->
-            <div class="space-y-1.5 bg-slate-900/50 p-2 rounded border border-slate-800">
-                <div class="font-bold text-cyberGreen">3. TEKS & EFEK</div>
-                <input type="text" id="text-input" value="Studio Kecil 46" class="w-full bg-black text-white border border-slate-700 rounded p-1">
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-[10px] text-slate-400">Efek Teks:</label>
-                        <select id="text-effect" class="w-full bg-black text-white border border-slate-700 rounded p-1">
-                            <option value="glow">Glow Neon</option>
-                            <option value="shadow">Shadow</option>
-                            <option value="plain">Polos</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-400">Warna Teks:</label>
-                        <input type="color" id="text-color" value="#ffffff" class="w-full h-6 bg-black rounded border border-slate-700">
-                    </div>
-                </div>
-            </div>
-
-            <!-- PLAY PLAYER CONTROL -->
-            <button id="btn-play" class="w-full bg-cyberGreen text-black py-2 rounded font-bold hover:bg-emerald-400 transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-play"></i> PUTAR AUDIO
-            </button>
         </div>
 
-        <!-- CANVAS PREVIEW KANAN -->
-        <div class="lg:col-span-8 flex flex-col items-center justify-center space-y-2">
-            <div class="w-full aspect-video bg-black rounded-xl border border-slate-800 overflow-hidden relative shadow-2xl">
-                <canvas id="viz-canvas" width="1280" height="720" class="w-full h-full object-contain"></canvas>
-            </div>
+        <!-- CANVAS PREVIEW & PLAYER BAR (RIGHT) -->
+        <div class="lg:col-span-8 bg-black flex flex-col justify-between p-3 relative overflow-hidden">
             
-            <div class="text-[10px] text-slate-400 flex items-center gap-4 bg-black/40 px-3 py-1 rounded border border-slate-800">
-                <span><i class="fa-solid fa-up-down-left-right text-cyberGreen"></i> Klik & Drag di Canvas untuk pindahkan posisi.</span>
-                <span><i class="fa-solid fa-expand text-islamicGold"></i> Tarik kotak sudut bawah-kanan untuk perbesar/perkecil.</span>
+            <div class="flex-1 flex items-center justify-center relative w-full h-full min-h-[300px]">
+                <canvas id="GNR-canvas" width="1280" height="720" class="max-w-full max-h-[75vh] object-contain border border-GNRBorder rounded-lg shadow-2xl bg-GNRDark"></canvas>
             </div>
+
+            <!-- Player Bar Bottom -->
+            <div class="bg-GNRPanel border border-GNRBorder p-2 rounded-lg flex items-center gap-3 mt-2 text-xs">
+                <button id="btn-play" class="w-9 h-9 rounded-full bg-GNRGreen text-black flex items-center justify-center font-bold hover:scale-105 transition">
+                    <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="flex-1">
+                    <div class="flex justify-between text-[10px] text-slate-400 mb-1">
+                        <span id="track-title">Belum ada audio</span>
+                        <span id="track-time">0:00 / 0:00</span>
+                    </div>
+                    <input type="range" id="audio-seek" value="0" min="0" max="100" class="w-full slider-GNR">
+                </div>
+            </div>
+
         </div>
 
     </div>
 
-    <!-- ENGINE CODE -->
+    <!-- ENGINE CODE JS -->
     <script>
-        const canvas = document.getElementById('viz-canvas');
+        const canvas = document.getElementById('GNR-canvas');
         const ctx = canvas.getContext('2d');
 
         // Inputs & Controls
-        const audioInput = document.getElementById('audio-input');
-        const bgInput = document.getElementById('bg-input');
-        const bgDarkness = document.getElementById('bg-darkness');
-        const bgBlur = document.getElementById('bg-blur');
-        const vizColorMode = document.getElementById('viz-color-mode');
-        const vizStyle = document.getElementById('viz-style');
-        const textInput = document.getElementById('text-input');
-        const textEffect = document.getElementById('text-effect');
-        const textColor = document.getElementById('text-color');
-        const btnPlay = document.getElementById('btn-play');
+        const inputAudio = document.getElementById('input-audio');
+        const inputBg = document.getElementById('input-bg');
+        const canvasRatio = document.getElementById('canvas-ratio');
+        const projectName = document.getElementById('project-name');
         const btnRecord = document.getElementById('btn-record');
-        const recText = document.getElementById('rec-text');
+        const recLabel = document.getElementById('rec-label');
+        const btnPlay = document.getElementById('btn-play');
+        const trackTitle = document.getElementById('track-title');
 
-        // State Objects Transformers (Posisi & Ukuran)
-        let objects = {
-            viz: { x: 340, y: 480, w: 600, h: 180, selected: false },
-            text: { x: 640, y: 200, size: 52, selected: false }
-        };
-
-        let activeTarget = null;
-        let isResizing = false;
-        let dragOffset = { x: 0, y: 0 };
-
-        // Audio Engine
+        // Layers & Audio State
+        let bgImage = null;
         let audio = new Audio();
         let audioCtx, analyser, source, bufferLength, dataArray;
-        let bgImage = null;
         let isPlaying = false;
-
-        // Recorder Engine
-        let mediaRecorder;
-        let recordedChunks = [];
         let isRecording = false;
+        let mediaRecorder, recordedChunks = [];
 
-        // Transform Mouse / Touch Handlers
-        function getCanvasCoords(e) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
-        }
+        // Dynamic State Objects
+        let GNRState = { x: 128, y: 468, w: 1024, h: 180, style: 'bars-round' };
+        let textState = { text: 'Studio Kecil 46', size: 48, opacity: 1, fx: 'plain', x: 640, y: 220 };
+        let bgState = { darkness: 0.3, blur: 0 };
 
-        canvas.addEventListener('mousedown', handlePointerDown);
-        canvas.addEventListener('mousemove', handlePointerMove);
-        canvas.addEventListener('mouseup', handlePointerUp);
-        canvas.addEventListener('touchstart', handlePointerDown);
-        canvas.addEventListener('touchmove', handlePointerMove);
-        canvas.addEventListener('touchend', handlePointerUp);
+        // Ratio Switch Handler
+        canvasRatio.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === '16:9') { canvas.width = 1280; canvas.height = 720; }
+            else if (val === '9:16') { canvas.width = 720; canvas.height = 1280; }
+            else if (val === '1:1') { canvas.width = 1080; canvas.height = 1080; }
+            else if (val === '4:5') { canvas.width = 864; canvas.height = 1080; }
 
-        function handlePointerDown(e) {
-            const pos = getCanvasCoords(e);
-
-            // Cek Klik Handle Resize Viz (Sudut kanan bawah Viz)
-            const v = objects.viz;
-            if (pos.x >= v.x + v.w - 20 && pos.x <= v.x + v.w + 20 && pos.y >= v.y + v.h - 20 && pos.y <= v.y + v.h + 20) {
-                isResizing = true;
-                activeTarget = 'viz';
-                return;
-            }
-
-            // Cek Hit Visualizer Box
-            if (pos.x >= v.x && pos.x <= v.x + v.w && pos.y >= v.y && pos.y <= v.y + v.h) {
-                activeTarget = 'viz';
-                dragOffset = { x: pos.x - v.x, y: pos.y - v.y };
-                return;
-            }
-
-            // Cek Hit Teks
-            const t = objects.text;
-            if (Math.abs(pos.x - t.x) < 200 && Math.abs(pos.y - t.y) < 40) {
-                activeTarget = 'text';
-                dragOffset = { x: pos.x - t.x, y: pos.y - t.y };
-                return;
-            }
-
-            activeTarget = null;
-        }
-
-        function handlePointerMove(e) {
-            if (!activeTarget) return;
-            const pos = getCanvasCoords(e);
-
-            if (isResizing && activeTarget === 'viz') {
-                objects.viz.w = Math.max(100, pos.x - objects.viz.x);
-                objects.viz.h = Math.max(50, pos.y - objects.viz.y);
-            } else if (activeTarget === 'viz') {
-                objects.viz.x = pos.x - dragOffset.x;
-                objects.viz.y = pos.y - dragOffset.y;
-            } else if (activeTarget === 'text') {
-                objects.text.x = pos.x - dragOffset.x;
-                objects.text.y = pos.y - dragOffset.y;
-            }
-
-            if (!isPlaying) drawFrame();
-        }
-
-        function handlePointerUp() {
-            activeTarget = null;
-            isResizing = false;
-        }
-
-        // Upload Handlers
-        bgInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    bgImage = new Image();
-                    bgImage.onload = () => drawFrame();
-                    bgImage.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+            // Auto-reposition elements according to new canvas dimensions
+            autoCenterElements();
+            drawFrame();
         });
 
-        audioInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) audio.src = URL.createObjectURL(file);
-        });
-
-        [bgDarkness, bgBlur, vizColorMode, vizStyle, textInput, textEffect, textColor].forEach(el => {
-            el.addEventListener('input', () => { if (!isPlaying) drawFrame(); });
-        });
+        function autoCenterElements() {
+            textState.x = canvas.width / 2;
+            textState.y = canvas.height * 0.3;
+            GNRState.w = canvas.width * 0.8;
+            GNRState.x = (canvas.width - GNRState.w) / 2;
+            GNRState.y = canvas.height * 0.65;
+            GNRState.h = canvas.height * 0.2;
+        }
 
         function initAudio() {
             if (!audioCtx) {
@@ -283,96 +243,95 @@
             }
         }
 
-        // Draw Canvas Loop
+        inputAudio.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                audio.src = URL.createObjectURL(file);
+                trackTitle.innerText = file.name;
+            }
+        });
+
+        inputBg.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    bgImage = new Image();
+                    bgImage.onload = () => drawFrame();
+                    bgImage.src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Event Controls
+        document.getElementById('text-content').addEventListener('input', (e) => { textState.text = e.target.value; drawFrame(); });
+        document.getElementById('text-size').addEventListener('input', (e) => { textState.size = e.target.value; drawFrame(); });
+        document.getElementById('text-opacity').addEventListener('input', (e) => { textState.opacity = e.target.value; drawFrame(); });
+        document.getElementById('bg-darkness').addEventListener('input', (e) => { bgState.darkness = e.target.value; drawFrame(); });
+        document.getElementById('bg-blur').addEventListener('input', (e) => { bgState.blur = e.target.value; drawFrame(); });
+        document.getElementById('GNR-style').addEventListener('change', (e) => { GNRState.style = e.target.value; drawFrame(); });
+
+        window.alignGNR = function(type) {
+            if (type === 'center') { GNRState.y = (canvas.height - GNRState.h) / 2; }
+            if (type === 'bottom') { GNRState.y = canvas.height * 0.7; }
+            if (type === 'full') { GNRState.w = canvas.width * 0.95; GNRState.x = canvas.width * 0.025; }
+            if (type === 'reset') { autoCenterElements(); }
+            drawFrame();
+        };
+
         function drawFrame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 1. Draw Background
+            // 1. Render Background
             if (bgImage) {
                 ctx.save();
-                if (bgBlur.value > 0) ctx.filter = `blur(${bgBlur.value}px)`;
+                if (bgState.blur > 0) ctx.filter = `blur(${bgState.blur}px)`;
                 ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
                 ctx.restore();
-                ctx.fillStyle = `rgba(0, 0, 0, ${bgDarkness.value})`;
+                ctx.fillStyle = `rgba(0,0,0,${bgState.darkness})`;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             } else {
-                ctx.fillStyle = '#050907';
+                ctx.fillStyle = '#0a0d0b';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
-            // 2. Draw Teks Overlay
-            ctx.fillStyle = textColor.value;
-            ctx.font = `bold ${objects.text.size}px monospace`;
+            // 2. Render Teks
+            ctx.save();
+            ctx.globalAlpha = textState.opacity;
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `bold ${textState.size}px monospace`;
             ctx.textAlign = 'center';
 
-            if (textEffect.value === 'glow') {
+            if (textState.fx === 'glow') {
                 ctx.shadowColor = '#00ff66';
-                ctx.shadowBlur = 15;
-            } else if (textEffect.value === 'shadow') {
+                ctx.shadowBlur = 18;
+            } else if (textState.fx === 'shadow') {
                 ctx.shadowColor = '#000000';
                 ctx.shadowBlur = 10;
-            } else {
-                ctx.shadowBlur = 0;
             }
-            ctx.fillText(textInput.value || 'Studio Kecil 46', objects.text.x, objects.text.y);
-            ctx.shadowBlur = 0;
 
-            // 3. Draw Visualizer (Rainbow / Custom Gradient)
-            const v = objects.viz;
-            
-            // Draw Box Transform / Select Indicator
-            ctx.strokeStyle = 'rgba(0, 255, 102, 0.4)';
-            ctx.lineWidth = 1;
-            ctx.setLineDash([4, 4]);
-            ctx.strokeRect(v.x, v.y, v.w, v.h);
-            ctx.setLineDash([]);
+            ctx.fillText(textState.text, textState.x, textState.y);
+            ctx.restore();
 
-            // Draw Resize Handle Point (Sudut Kanan Bawah)
-            ctx.fillStyle = '#00ff66';
-            ctx.fillRect(v.x + v.w - 6, v.y + v.h - 6, 12, 12);
-
+            // 3. Render Visualizer Spektrum
             if (analyser) {
                 analyser.getByteFrequencyData(dataArray);
 
-                // Buat Gradient Pelangi jika diset
-                let gradient;
-                if (vizColorMode.value === 'rainbow') {
-                    gradient = ctx.createLinearGradient(v.x, 0, v.x + v.w, 0);
-                    gradient.addColorStop(0, '#ff0000');
-                    gradient.addColorStop(0.2, '#ff7f00');
-                    gradient.addColorStop(0.4, '#ffff00');
-                    gradient.addColorStop(0.6, '#00ff00');
-                    gradient.addColorStop(0.8, '#0000ff');
-                    gradient.addColorStop(1, '#8b00ff');
-                } else if (vizColorMode.value === 'neon') {
-                    gradient = ctx.createLinearGradient(0, v.y + v.h, 0, v.y);
-                    gradient.addColorStop(0, '#00ff66');
-                    gradient.addColorStop(1, '#00ffff');
-                } else {
-                    gradient = '#fbbf24';
-                }
+                const grad = ctx.createLinearGradient(GNRState.x, 0, GNRState.x + GNRState.w, 0);
+                grad.addColorStop(0, '#ff0000');
+                grad.addColorStop(0.2, '#ff7f00');
+                grad.addColorStop(0.4, '#ffff00');
+                grad.addColorStop(0.6, '#00ff66');
+                grad.addColorStop(0.8, '#00ffff');
+                grad.addColorStop(1, '#8b00ff');
 
-                ctx.fillStyle = gradient;
-                ctx.strokeStyle = gradient;
+                ctx.fillStyle = grad;
+                const barW = GNRState.w / bufferLength;
 
-                const barWidth = (v.w / bufferLength);
-
-                if (vizStyle.value === 'bar') {
-                    for (let i = 0; i < bufferLength; i++) {
-                        const barHeight = (dataArray[i] / 255) * v.h;
-                        ctx.fillRect(v.x + (i * barWidth), v.y + v.h - barHeight, barWidth - 2, barHeight);
-                    }
-                } else if (vizStyle.value === 'line') {
-                    ctx.beginPath();
-                    ctx.lineWidth = 4;
-                    for (let i = 0; i < bufferLength; i++) {
-                        const barHeight = (dataArray[i] / 255) * v.h;
-                        const x = v.x + (i * barWidth);
-                        const y = v.y + v.h - barHeight;
-                        if (i === 0) ctx.moveTo(x, y);
-                        else ctx.lineTo(x, y);
-                    }
-                    ctx.stroke();
+                for (let i = 0; i < bufferLength; i++) {
+                    const barH = (dataArray[i] / 255) * GNRState.h;
+                    ctx.fillRect(GNRState.x + (i * barW), GNRState.y + GNRState.h - barH, barW - 2, barH);
                 }
             }
 
@@ -383,33 +342,28 @@
 
         // Audio Play Button
         btnPlay.addEventListener('click', () => {
-            if (!audio.src) {
-                alert('Pilih file MP3 terlebih dahulu!');
-                return;
-            }
+            if (!audio.src) return alert('Pilih file audio MP3 terlebih dahulu!');
             initAudio();
             if (audioCtx.state === 'suspended') audioCtx.resume();
 
             if (!isPlaying) {
                 audio.play();
                 isPlaying = true;
-                btnPlay.innerHTML = '<i class="fa-solid fa-pause"></i> PAUSE AUDIO';
+                btnPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
                 drawFrame();
             } else {
                 audio.pause();
                 isPlaying = false;
-                btnPlay.innerHTML = '<i class="fa-solid fa-play"></i> PUTAR AUDIO';
+                btnPlay.innerHTML = '<i class="fa-solid fa-play"></i>';
             }
         });
 
-        // REKAM VIDEO & UNDUH HASIL (EXPORT)
+        // Rekam & Download Video
         btnRecord.addEventListener('click', () => {
             if (!isRecording) {
-                // Mulai Rekam
                 recordedChunks = [];
-                const stream = canvas.captureStream(30); // 30 FPS
+                const stream = canvas.captureStream(30);
 
-                // Gabungkan Audio Stream jika ada
                 if (audioCtx) {
                     const dest = audioCtx.createMediaStreamDestination();
                     source.connect(dest);
@@ -423,24 +377,24 @@
 
                 mediaRecorder.start();
                 isRecording = true;
-                btnRecord.classList.replace('bg-red-600', 'bg-amber-500');
-                recText.innerText = 'Stop & Download';
+                btnRecord.classList.replace('bg-rose-600', 'bg-amber-500');
+                recLabel.innerText = 'Stop & Unduh';
             } else {
-                // Stop Rekam & Unduh
                 mediaRecorder.stop();
                 isRecording = false;
-                btnRecord.classList.replace('bg-amber-500', 'bg-red-600');
-                recText.innerText = 'Rekam Video';
+                btnRecord.classList.replace('bg-amber-500', 'bg-rose-600');
+                recLabel.innerText = 'Rekam';
             }
         });
 
         function exportVideo() {
+            const fileName = (projectName.value.trim() || 'Visualizer_Output') + '.webm';
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = 'murottal-visualizer-studio46.webm';
+            a.download = fileName;
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
