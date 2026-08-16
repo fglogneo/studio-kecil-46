@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Qur'an Digital - Studio Kecil 46</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyberGreen: '#00ff66',
+                        cyberDark: '#050907',
+                        islamicGold: '#fbbf24'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cyberDark text-slate-200 min-h-screen p-4 md:p-8 font-mono">
+
+    <!-- Header & Tombol Kembali -->
+    <div class="max-w-4xl mx-auto mb-6 flex items-center justify-between border-b border-cyberGreen/30 pb-4">
+        <a href="../index.html" class="text-xs text-cyberGreen border border-cyberGreen/50 px-3 py-1.5 rounded hover:bg-cyberGreen hover:text-black transition">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Dashboard
+        </a>
+        <h1 class="text-lg font-bold text-islamicGold">📖 Al-Qur'an Digital Shahih</h1>
+    </div>
+
+    <!-- Container Utama -->
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Dropdown Pilih Surah -->
+        <div class="bg-black/60 border border-cyberGreen/40 p-4 rounded-xl">
+            <label class="block text-xs text-cyberGreen mb-2">PILIH SURAH:</label>
+            <select id="surah-select" onchange="loadAyat()" class="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:outline-none focus:border-cyberGreen">
+                <option value="">-- Memuat Daftar Surah... --</option>
+            </select>
+        </div>
+
+        <!-- Info Surah -->
+        <div id="surah-info" class="hidden bg-slate-900/80 border border-islamicGold/40 p-4 rounded-xl text-center space-y-1">
+            <h2 id="surah-title" class="text-xl font-bold text-islamicGold"></h2>
+            <p id="surah-subtitle" class="text-xs text-slate-400"></p>
+        </div>
+
+        <!-- Wadah Daftar Ayat -->
+        <div id="ayat-container" class="space-y-4"></div>
+
+    </div>
+
+    <!-- Script Pengambil Data API -->
+    <script>
+        // API Gratis Al-Qur'an Kemenag & Internasional
+        const API_SURAH = 'https://equran.id/api/v2/surat';
+
+        // 1. Ambil daftar surah saat halaman pertama kali dibuka
+        async function fetchSurahList() {
+            const select = document.getElementById('surah-select');
+            try {
+                const res = await fetch(API_SURAH);
+                const data = await res.json();
+                
+                select.innerHTML = '<option value="">-- Pilih Surah --</option>';
+                data.data.forEach(surah => {
+                    select.innerHTML += `<option value="${surah.nomor}">${surah.nomor}. ${surah.namaLatin} (${surah.nama})</option>`;
+                });
+            } catch (err) {
+                select.innerHTML = '<option value="">Gagal memuat surah. Periksa koneksi internet.</option>';
+            }
+        }
+
+        // 2. Ambil detail ayat (Arab, Latin, Indonesia, Inggris)
+        async function loadAyat() {
+            const surahNo = document.getElementById('surah-select').value;
+            const container = document.getElementById('ayat-container');
+            const infoBox = document.getElementById('surah-info');
+
+            if (!surahNo) {
+                container.innerHTML = '';
+                infoBox.classList.add('hidden');
+                return;
+            }
+
+            container.innerHTML = '<div class="text-center text-cyberGreen py-8">Memuat ayat-ayat Al-Qur\'an...</div>';
+
+            try {
+                // Fetch data dari API Kemenag (Arab, Latin, Indo) & API Inggris
+                const [resIndo, resEng] = await Promise.all([
+                    fetch(`https://equran.id/api/v2/surat/${surahNo}`),
+                    fetch(`https://api.alquran.cloud/v1/surah/${surahNo}/en.sahih`)
+                ]);
+
+                const dataIndo = (await resIndo.json()).data;
+                const dataEng = (await resEng.json()).data;
+
+                // Tampilkan Header Surah
+                document.getElementById('surah-title').innerText = `${dataIndo.namaLatin} (${dataIndo.nama})`;
+                document.getElementById('surah-subtitle').innerText = `Arti: ${dataIndo.arti} | Jumlah Ayat: ${dataIndo.jumlahAyat} | Tempat Turun: ${dataIndo.tempatTurun}`;
+                infoBox.classList.remove('hidden');
+
+                // Tampilkan daftar ayat
+                container.innerHTML = '';
+                dataIndo.ayat.forEach((ayat, index) => {
+                    const ayatEngText = dataEng.ayat[index] ? dataEng.ayat[index].text : '';
+
+                    container.innerHTML += `
+                        <div class="bg-black/50 border border-slate-800 hover:border-cyberGreen/50 p-5 rounded-xl space-y-4 transition">
+                            <!-- Nomor Ayat -->
+                            <div class="text-xs text-cyberGreen font-bold flex justify-between border-b border-slate-800 pb-2">
+                                <span>AYAT ${ayat.nomorAyat}</span>
+                            </div>
+                            <!-- Teks Arab -->
+                            <div class="text-right font-serif text-2xl md:text-3xl text-islamicGold leading-loose dir-rtl" style="font-family: 'Amiri', serif;">
+                                ${ayat.teksArab}
+                            </div>
+                            <!-- Bacaan Latin -->
+                            <div class="text-xs text-cyberGreen/90 italic">
+                                📌 ${ayat.teksLatin}
+                            </div>
+                            <!-- Terjemahan Indonesia -->
+                            <div class="text-xs text-slate-300">
+                                🇮🇩 <span class="font-sans">${ayat.teksIndonesia}</span>
+                            </div>
+                            <!-- Terjemahan Inggris -->
+                            <div class="text-xs text-slate-400 border-t border-slate-800/60 pt-2">
+                                🇬🇧 <span class="font-sans">${ayatEngText}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+            </div> catch (err) {
+                container.innerHTML = '<div class="text-center text-red-400 py-8">Gagal mengambil data ayat. Masalah jaringan atau API.</div>';
+            }
+        }
+
+        // Jalankan fungsi awal saat halaman dimuat
+        fetchSurahList();
+    </script>
+</body>
+</html>
