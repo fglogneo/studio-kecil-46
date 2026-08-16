@@ -41,7 +41,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated Motion Text & Neon Effects */
         .neon-text-green {
             text-shadow: 0 0 12px rgba(0, 255, 102, 0.8), 0 0 25px rgba(0, 255, 102, 0.5);
         }
@@ -50,7 +49,6 @@
             text-shadow: 0 0 12px rgba(245, 158, 11, 0.8), 0 0 25px rgba(245, 158, 11, 0.5);
         }
 
-        /* Animated Title Gradient Move */
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -65,7 +63,6 @@
             animation: gradientShift 6s ease infinite;
         }
 
-        /* Motion Pulse Animation for Titles */
         @keyframes cyberPulse {
             0%, 100% {
                 filter: drop-shadow(0 0 10px rgba(0, 255, 102, 0.5));
@@ -81,7 +78,6 @@
             animation: cyberPulse 3s infinite ease-in-out;
         }
 
-        /* Gentle Floating Motion */
         @keyframes floatSlow {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-6px); }
@@ -103,7 +99,6 @@
             box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
         }
 
-        /* Matrix Canvas Background */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -115,7 +110,6 @@
             pointer-events: none;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -144,7 +138,7 @@
 </head>
 <body class="relative min-h-screen flex flex-col justify-between scanline bg-[#050907]">
 
-    <!-- Background Matrix & Twinkling Stars Canvas -->
+    <!-- Background Matrix Canvas -->
     <canvas id="matrix-canvas"></canvas>
 
     <!-- Floating Toast Notification -->
@@ -153,7 +147,7 @@
         <span id="toast-message" class="text-sm font-medium">Notifikasi</span>
     </div>
 
-    <!-- Header / Navbar (Dark Deep Cyber Theme) -->
+    <!-- Header / Navbar -->
     <header class="border-b border-cyberBorder bg-[#050907]/95 backdrop-blur sticky top-0 z-40 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -169,7 +163,6 @@
                 </div>
             </div>
 
-            <!-- Nav Links -->
             <nav class="hidden md:flex items-center space-x-6 text-sm">
                 <a href="#intro" class="text-slate-200 hover:text-cyberGreen transition-colors flex items-center gap-1.5 font-medium">
                     <i class="fa-solid fa-mosque text-xs text-islamicGold"></i> Doa & Pencerahan
@@ -190,7 +183,7 @@
         <!-- HERO SECTION -->
         <section id="intro" class="text-center py-8 relative">
             <div class="inline-block bg-black/80 border border-islamicGold/50 text-islamicGold text-xs px-4 py-1.5 rounded-full mb-4 shadow-[0_0_12px_rgba(245,158,11,0.25)] motion-float">
-                <i class="fa-solid fa-star-and-crescent mr-1"></i> Bissmillah — Menebar Kebaikan, Menyebar Barokah
+                <i class="fa-solid fa-star-and-crescent mr-1"></i> Bismillah — Menebar Kebaikan, Menyebar Barokah
             </div>
 
             <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-wide mb-4 leading-tight motion-title">
@@ -206,7 +199,7 @@
 
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="#tools" class="bg-cyberGreen text-black font-extrabold px-6 py-3 rounded-lg hover:bg-emerald-400 transition-all flex items-center gap-2 shadow-[0_0_18px_rgba(0,255,102,0.5)]">
-                    <i class="fa-solid fa-rocket"></i> GUNAKAN TOOLS SEKARANG
+                    <i class="fa-solid fa-rocket"></i> JELAJAHI TOOLS
                 </a>
                 <a href="#terminal" class="bg-black/80 border border-cyberBorder text-slate-200 hover:border-cyberGreen hover:text-cyberGreen px-6 py-3 rounded-lg transition-all flex items-center gap-2 font-mono">
                     <i class="fa-solid fa-terminal"></i> BUKA TERMINAL WEB
@@ -242,7 +235,6 @@
                 </button>
             </div>
 
-            <!-- Terminal Shortcuts -->
             <div class="flex flex-wrap gap-2 mt-3 text-xs">
                 <button onclick="runCommand('help')" class="bg-cyberBorder/60 hover:bg-cyberGreen/20 hover:text-cyberGreen px-3 py-1 rounded text-slate-300 font-mono">/help</button>
                 <button onclick="runCommand('bismillah')" class="bg-cyberBorder/60 hover:bg-cyberGreen/20 hover:text-cyberGreen px-3 py-1 rounded text-slate-300 font-mono">/bismillah</button>
@@ -293,118 +285,64 @@
             </div>
         </section>
 
-        <!-- CREATOR CYBER-TOOLKIT SECTION -->
+        <!-- CREATOR CYBER-TOOLKIT SECTION (MODULAR GRID PLACEHOLDER) -->
         <section id="tools" class="space-y-6">
             <div class="border-l-4 border-cyberGreen pl-4">
                 <h3 class="text-xl font-bold text-white tracking-wide">CREATOR CYBER-TOOLKIT</h3>
-                <p class="text-xs text-slate-300">Pilih tools di bawah untuk mempermudah alur kerja konten Islami Anda.</p>
+                <p class="text-xs text-slate-300">Pilih tools di bawah ini untuk mengarahkan ke fitur/aplikasi pembuatan konten.</p>
             </div>
 
-            <!-- TOOL 1: HOOK & CAPTION GENERATOR -->
-            <div class="cyber-card rounded-xl p-6 space-y-4">
-                <div class="flex items-center space-x-3 text-cyberGreen">
-                    <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
-                    <div>
-                        <h4 class="font-bold text-white">1. Generator Hook & Caption Dakwah</h4>
-                        <p class="text-xs text-slate-300 font-sans">Buat kalimat pembuka yang memikat dan caption Islami otomatis untuk IG Reels, TikTok, atau YouTube Shorts.</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                    <button onclick="generateCaption('motivasi')" class="bg-black/60 border border-cyberBorder hover:border-cyberGreen text-slate-200 hover:text-cyberGreen py-2.5 px-3 rounded-lg text-xs font-mono flex items-center justify-center gap-2 transition-all">
-                        <i class="fa-solid fa-fire text-amber-500"></i> Tema Motivasi
-                    </button>
-                    <button onclick="generateCaption('hijrah')" class="bg-black/60 border border-cyberBorder hover:border-cyberGreen text-slate-200 hover:text-cyberGreen py-2.5 px-3 rounded-lg text-xs font-mono flex items-center justify-center gap-2 transition-all">
-                        <i class="fa-solid fa-heart text-rose-400"></i> Tema Hijrah & Hati
-                    </button>
-                    <button onclick="generateCaption('adab')" class="bg-black/60 border border-cyberBorder hover:border-cyberGreen text-slate-200 hover:text-cyberGreen py-2.5 px-3 rounded-lg text-xs font-mono flex items-center justify-center gap-2 transition-all">
-                        <i class="fa-solid fa-graduation-cap text-cyan-400"></i> Tema Adab & Ilmu
-                    </button>
-                </div>
-
-                <div class="bg-black/80 border border-cyberBorder rounded-lg p-4 relative space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-[11px] font-mono text-islamicGold">// Hasil Output Caption:</span>
-                        <button onclick="copyGeneratedCaption()" class="text-xs bg-cyberGreen/20 text-cyberGreen hover:bg-cyberGreen hover:text-black px-2.5 py-1 rounded font-mono transition-colors">
-                            <i class="fa-regular fa-copy mr-1"></i> Salin Caption
-                        </button>
-                    </div>
-                    <div id="caption-output" class="text-xs text-slate-200 font-sans leading-relaxed whitespace-pre-line min-h-[80px]">
-                        Klik salah satu tombol tema di atas untuk menghasilkan hook, isi caption, dan hashtag Islami otomatis...
-                    </div>
-                </div>
-            </div>
-
-            <!-- TOOL 2: STUDIO QUOTE CARD DESIGNER (CANVAS GENERATOR) -->
-            <div class="cyber-card rounded-xl p-6 space-y-4">
-                <div class="flex items-center space-x-3 text-islamicGold">
-                    <i class="fa-solid fa-palette text-2xl"></i>
-                    <div>
-                        <h4 class="font-bold text-white">2. Studio Quote Card Generator</h4>
-                        <p class="text-xs text-slate-300 font-sans">Buat gambar Quote Islami estetis bergaya Cyber/Minimalis secara instan dan langsung unduh (PNG).</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Controls -->
-                    <div class="space-y-3 font-sans text-xs">
-                        <div>
-                            <label class="block text-slate-300 mb-1">Teks Kutipan / Hadits / Kata Mutiara:</label>
-                            <textarea id="quote-text-input" rows="3" class="w-full bg-black border border-cyberBorder text-white p-2 rounded focus:outline-none focus:border-cyberGreen" placeholder="Tuliskan kata-kata hikmah di sini..."></textarea>
+            <!-- Grid Card Tools -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Tool Card 1 -->
+                <div class="cyber-card rounded-xl p-6 flex flex-col justify-between space-y-4 border-t-2 border-t-cyberGreen">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-lg bg-black border border-cyberGreen flex items-center justify-center text-cyberGreen text-xl">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
                         </div>
-
-                        <div>
-                            <label class="block text-slate-300 mb-1">Sumber / Penulis / Perawi:</label>
-                            <input type="text" id="quote-author-input" class="w-full bg-black border border-cyberBorder text-white p-2 rounded focus:outline-none focus:border-cyberGreen" placeholder="Contoh: HR. Bukhari / Imam Al-Ghazali / Studio Kecil 46">
-                        </div>
-
-                        <div>
-                            <label class="block text-slate-300 mb-1">Pilih Style Warna:</label>
-                            <select id="quote-theme-select" class="w-full bg-black border border-cyberBorder text-white p-2 rounded focus:outline-none focus:border-cyberGreen font-mono">
-                                <option value="cyber">Cyber Matrix (Hijau - Hitam)</option>
-                                <option value="gold">Gold Luxury (Emas - Dark Slate)</option>
-                                <option value="minimal">Minimalist Dark (Abu - Monokrom)</option>
-                            </select>
-                        </div>
-
-                        <div class="flex gap-2 pt-2">
-                            <button onclick="renderQuoteCanvas()" class="flex-1 bg-cyberGreen/20 border border-cyberGreen text-cyberGreen hover:bg-cyberGreen hover:text-black py-2 rounded font-mono font-bold transition-all">
-                                <i class="fa-solid fa-arrows-rotate"></i> Update Preview
-                            </button>
-                            <button onclick="downloadQuoteCard()" class="flex-1 bg-islamicGold text-black font-bold py-2 rounded hover:bg-amber-400 font-mono transition-all">
-                                <i class="fa-solid fa-download"></i> Download Gambar
-                            </button>
-                        </div>
+                        <h4 class="font-bold text-white text-lg">Caption Generator</h4>
+                        <p class="text-xs text-slate-300 font-sans leading-relaxed">
+                            Buat hook memikat, teks caption, dan hashtag Islami otomatis untuk IG Reels, TikTok, atau Shorts.
+                        </p>
                     </div>
+                    <a href="#" class="w-full bg-cyberGreen/10 border border-cyberGreen text-cyberGreen hover:bg-cyberGreen hover:text-black py-2.5 rounded-lg text-xs font-mono font-bold transition-all text-center block">
+                        BUKA TOOL <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
 
-                    <!-- Live Canvas Preview -->
-                    <div class="flex flex-col items-center justify-center bg-black/80 border border-cyberBorder p-3 rounded-lg">
-                        <span class="text-[11px] font-mono text-slate-400 mb-2">// Live Image Canvas Preview (Square 1:1)</span>
-                        <canvas id="quote-canvas" width="400" height="400" class="max-w-full h-auto border border-cyberBorder rounded shadow-lg"></canvas>
+                <!-- Tool Card 2 -->
+                <div class="cyber-card rounded-xl p-6 flex flex-col justify-between space-y-4 border-t-2 border-t-islamicGold">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-lg bg-black border border-islamicGold flex items-center justify-center text-islamicGold text-xl">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-lg">Quote Card Generator</h4>
+                        <p class="text-xs text-slate-300 font-sans leading-relaxed">
+                            Buat gambar Quote Islami estetis bergaya Cyber/Minimalis secara instan dan langsung unduh (PNG).
+                        </p>
                     </div>
+                    <a href="#" class="w-full bg-islamicGold/10 border border-islamicGold text-islamicGold hover:bg-islamicGold hover:text-black py-2.5 rounded-lg text-xs font-mono font-bold transition-all text-center block">
+                        BUKA TOOL <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </a>
                 </div>
-            </div>
 
-            <!-- TOOL 3: VIRAL TITLE GENERATOR -->
-            <div class="cyber-card rounded-xl p-6 space-y-4">
-                <div class="flex items-center space-x-3 text-cyan-400">
-                    <i class="fa-solid fa-lightbulb text-2xl"></i>
-                    <div>
-                        <h4 class="font-bold text-white">3. Generator Judul Video Viral</h4>
-                        <p class="text-xs text-slate-300 font-sans">Dapatkan ide judul konten Islami-Teknologi tinggi rasa penasaran (High CTR) untuk menarik audiens muda.</p>
+                <!-- Tool Card 3 -->
+                <div class="cyber-card rounded-xl p-6 flex flex-col justify-between space-y-4 border-t-2 border-t-cyan-400">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-lg bg-black border border-cyan-400 flex items-center justify-center text-cyan-400 text-xl">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-lg">Viral Title Generator</h4>
+                        <p class="text-xs text-slate-300 font-sans leading-relaxed">
+                            Dapatkan rekomendasi ide judul konten Islami-Teknologi berasio klik tinggi (High CTR).
+                        </p>
                     </div>
+                    <a href="#" class="w-full bg-cyan-500/10 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black py-2.5 rounded-lg text-xs font-mono font-bold transition-all text-center block">
+                        BUKA TOOL <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </a>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="topic-input" placeholder="Ketik topik konten (contoh: sholat, rezeki, gadget, pemuda, masa depan)..." class="flex-1 bg-black border border-cyberBorder text-white text-xs p-3 rounded-lg focus:outline-none focus:border-cyan-400 font-sans">
-                    <button onclick="generateViralTitles()" class="bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold px-5 py-3 rounded-lg text-xs font-mono transition-all">
-                        <i class="fa-solid fa-bolt mr-1"></i> GENERATE JUDUL
-                    </button>
-                </div>
-
-                <div id="titles-container" class="space-y-2 pt-2">
-                    <div class="text-xs text-slate-400 italic">Judul rekomendasi akan muncul di sini...</div>
-                </div>
             </div>
         </section>
 
@@ -446,7 +384,7 @@
                     <div class="text-xs text-slate-400 font-mono">QRIS / E-WALLET (GoPay/Shopeepay/Dana)</div>
                     <div class="text-lg font-bold text-islamicGold font-mono">0838-9693-4431</div>
                     <div class="text-xs text-slate-300">a.n. Guntur Saputro</div>
-                    <button onclick="copyToClipboard('081234567890')" class="w-full mt-2 bg-cyberBorder/60 hover:bg-islamicGold hover:text-black text-slate-200 py-1.5 rounded text-xs font-mono transition-all">
+                    <button onclick="copyToClipboard('083896934431')" class="w-full mt-2 bg-cyberBorder/60 hover:bg-islamicGold hover:text-black text-slate-200 py-1.5 rounded text-xs font-mono transition-all">
                         <i class="fa-regular fa-copy mr-1"></i> Salin No. E-Wallet
                     </button>
                 </div>
@@ -470,7 +408,7 @@
     </footer>
 
     <script>
-        /* 1. OPTIMIZED REAL-TIME MATRIX RAIN & TWINKLING STARS ANIMATION ENGINE */
+        /* REAL-TIME MATRIX RAIN ENGINE */
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -485,14 +423,12 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             
-            // Re-calculate columns for rain
             columns = Math.floor(canvas.width / fontSize);
             drops = [];
             for (let i = 0; i < columns; i++) {
-                drops[i] = Math.floor(Math.random() * -100); // Staggered entry
+                drops[i] = Math.floor(Math.random() * -100);
             }
 
-            // Re-init stars for full screen
             stars = [];
             for (let i = 0; i < numStars; i++) {
                 stars.push({
@@ -507,11 +443,9 @@
         }
 
         function drawMatrixAndStars() {
-            // Dark transparent background fade for motion trail
             ctx.fillStyle = 'rgba(5, 9, 7, 0.15)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Render Twinkling / Blinking Stars
             for (let s of stars) {
                 s.alpha += s.speed;
                 if (s.alpha >= 1 || s.alpha <= 0.1) {
@@ -526,7 +460,6 @@
                 ctx.restore();
             }
 
-            // Render Digital Rain
             ctx.fillStyle = '#00FF66';
             ctx.font = fontSize + 'px "JetBrains Mono", monospace';
 
@@ -543,16 +476,14 @@
                 drops[i]++;
             }
 
-            // Smooth high-performance requestAnimationFrame loop
             requestAnimationFrame(drawMatrixAndStars);
         }
 
-        // Initialize canvas and handle window resize
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         requestAnimationFrame(drawMatrixAndStars);
 
-        /* 2. INTERACTIVE TERMINAL LOGIC */
+        /* INTERACTIVE TERMINAL LOGIC */
         const terminalScreen = document.getElementById('terminal-screen');
         const terminalInput = document.getElementById('terminal-input');
 
@@ -625,175 +556,7 @@
             }
         });
 
-        /* 3. TOOL 1: CAPTION GENERATOR LOGIC */
-        let lastGeneratedCaption = '';
-
-        const captionsDB = {
-            motivasi: [
-                `🔥 [HOOK]: Jangan patah semangat, Allah tahu perjuanganmu!\n\nKadang kita merasa lelah, tapi ingatlah bahwa setiap titik peluh yang kamu keluarkan demi kebaikan tercatat sebagai pahala. Tetap konsisten dan percayalah pada skenario terbaik-Nya.\n\nSimpan & share video ini jika bermanfaat! 🤲\n\n#StudioKecil46 #MotivasiHijrah #CyberDakwah #SemangatKebaikan #QuotesIslami`,
-                `✨ [HOOK]: Kamu tidak terlambat, kamu hanya berada di waktu yang Allah atur.\n\nJangan bandingkan jalannmu dengan orang lain. Fokus pada perbaikan dirimu hari ini. Bismillah, langkah kecilmu sangat berarti.\n\n#StudioKecil46 #PengingatDiri #SelfReminder #HijrahKreatif #Barakah`
-            ],
-            hijrah: [
-                `💖 [HOOK]: Hijrah itu bukan tentang menjadi sempurna, tapi tentang mau belajar.\n\nKalau kamu pernah salah, pintu ampunan Allah selalu lebih besar dari dosamu. Mulailah kembali hari ini tanpa ragu.\n\nKetik 'Aamiin' di kolom komentar ya! ✨\n\n#StudioKecil46 #PemudaHijrah #DakwahDigital #HatiTenang #UmatPositif`,
-                `🌙 [HOOK]: Ketika hatimu merasa lelah dengan dunia, kembalilah pada-Nya.\n\nSatu sujud yang khusyu' bisa menenangkan jiwa yang gelisah sepanjang hari. Yuk perbaiki sholat kita.\n\n#StudioKecil46 #SholatKhusyu #DakwahVisual #QuoteIslami #InspirasiAhad`
-            ],
-            adab: [
-                `📚 [HOOK]: Adab lebih utama sebelum tingginya ilmu.\n\nIlmu tanpa adab ibarat pohon tanpa buah. Mari kita hiasi kata-kata dan postingan kita di media sosial dengan kelembutan dan kesantunan.\n\n#StudioKecil46 #AdabKreator #BelajarIslam #KontenPositif #IlmuManfaat`,
-                `🌱 [HOOK]: Satu kalimat baik yang kamu bagikan bisa mengubah hidup seseorang.\n\nManfaatkan media sosialmu menjadi ladang pahala jariyah. Sebarkan konten yang menyejukkan hati.\n\n#StudioKecil46 #CyberKebaikan #KreatorMuslim #DakwahMedia #Barakah`
-            ]
-        };
-
-        function generateCaption(type) {
-            const list = captionsDB[type];
-            const randomIndex = Math.floor(Math.random() * list.length);
-            lastGeneratedCaption = list[randomIndex];
-            document.getElementById('caption-output').innerText = lastGeneratedCaption;
-            showToast('Caption baru berhasil di-generate!');
-        }
-
-        function copyGeneratedCaption() {
-            if (!lastGeneratedCaption) {
-                showToast('Silakan generate caption terlebih dahulu!');
-                return;
-            }
-            copyToClipboard(lastGeneratedCaption);
-        }
-
-        /* 4. TOOL 2: QUOTE CANVAS DESIGNER LOGIC */
-        const quoteCanvas = document.getElementById('quote-canvas');
-        const qCtx = quoteCanvas.getContext('2d');
-
-        function renderQuoteCanvas() {
-            const quoteText = document.getElementById('quote-text-input').value || '"Sebaik-baik manusia adalah yang paling bermanfaat bagi orang lain."';
-            const authorText = document.getElementById('quote-author-input').value || '- HR. Ahmad & Thabrani';
-            const theme = document.getElementById('quote-theme-select').value;
-
-            // Background Theme
-            if (theme === 'cyber') {
-                qCtx.fillStyle = '#050907';
-                qCtx.fillRect(0, 0, 400, 400);
-
-                // Grid Cyber Lines
-                qCtx.strokeStyle = 'rgba(0, 255, 102, 0.15)';
-                qCtx.lineWidth = 1;
-                for (let i = 0; i < 400; i += 20) {
-                    qCtx.beginPath();
-                    qCtx.moveTo(i, 0); qCtx.lineTo(i, 400);
-                    qCtx.stroke();
-                    qCtx.beginPath();
-                    qCtx.moveTo(0, i); qCtx.lineTo(400, i);
-                    qCtx.stroke();
-                }
-
-                qCtx.strokeStyle = '#00FF66';
-                qCtx.lineWidth = 3;
-                qCtx.strokeRect(15, 15, 370, 370);
-
-                qCtx.fillStyle = '#00FF66';
-                qCtx.font = 'bold 16px "JetBrains Mono", monospace';
-            } else if (theme === 'gold') {
-                const grad = qCtx.createLinearGradient(0, 0, 400, 400);
-                grad.addColorStop(0, '#0F172A');
-                grad.addColorStop(1, '#020617');
-                qCtx.fillStyle = grad;
-                qCtx.fillRect(0, 0, 400, 400);
-
-                qCtx.strokeStyle = '#F59E0B';
-                qCtx.lineWidth = 2;
-                qCtx.strokeRect(20, 20, 360, 360);
-
-                qCtx.fillStyle = '#F59E0B';
-                qCtx.font = 'bold 16px "Inter", sans-serif';
-            } else {
-                qCtx.fillStyle = '#111827';
-                qCtx.fillRect(0, 0, 400, 400);
-
-                qCtx.strokeStyle = '#4B5563';
-                qCtx.lineWidth = 1;
-                qCtx.strokeRect(25, 25, 350, 350);
-
-                qCtx.fillStyle = '#F3F4F6';
-                qCtx.font = '16px "Inter", sans-serif';
-            }
-
-            // Watermark Studio Kecil 46
-            qCtx.fillStyle = '#64748B';
-            qCtx.font = '10px "JetBrains Mono", monospace';
-            qCtx.textAlign = 'center';
-            qCtx.fillText('STUDIO KECIL 46', 200, 45);
-
-            // Text Wrapping for Quote
-            qCtx.fillStyle = theme === 'cyber' ? '#00FF66' : (theme === 'gold' ? '#FDE68A' : '#FFFFFF');
-            qCtx.font = '15px "Inter", sans-serif';
-            qCtx.textAlign = 'center';
-
-            wrapCanvasText(qCtx, quoteText, 200, 160, 320, 24);
-
-            // Author Text
-            qCtx.fillStyle = theme === 'cyber' ? '#F59E0B' : (theme === 'gold' ? '#F59E0B' : '#9CA3AF');
-            qCtx.font = 'italic 13px "Inter", sans-serif';
-            qCtx.fillText(authorText, 200, 330);
-        }
-
-        function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
-            const words = text.split(' ');
-            let line = '';
-            let currentY = y;
-
-            for (let n = 0; n < words.length; n++) {
-                const testLine = line + words[n] + ' ';
-                const metrics = ctx.measureText(testLine);
-                const testWidth = metrics.width;
-                if (testWidth > maxWidth && n > 0) {
-                    ctx.fillText(line, x, currentY);
-                    line = words[n] + ' ';
-                    currentY += lineHeight;
-                } else {
-                    line = testLine;
-                }
-            }
-            ctx.fillText(line, x, currentY);
-        }
-
-        function downloadQuoteCard() {
-            const link = document.createElement('a');
-            link.download = 'StudioKecil46-Quote.png';
-            link.href = quoteCanvas.toDataURL('image/png');
-            link.click();
-            showToast('Gambar Quote berhasil diunduh!');
-        }
-
-        /* 5. TOOL 3: VIRAL TITLE GENERATOR LOGIC */
-        function generateViralTitles() {
-            const topic = document.getElementById('topic-input').value.trim() || 'Sholat';
-            const container = document.getElementById('titles-container');
-
-            const templates = [
-                `Kenapa Rahasia [TOPIK] Ini Jarang Diketahui Banyak Orang?`,
-                `1 Kebiasaan Soal [TOPIK] Yang Bikin Hidup Lebih Tenang & Berkah`,
-                `Hacker Pembuka Pintu Rezeki: Mulai Dari Perbaiki [TOPIK]!`,
-                `Jangan Sampai Salah! Ini Adab Penting Terkait [TOPIK]`,
-                `Cara Anak Muda Zaman Now Menjaga [TOPIK] di Era Digital`
-            ];
-
-            container.innerHTML = '';
-            templates.forEach((temp, idx) => {
-                const titleText = temp.replace(/\[TOPIK\]/g, topic);
-                const item = document.createElement('div');
-                item.className = 'bg-black/60 border border-cyberBorder p-3 rounded-lg flex justify-between items-center text-xs hover:border-cyan-400 transition-all';
-                item.innerHTML = `
-                    <span class="text-slate-200 font-sans"><strong class="text-cyan-400 font-mono">#${idx+1}</strong> ${titleText}</span>
-                    <button onclick="copyToClipboard('${titleText}')" class="text-cyan-400 hover:text-white font-mono ml-2">
-                        <i class="fa-regular fa-copy"></i> Salin
-                    </button>
-                `;
-                container.appendChild(item);
-            });
-
-            showToast(`5 Ide judul viral untuk '${topic}' berhasil dibuat!`);
-        }
-
-        /* 6. UTILITY FUNCTIONS (TOAST & CLIPBOARD) */
+        /* UTILITY FUNCTIONS */
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-message');
@@ -814,14 +577,6 @@
             document.body.removeChild(tempInput);
             showToast('Teks berhasil disalin ke clipboard!');
         }
-
-        // Initialize default state on window load
-        window.onload = function() {
-            renderQuoteCanvas();
-            document.getElementById('quote-text-input').addEventListener('input', renderQuoteCanvas);
-            document.getElementById('quote-author-input').addEventListener('input', renderQuoteCanvas);
-            document.getElementById('quote-theme-select').addEventListener('change', renderQuoteCanvas);
-        };
     </script>
 </body>
 </html>
