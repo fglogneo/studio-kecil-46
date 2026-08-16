@@ -25,11 +25,12 @@
         body { background-color: #070908; color: #cbd5e1; font-family: monospace; user-select: none; }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-thumb { background: #1c2620; border-radius: 2px; }
-        .btn-v { background: #121a14; border: 1px solid #1c2620; font-size: 9px; padding: 2px 6px; border-radius: 3px; color: #94a3b8; line-height: 1.2; transition: all 0.15s; }
+        .btn-v { background: #121a14; border: 1px solid #1c2620; font-size: 9px; padding: 2px 6px; border-radius: 3px; color: #94a3b8; line-height: 1.2; transition: all 0.15s; cursor: pointer; }
         .btn-v:hover, .btn-v.active { background: #00ff66; color: #000; font-weight: bold; border-color: #00ff66; }
         .slider-v { accent-color: #00ff66; height: 2px; background: #1c2620; border-radius: 2px; }
         select, input[type="text"] { background: #000; border: 1px solid #1c2620; color: #fff; font-size: 10px; border-radius: 3px; padding: 2px 4px; }
-        canvas { touch-action: none; cursor: crosshair; }
+        canvas { touch-action: none; cursor: grab; }
+        canvas:active { cursor: grabbing; }
     </style>
 </head>
 <body class="bg-vizDark text-slate-300 min-h-screen flex flex-col h-screen overflow-hidden">
@@ -43,7 +44,6 @@
             <span class="font-bold text-vizGreen tracking-wider text-xs">Studio Kecil 46</span>
         </div>
 
-        <!-- Inputs Audio, BG, Rasio, Rename & Actions -->
         <div class="flex items-center gap-1 flex-wrap">
             <label class="btn-v cursor-pointer flex items-center gap-1">
                 <i class="fa-solid fa-music text-vizGreen"></i> +Audio
@@ -89,20 +89,20 @@
     <!-- MAIN WORKSPACE -->
     <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
         
-        <!-- SIDEBAR MENU KECIL LENGKAP (LEFT) -->
+        <!-- SIDEBAR MENU KECIL LENGKAP -->
         <div class="lg:col-span-4 bg-vizPanel border-r border-vizBorder p-2 space-y-3 overflow-y-auto max-h-full text-[10px]">
             
             <!-- 1. VISUALIZER SECTION -->
             <div class="space-y-1.5 border-b border-vizBorder pb-2">
                 <div class="flex justify-between items-center text-vizGreen font-bold">
                     <span>+ VISUALIZER</span>
-                    <span class="text-[8px] text-slate-500">SPEKTRUM 1</span>
+                    <span class="text-[8px] text-slate-500">GESER/DRAG DI CANVAS</span>
                 </div>
                 <div class="grid grid-cols-4 gap-1">
                     <button class="btn-v" onclick="alignViz('center')">Tengah</button>
                     <button class="btn-v" onclick="alignViz('bottom')">Bawah</button>
                     <button class="btn-v" onclick="alignViz('full')">Full</button>
-                    <button class="btn-v" onclick="alignViz('reset')">Rata 0°</button>
+                    <button class="btn-v" onclick="alignViz('reset')">Reset</button>
                 </div>
                 <div class="flex items-center justify-between gap-2">
                     <span class="text-[9px] text-slate-400">Ukuran</span>
@@ -113,6 +113,7 @@
                         <option value="bars-round">Bars Round (Pelangi)</option>
                         <option value="bars-square">Bars Square</option>
                         <option value="wave-line">Garis Wave Neon</option>
+                        <option value="circle">Circle Pulse</option>
                     </select>
                 </div>
             </div>
@@ -121,14 +122,14 @@
             <div class="space-y-1.5 border-b border-vizBorder pb-2">
                 <div class="flex justify-between items-center text-vizGold font-bold">
                     <span>+ TEKS</span>
-                    <span class="text-[8px] text-slate-500">T1</span>
+                    <span class="text-[8px] text-slate-500">GESER/DRAG DI CANVAS</span>
                 </div>
                 <input type="text" id="text-content" value="Studio Kecil 46" class="w-full">
 
                 <div class="grid grid-cols-2 gap-1">
                     <div>
                         <span class="text-[8px] text-slate-400 block">Besar Font</span>
-                        <input type="range" id="text-size" min="16" max="120" value="48" class="w-full slider-v">
+                        <input type="range" id="text-size" min="16" max="150" value="48" class="w-full slider-v">
                     </div>
                     <div>
                         <span class="text-[8px] text-slate-400 block">Opacity</span>
@@ -138,7 +139,7 @@
 
                 <!-- EFEK TEKS -->
                 <div>
-                    <span class="text-[8px] text-slate-400 block mb-0.5">EFEK:</span>
+                    <span class="text-[8px] text-slate-400 block mb-0.5">EFEK TEKS:</span>
                     <div class="flex gap-1 flex-wrap" id="text-fx-group">
                         <button class="btn-v active" data-fx="plain">Normal</button>
                         <button class="btn-v" data-fx="shadow">Bayangan</button>
@@ -153,7 +154,7 @@
 
                 <!-- ANIMASI TEKS -->
                 <div>
-                    <span class="text-[8px] text-slate-400 block mb-0.5">ANIMASI:</span>
+                    <span class="text-[8px] text-slate-400 block mb-0.5">ANIMASI TEKS:</span>
                     <div class="flex gap-1 flex-wrap" id="text-anim-group">
                         <button class="btn-v active" data-anim="none">Tanpa anim</button>
                         <button class="btn-v" data-anim="pan">Pan</button>
@@ -179,7 +180,7 @@
 
                 <div class="grid grid-cols-2 gap-1 pt-0.5">
                     <div>
-                        <span class="text-[8px] text-slate-400 block">Gelap</span>
+                        <span class="text-[8px] text-slate-400 block">Kegelapan</span>
                         <input type="range" id="bg-darkness" min="0" max="1" step="0.05" value="0.3" class="w-full slider-v">
                     </div>
                     <div>
@@ -189,41 +190,20 @@
                 </div>
             </div>
 
-            <!-- 4. OVERLAY SECTION -->
-            <div class="space-y-1.5">
-                <div class="flex justify-between items-center text-slate-300 font-bold">
-                    <span>+ OVERLAY</span>
-                    <span class="text-[8px] text-slate-500">BLEND / LAYER</span>
-                </div>
-                <div class="grid grid-cols-2 gap-1">
-                    <div>
-                        <span class="text-[8px] text-slate-400 block">Ukuran</span>
-                        <input type="range" id="overlay-size" min="10" max="200" value="100" class="w-full slider-v">
-                    </div>
-                    <div>
-                        <span class="text-[8px] text-slate-400 block">Opacity</span>
-                        <input type="range" id="overlay-opacity" min="0" max="1" step="0.1" value="0.8" class="w-full slider-v">
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <!-- PREVIEW CANVAS BESAR (RIGHT) -->
+        <!-- PREVIEW CANVAS BESAR -->
         <div class="lg:col-span-8 bg-black flex flex-col justify-between p-2 relative overflow-hidden">
-            
-            <!-- Area Canvas Preview -->
             <div class="flex-1 flex items-center justify-center relative w-full h-full min-h-[250px]">
                 <canvas id="viz-canvas" width="1280" height="720" class="max-w-full max-h-[80vh] object-contain border border-vizBorder rounded bg-vizDark shadow-2xl"></canvas>
             </div>
 
-            <!-- Player Bar Ringkas -->
+            <!-- Player Bar -->
             <div class="bg-vizPanel border border-vizBorder px-2 py-1 rounded flex items-center gap-2 mt-1 text-[10px]">
                 <span id="track-title" class="truncate text-slate-400 max-w-[200px]">Audio: Belum dipilih</span>
                 <input type="range" id="audio-seek" value="0" min="0" max="100" class="w-full slider-v">
                 <span id="track-time" class="text-slate-500 text-[9px] whitespace-nowrap">0:00</span>
             </div>
-
         </div>
 
     </div>
@@ -254,13 +234,82 @@
         let isRecording = false;
         let mediaRecorder, recordedChunks = [];
         let frameCounter = 0;
+        let animLoopId = null;
 
-        // Configuration Layer Objects
-        let vizState = { x: 128, y: 468, w: 1024, h: 180, size: 100, style: 'bars-round' };
+        // Configuration State Objects
+        let vizState = { x: 128, y: 468, w: 1024, h: 180, scale: 1, style: 'bars-round' };
         let textState = { text: 'Studio Kecil 46', size: 48, opacity: 1, fx: 'plain', anim: 'none', x: 640, y: 220 };
         let bgState = { darkness: 0.3, blur: 0, fx: 'normal' };
 
-        // Ratio Switcher & Responsive Canvas Size
+        // DRAG & DROP INTERACTION SYSTEM
+        let isDragging = false;
+        let dragTarget = null; // 'text' | 'viz'
+        let dragOffset = { x: 0, y: 0 };
+
+        function getCanvasPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function onPointerDown(e) {
+            const pos = getCanvasPos(e);
+            
+            // Hit test Teks
+            const textDist = Math.hypot(pos.x - textState.x, pos.y - textState.y);
+            if (textDist < textState.size * 2) {
+                isDragging = true;
+                dragTarget = 'text';
+                dragOffset = { x: pos.x - textState.x, y: pos.y - textState.y };
+                return;
+            }
+
+            // Hit test Visualizer
+            const currentW = vizState.w * vizState.scale;
+            const currentH = vizState.h * vizState.scale;
+            if (pos.x >= vizState.x && pos.x <= vizState.x + currentW &&
+                pos.y >= vizState.y && pos.y <= vizState.y + currentH) {
+                isDragging = true;
+                dragTarget = 'viz';
+                dragOffset = { x: pos.x - vizState.x, y: pos.y - vizState.y };
+                return;
+            }
+        }
+
+        function onPointerMove(e) {
+            if (!isDragging) return;
+            const pos = getCanvasPos(e);
+
+            if (dragTarget === 'text') {
+                textState.x = pos.x - dragOffset.x;
+                textState.y = pos.y - dragOffset.y;
+            } else if (dragTarget === 'viz') {
+                vizState.x = pos.x - dragOffset.x;
+                vizState.y = pos.y - dragOffset.y;
+            }
+            drawFrame();
+        }
+
+        function onPointerUp() {
+            isDragging = false;
+            dragTarget = null;
+        }
+
+        canvas.addEventListener('mousedown', onPointerDown);
+        canvas.addEventListener('mousemove', onPointerMove);
+        window.addEventListener('mouseup', onPointerUp);
+
+        canvas.addEventListener('touchstart', onPointerDown, { passive: true });
+        canvas.addEventListener('touchmove', onPointerMove, { passive: true });
+        window.addEventListener('touchend', onPointerUp);
+
+        // Ratio Switcher
         canvasRatio.addEventListener('change', (e) => {
             const val = e.target.value;
             if (val === '16:9') { canvas.width = 1280; canvas.height = 720; }
@@ -281,7 +330,7 @@
             vizState.h = canvas.height * 0.2;
         }
 
-        // Web Audio Context Setup
+        // Web Audio Setup
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -330,15 +379,16 @@
 
         // Event Input Listeners
         document.getElementById('text-content').addEventListener('input', (e) => { textState.text = e.target.value; drawFrame(); });
-        document.getElementById('text-size').addEventListener('input', (e) => { textState.size = e.target.value; drawFrame(); });
-        document.getElementById('text-opacity').addEventListener('input', (e) => { textState.opacity = e.target.value; drawFrame(); });
-        document.getElementById('bg-darkness').addEventListener('input', (e) => { bgState.darkness = e.target.value; drawFrame(); });
-        document.getElementById('bg-blur').addEventListener('input', (e) => { bgState.blur = e.target.value; drawFrame(); });
+        document.getElementById('text-size').addEventListener('input', (e) => { textState.size = parseFloat(e.target.value); drawFrame(); });
+        document.getElementById('text-opacity').addEventListener('input', (e) => { textState.opacity = parseFloat(e.target.value); drawFrame(); });
+        document.getElementById('viz-size').addEventListener('input', (e) => { vizState.scale = parseFloat(e.target.value) / 100; drawFrame(); });
+        document.getElementById('bg-darkness').addEventListener('input', (e) => { bgState.darkness = parseFloat(e.target.value); drawFrame(); });
+        document.getElementById('bg-blur').addEventListener('input', (e) => { bgState.blur = parseFloat(e.target.value); drawFrame(); });
         document.getElementById('viz-style').addEventListener('change', (e) => { vizState.style = e.target.value; drawFrame(); });
 
         // Button Selector Groups
         setupButtonGroup('text-fx-group', (val) => { textState.fx = val; drawFrame(); });
-        setupButtonGroup('text-anim-group', (val) => { textState.anim = val; drawFrame(); });
+        setupButtonGroup('text-anim-group', (val) => { textState.anim = val; startAnimLoop(); drawFrame(); });
         setupButtonGroup('bg-fx-group', (val) => { bgState.fx = val; drawFrame(); });
 
         function setupButtonGroup(groupId, callback) {
@@ -354,24 +404,61 @@
         }
 
         window.alignViz = function(type) {
-            if (type === 'center') { vizState.y = (canvas.height - vizState.h) / 2; }
+            if (type === 'center') { vizState.y = (canvas.height - (vizState.h * vizState.scale)) / 2; }
             if (type === 'bottom') { vizState.y = canvas.height * 0.7; }
             if (type === 'full') { vizState.w = canvas.width * 0.95; vizState.x = canvas.width * 0.025; }
             if (type === 'reset') { autoCenterElements(); }
             drawFrame();
         };
 
-        // Main Render Canvas Frame Loop
+        function startAnimLoop() {
+            if (!animLoopId) {
+                function loop() {
+                    frameCounter++;
+                    drawFrame();
+                    if (isPlaying || textState.anim !== 'none') {
+                        animLoopId = requestAnimationFrame(loop);
+                    } else {
+                        animLoopId = null;
+                    }
+                }
+                loop();
+            }
+        }
+
+        // MAIN RENDER ENGINE
         function drawFrame() {
-            frameCounter++;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // 1. Draw Background
             if (bgImage) {
                 ctx.save();
-                if (bgState.blur > 0) ctx.filter = `blur(${bgState.blur}px)`;
+                let filters = [];
+                if (bgState.blur > 0) filters.push(`blur(${bgState.blur}px)`);
+                if (bgState.fx === 'mono') filters.push('grayscale(100%)');
+                if (bgState.fx === 'dream') filters.push('saturate(180%) contrast(110%)');
+
+                if (filters.length > 0) ctx.filter = filters.join(' ');
                 ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
                 ctx.restore();
+
+                if (bgState.fx === 'warm') {
+                    ctx.fillStyle = 'rgba(255, 140, 0, 0.15)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else if (bgState.fx === 'cool') {
+                    ctx.fillStyle = 'rgba(0, 150, 255, 0.15)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else if (bgState.fx === 'vignette') {
+                    const grad = ctx.createRadialGradient(
+                        canvas.width/2, canvas.height/2, canvas.width * 0.3,
+                        canvas.width/2, canvas.height/2, canvas.width * 0.7
+                    );
+                    grad.addColorStop(0, 'rgba(0,0,0,0)');
+                    grad.addColorStop(1, 'rgba(0,0,0,0.85)');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
                 ctx.fillStyle = `rgba(0,0,0,${bgState.darkness})`;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             } else {
@@ -379,58 +466,121 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
-            // 2. Draw Text
+            // 2. Draw Text with Animation Offsets & FX
             ctx.save();
             ctx.globalAlpha = textState.opacity;
-            ctx.fillStyle = '#ffffff';
-            ctx.font = `bold ${textState.size}px monospace`;
-            ctx.textAlign = 'center';
-
             let tx = textState.x;
             let ty = textState.y;
+            let currentSize = textState.size;
 
-            // Animations
-            if (textState.anim === 'float') ty += Math.sin(frameCounter / 15) * 8;
-            if (textState.anim === 'shake') tx += (Math.random() - 0.5) * 4;
+            // Animasi Teks
+            if (textState.anim === 'pan') tx += Math.sin(frameCounter * 0.05) * 30;
+            if (textState.anim === 'pulse') currentSize *= (1 + Math.sin(frameCounter * 0.08) * 0.15);
+            if (textState.anim === 'float') ty += Math.sin(frameCounter * 0.05) * 15;
+            if (textState.anim === 'shake') { tx += (Math.random() - 0.5) * 6; ty += (Math.random() - 0.5) * 6; }
+            if (textState.anim === 'glitch' && Math.random() > 0.8) { tx += (Math.random() - 0.5) * 12; }
 
-            // Effects
-            if (textState.fx === 'glow' || textState.fx === 'neon') {
-                ctx.shadowColor = '#00ff66';
-                ctx.shadowBlur = 18;
-            } else if (textState.fx === 'shadow') {
-                ctx.shadowColor = '#000000';
+            ctx.font = `bold ${currentSize}px monospace`;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#ffffff';
+
+            // Efek Teks
+            if (textState.fx === 'shadow') {
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
                 ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 4;
+                ctx.shadowOffsetY = 4;
+            } else if (textState.fx === 'glow') {
+                ctx.shadowColor = '#00ff66';
+                ctx.shadowBlur = 25;
+            } else if (textState.fx === 'neon') {
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 25;
+                ctx.strokeStyle = '#00ffff';
+                ctx.lineWidth = 2;
+                ctx.strokeText(textState.text, tx, ty);
+            } else if (textState.fx === 'emboss') {
+                ctx.fillStyle = '#111';
+                ctx.fillText(textState.text, tx + 2, ty + 2);
+                ctx.fillStyle = '#fff';
             } else if (textState.fx === 'api') {
-                ctx.shadowColor = '#ff4500';
-                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ff3300';
+                ctx.shadowBlur = 20;
                 ctx.fillStyle = '#ffcc00';
+            } else if (textState.fx === 'es') {
+                ctx.shadowColor = '#00e5ff';
+                ctx.shadowBlur = 20;
+                ctx.fillStyle = '#e0ffff';
+            } else if (textState.fx === 'soft') {
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                ctx.shadowBlur = 15;
             }
 
             ctx.fillText(textState.text, tx, ty);
             ctx.restore();
 
             // 3. Draw Visualizer Spectrum
+            const currentW = vizState.w * vizState.scale;
+            const currentH = vizState.h * vizState.scale;
+
             if (analyser && isPlaying) {
                 analyser.getByteFrequencyData(dataArray);
 
-                const grad = ctx.createLinearGradient(vizState.x, 0, vizState.x + vizState.w, 0);
-                grad.addColorStop(0, '#ff0000');
-                grad.addColorStop(0.2, '#ff7f00');
-                grad.addColorStop(0.4, '#ffff00');
-                grad.addColorStop(0.6, '#00ff66');
-                grad.addColorStop(0.8, '#00ffff');
-                grad.addColorStop(1, '#8b00ff');
+                if (vizState.style === 'circle') {
+                    const cx = vizState.x + currentW / 2;
+                    const cy = vizState.y + currentH / 2;
+                    const radius = Math.min(currentW, currentH) * 0.3;
+                    ctx.strokeStyle = '#00ff66';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    for (let i = 0; i < bufferLength; i++) {
+                        const angle = (i / bufferLength) * Math.PI * 2;
+                        const r = radius + (dataArray[i] / 255) * (radius * 0.8);
+                        const x = cx + Math.cos(angle) * r;
+                        const y = cy + Math.sin(angle) * r;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                } else if (vizState.style === 'wave-line') {
+                    ctx.strokeStyle = '#00ff66';
+                    ctx.lineWidth = 4;
+                    ctx.shadowColor = '#00ff66';
+                    ctx.shadowBlur = 10;
+                    ctx.beginPath();
+                    const sliceW = currentW / bufferLength;
+                    for (let i = 0; i < bufferLength; i++) {
+                        const v = dataArray[i] / 255.0;
+                        const y = vizState.y + currentH - (v * currentH);
+                        const x = vizState.x + (i * sliceW);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
+                } else {
+                    const grad = ctx.createLinearGradient(vizState.x, 0, vizState.x + currentW, 0);
+                    grad.addColorStop(0, '#ff0000');
+                    grad.addColorStop(0.2, '#ff7f00');
+                    grad.addColorStop(0.4, '#ffff00');
+                    grad.addColorStop(0.6, '#00ff66');
+                    grad.addColorStop(0.8, '#00ffff');
+                    grad.addColorStop(1, '#8b00ff');
 
-                ctx.fillStyle = grad;
-                const barW = vizState.w / bufferLength;
+                    ctx.fillStyle = grad;
+                    const barW = currentW / bufferLength;
 
-                for (let i = 0; i < bufferLength; i++) {
-                    const barH = (dataArray[i] / 255) * vizState.h;
-                    ctx.fillRect(vizState.x + (i * barW), vizState.y + vizState.h - barH, barW - 2, barH);
+                    for (let i = 0; i < bufferLength; i++) {
+                        const barH = (dataArray[i] / 255) * currentH;
+                        ctx.fillRect(vizState.x + (i * barW), vizState.y + currentH - barH, barW - (vizState.style === 'bars-square' ? 1 : 2), barH);
+                    }
                 }
+            } else {
+                // Placeholder spektrum saat diam
+                ctx.fillStyle = 'rgba(0, 255, 102, 0.2)';
+                ctx.fillRect(vizState.x, vizState.y + currentH - 10, currentW, 10);
             }
-
-            if (isPlaying) requestAnimationFrame(drawFrame);
         }
 
         drawFrame();
@@ -445,7 +595,7 @@
                 audio.play();
                 isPlaying = true;
                 playLabel.innerText = 'Pause';
-                drawFrame();
+                startAnimLoop();
             } else {
                 audio.pause();
                 isPlaying = false;
