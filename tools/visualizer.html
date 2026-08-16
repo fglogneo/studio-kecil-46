@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GNR Audio Visualizer Studio - Multi Ratio</title>
+    <title>VIZ Audio Visualizer Studio - Multi Ratio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -11,11 +11,11 @@
             theme: {
                 extend: {
                     colors: {
-                        GNRDark: '#0a0d0b',
-                        GNRPanel: '#111613',
-                        GNRBorder: '#222d26',
-                        GNRGreen: '#00ff66',
-                        GNRGold: '#fbbf24'
+                        vizDark: '#0a0d0b',
+                        vizPanel: '#111613',
+                        vizBorder: '#222d26',
+                        vizGreen: '#00ff66',
+                        vizGold: '#fbbf24'
                     }
                 }
             }
@@ -27,38 +27,38 @@
         ::-webkit-scrollbar-thumb { background: #222d26; border-radius: 2px; }
         .btn-opt { background: #18201a; border: 1px solid #28362d; font-size: 10px; padding: 3px 8px; border-radius: 4px; color: #94a3b8; transition: all 0.2s; }
         .btn-opt:hover, .btn-opt.active { background: #00ff66; color: #000; font-weight: bold; border-color: #00ff66; }
-        .slider-GNR { accent-color: #00ff66; height: 3px; background: #28362d; border-radius: 2px; }
+        .slider-viz { accent-color: #00ff66; height: 3px; background: #28362d; border-radius: 2px; }
         canvas { touch-action: none; cursor: crosshair; }
     </style>
 </head>
-<body class="bg-GNRDark text-slate-200 min-h-screen flex flex-col h-screen overflow-hidden">
+<body class="bg-vizDark text-slate-200 min-h-screen flex flex-col h-screen overflow-hidden">
 
     <!-- TOP BAR CONTROL -->
-    <header class="bg-GNRPanel border-b border-GNRBorder px-3 py-2 flex items-center justify-between gap-2 text-xs flex-wrap">
+    <header class="bg-vizPanel border-b border-vizBorder px-3 py-2 flex items-center justify-between gap-2 text-xs flex-wrap">
         <div class="flex items-center gap-2">
-            <a href="../index.html" class="text-GNRGreen border border-GNRGreen/40 px-2 py-1 rounded hover:bg-GNRGreen hover:text-black">
+            <a href="../index.html" class="text-vizGreen border border-vizGreen/40 px-2 py-1 rounded hover:bg-vizGreen hover:text-black">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
-            <span class="font-bold text-GNRGreen tracking-wider">GNR</span>
+            <span class="font-bold text-vizGreen tracking-wider">VIZ</span>
             <span class="text-[10px] text-slate-500 hidden sm:inline">| Studio 46</span>
         </div>
 
         <!-- Inputs Audio, BG & Ratio Select -->
         <div class="flex items-center gap-1.5 flex-wrap">
             <label class="btn-opt cursor-pointer flex items-center gap-1">
-                <i class="fa-solid fa-music text-GNRGreen"></i> Audio
+                <i class="fa-solid fa-music text-vizGreen"></i> Audio
                 <input type="file" id="input-audio" accept="audio/*" class="hidden">
             </label>
 
             <label class="btn-opt cursor-pointer flex items-center gap-1">
-                <i class="fa-solid fa-image text-GNRGold"></i> BG
+                <i class="fa-solid fa-image text-vizGold"></i> BG
                 <input type="file" id="input-bg" accept="image/*" class="hidden">
             </label>
 
             <!-- PILIHAN RASIO VIDEO -->
-            <div class="flex items-center gap-1 bg-black/60 border border-GNRBorder rounded px-2 py-0.5">
-                <span class="text-[10px] text-slate-400"><i class="fa-solid fa-crop text-GNRGreen mr-1"></i>Rasio:</span>
-                <select id="canvas-ratio" class="bg-transparent text-GNRGreen font-bold text-[11px] focus:outline-none cursor-pointer">
+            <div class="flex items-center gap-1 bg-black/60 border border-vizBorder rounded px-2 py-0.5">
+                <span class="text-[10px] text-slate-400"><i class="fa-solid fa-crop text-vizGreen mr-1"></i>Rasio:</span>
+                <select id="canvas-ratio" class="bg-transparent text-vizGreen font-bold text-[11px] focus:outline-none cursor-pointer">
                     <option value="16:9">16:9 (YouTube / PC)</option>
                     <option value="9:16">9:16 (TikTok / Reels / Shorts)</option>
                     <option value="1:1">1:1 (IG Feed Square)</option>
@@ -67,7 +67,7 @@
             </div>
 
             <!-- RENAME FILE SEBELUM DOWNLOAD -->
-            <div class="flex items-center gap-1 bg-black/60 border border-GNRBorder rounded px-2 py-0.5">
+            <div class="flex items-center gap-1 bg-black/60 border border-vizBorder rounded px-2 py-0.5">
                 <span class="text-[10px] text-slate-400">Nama:</span>
                 <input type="text" id="project-name" value="Murottal_Konten" class="bg-transparent text-white w-24 sm:w-28 focus:outline-none text-[11px] font-bold">
             </div>
@@ -83,25 +83,25 @@
     <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
         
         <!-- SIDEBAR CONTROLS (LEFT) -->
-        <div class="lg:col-span-4 bg-GNRPanel border-r border-GNRBorder p-3 space-y-4 overflow-y-auto max-h-full text-[11px]">
+        <div class="lg:col-span-4 bg-vizPanel border-r border-vizBorder p-3 space-y-4 overflow-y-auto max-h-full text-[11px]">
             
             <!-- 1. SECTION VISUALIZER -->
-            <div class="space-y-2 border-b border-GNRBorder pb-3">
-                <div class="flex justify-between items-center text-GNRGreen font-bold">
+            <div class="space-y-2 border-b border-vizBorder pb-3">
+                <div class="flex justify-between items-center text-vizGreen font-bold">
                     <span>VISUALIZER</span>
-                    <button id="btn-add-GNR" class="btn-opt">+ GNR</button>
+                    <button id="btn-add-viz" class="btn-opt">+ Viz</button>
                 </div>
                 
                 <div class="grid grid-cols-4 gap-1 pt-1">
-                    <button class="btn-opt" onclick="alignGNR('center')">Tengah</button>
-                    <button class="btn-opt" onclick="alignGNR('bottom')">Bawah</button>
-                    <button class="btn-opt" onclick="alignGNR('full')">Full Width</button>
-                    <button class="btn-opt" onclick="alignGNR('reset')">Reset Posisi</button>
+                    <button class="btn-opt" onclick="alignViz('center')">Tengah</button>
+                    <button class="btn-opt" onclick="alignViz('bottom')">Bawah</button>
+                    <button class="btn-opt" onclick="alignViz('full')">Full Width</button>
+                    <button class="btn-opt" onclick="alignViz('reset')">Reset Posisi</button>
                 </div>
 
                 <div>
                     <label class="text-[10px] text-slate-400">Bentuk Spektrum:</label>
-                    <select id="GNR-style" class="w-full bg-black border border-GNRBorder rounded p-1 text-white">
+                    <select id="viz-style" class="w-full bg-black border border-vizBorder rounded p-1 text-white">
                         <option value="bars-round">Bars Round (Pelangi)</option>
                         <option value="bars-square">Bars Square</option>
                         <option value="wave-line">Garis Wave Neon</option>
@@ -110,21 +110,21 @@
             </div>
 
             <!-- 2. SECTION TEKS -->
-            <div class="space-y-2 border-b border-GNRBorder pb-3">
-                <div class="flex justify-between items-center text-GNRGold font-bold">
+            <div class="space-y-2 border-b border-vizBorder pb-3">
+                <div class="flex justify-between items-center text-vizGold font-bold">
                     <span>TEKS</span>
                     <button id="btn-add-text" class="btn-opt">+ Text</button>
                 </div>
-                <input type="text" id="text-content" value="Studio Kecil 46" class="w-full bg-black border border-GNRBorder rounded p-1 text-white font-bold">
+                <input type="text" id="text-content" value="Studio Kecil 46" class="w-full bg-black border border-vizBorder rounded p-1 text-white font-bold">
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <span class="text-[10px] text-slate-400">Besar Font</span>
-                        <input type="range" id="text-size" min="16" max="120" value="48" class="w-full slider-GNR">
+                        <input type="range" id="text-size" min="16" max="120" value="48" class="w-full slider-viz">
                     </div>
                     <div>
                         <span class="text-[10px] text-slate-400">Opacity</span>
-                        <input type="range" id="text-opacity" min="0" max="1" step="0.1" value="1" class="w-full slider-GNR">
+                        <input type="range" id="text-opacity" min="0" max="1" step="0.1" value="1" class="w-full slider-viz">
                     </div>
                 </div>
 
@@ -139,16 +139,16 @@
             </div>
 
             <!-- 3. SECTION BACKGROUND & FX -->
-            <div class="space-y-2 border-b border-GNRBorder pb-3">
+            <div class="space-y-2 border-b border-vizBorder pb-3">
                 <div class="text-cyberGreen font-bold">BACKGROUND & FX</div>
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div>
                         <span class="text-[10px] text-slate-400">Kegelapan</span>
-                        <input type="range" id="bg-darkness" min="0" max="1" step="0.05" value="0.3" class="w-full slider-GNR">
+                        <input type="range" id="bg-darkness" min="0" max="1" step="0.05" value="0.3" class="w-full slider-viz">
                     </div>
                     <div>
                         <span class="text-[10px] text-slate-400">Blur</span>
-                        <input type="range" id="bg-blur" min="0" max="20" value="0" class="w-full slider-GNR">
+                        <input type="range" id="bg-blur" min="0" max="20" value="0" class="w-full slider-viz">
                     </div>
                 </div>
             </div>
@@ -159,12 +159,12 @@
         <div class="lg:col-span-8 bg-black flex flex-col justify-between p-3 relative overflow-hidden">
             
             <div class="flex-1 flex items-center justify-center relative w-full h-full min-h-[300px]">
-                <canvas id="GNR-canvas" width="1280" height="720" class="max-w-full max-h-[75vh] object-contain border border-GNRBorder rounded-lg shadow-2xl bg-GNRDark"></canvas>
+                <canvas id="viz-canvas" width="1280" height="720" class="max-w-full max-h-[75vh] object-contain border border-vizBorder rounded-lg shadow-2xl bg-vizDark"></canvas>
             </div>
 
             <!-- Player Bar Bottom -->
-            <div class="bg-GNRPanel border border-GNRBorder p-2 rounded-lg flex items-center gap-3 mt-2 text-xs">
-                <button id="btn-play" class="w-9 h-9 rounded-full bg-GNRGreen text-black flex items-center justify-center font-bold hover:scale-105 transition">
+            <div class="bg-vizPanel border border-vizBorder p-2 rounded-lg flex items-center gap-3 mt-2 text-xs">
+                <button id="btn-play" class="w-9 h-9 rounded-full bg-vizGreen text-black flex items-center justify-center font-bold hover:scale-105 transition">
                     <i class="fa-solid fa-play"></i>
                 </button>
                 <div class="flex-1">
@@ -172,7 +172,7 @@
                         <span id="track-title">Belum ada audio</span>
                         <span id="track-time">0:00 / 0:00</span>
                     </div>
-                    <input type="range" id="audio-seek" value="0" min="0" max="100" class="w-full slider-GNR">
+                    <input type="range" id="audio-seek" value="0" min="0" max="100" class="w-full slider-viz">
                 </div>
             </div>
 
@@ -182,7 +182,7 @@
 
     <!-- ENGINE CODE JS -->
     <script>
-        const canvas = document.getElementById('GNR-canvas');
+        const canvas = document.getElementById('viz-canvas');
         const ctx = canvas.getContext('2d');
 
         // Inputs & Controls
@@ -204,7 +204,7 @@
         let mediaRecorder, recordedChunks = [];
 
         // Dynamic State Objects
-        let GNRState = { x: 128, y: 468, w: 1024, h: 180, style: 'bars-round' };
+        let vizState = { x: 128, y: 468, w: 1024, h: 180, style: 'bars-round' };
         let textState = { text: 'Studio Kecil 46', size: 48, opacity: 1, fx: 'plain', x: 640, y: 220 };
         let bgState = { darkness: 0.3, blur: 0 };
 
@@ -224,10 +224,10 @@
         function autoCenterElements() {
             textState.x = canvas.width / 2;
             textState.y = canvas.height * 0.3;
-            GNRState.w = canvas.width * 0.8;
-            GNRState.x = (canvas.width - GNRState.w) / 2;
-            GNRState.y = canvas.height * 0.65;
-            GNRState.h = canvas.height * 0.2;
+            vizState.w = canvas.width * 0.8;
+            vizState.x = (canvas.width - vizState.w) / 2;
+            vizState.y = canvas.height * 0.65;
+            vizState.h = canvas.height * 0.2;
         }
 
         function initAudio() {
@@ -270,12 +270,12 @@
         document.getElementById('text-opacity').addEventListener('input', (e) => { textState.opacity = e.target.value; drawFrame(); });
         document.getElementById('bg-darkness').addEventListener('input', (e) => { bgState.darkness = e.target.value; drawFrame(); });
         document.getElementById('bg-blur').addEventListener('input', (e) => { bgState.blur = e.target.value; drawFrame(); });
-        document.getElementById('GNR-style').addEventListener('change', (e) => { GNRState.style = e.target.value; drawFrame(); });
+        document.getElementById('viz-style').addEventListener('change', (e) => { vizState.style = e.target.value; drawFrame(); });
 
-        window.alignGNR = function(type) {
-            if (type === 'center') { GNRState.y = (canvas.height - GNRState.h) / 2; }
-            if (type === 'bottom') { GNRState.y = canvas.height * 0.7; }
-            if (type === 'full') { GNRState.w = canvas.width * 0.95; GNRState.x = canvas.width * 0.025; }
+        window.alignViz = function(type) {
+            if (type === 'center') { vizState.y = (canvas.height - vizState.h) / 2; }
+            if (type === 'bottom') { vizState.y = canvas.height * 0.7; }
+            if (type === 'full') { vizState.w = canvas.width * 0.95; vizState.x = canvas.width * 0.025; }
             if (type === 'reset') { autoCenterElements(); }
             drawFrame();
         };
@@ -318,7 +318,7 @@
             if (analyser) {
                 analyser.getByteFrequencyData(dataArray);
 
-                const grad = ctx.createLinearGradient(GNRState.x, 0, GNRState.x + GNRState.w, 0);
+                const grad = ctx.createLinearGradient(vizState.x, 0, vizState.x + vizState.w, 0);
                 grad.addColorStop(0, '#ff0000');
                 grad.addColorStop(0.2, '#ff7f00');
                 grad.addColorStop(0.4, '#ffff00');
@@ -327,11 +327,11 @@
                 grad.addColorStop(1, '#8b00ff');
 
                 ctx.fillStyle = grad;
-                const barW = GNRState.w / bufferLength;
+                const barW = vizState.w / bufferLength;
 
                 for (let i = 0; i < bufferLength; i++) {
-                    const barH = (dataArray[i] / 255) * GNRState.h;
-                    ctx.fillRect(GNRState.x + (i * barW), GNRState.y + GNRState.h - barH, barW - 2, barH);
+                    const barH = (dataArray[i] / 255) * vizState.h;
+                    ctx.fillRect(vizState.x + (i * barW), vizState.y + vizState.h - barH, barW - 2, barH);
                 }
             }
 
