@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Music Generator - Studio Kecil 46</title>
+    <title>AI Instrumen Studio - Studio Kecil 46</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -19,71 +19,129 @@
         <a href="../index.html" class="text-xs text-cyberGreen border border-cyberGreen/50 px-3 py-1.5 rounded hover:bg-cyberGreen hover:text-black transition">
             <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
         </a>
-        <h1 class="text-base md:text-lg font-bold text-cyberGreen">🎵 AI Music Studio</h1>
+        <h1 class="text-base md:text-lg font-bold text-cyberGreen">🎵 AI Instrumen Studio</h1>
     </div>
 
     <!-- Form Generator -->
-    <div class="max-w-3xl mx-auto bg-black/60 border border-cyberGreen/40 p-5 rounded-xl space-y-4">
+    <div class="max-w-3xl mx-auto space-y-4">
         
-        <div>
-            <label class="block text-xs text-cyberGreen mb-1">HUGGING FACE API TOKEN (GRATIS):</label>
-            <input type="password" id="hf-token" placeholder="hf_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-slate-900 border border-slate-700 text-white p-2.5 rounded text-xs focus:outline-none focus:border-cyberGreen">
-            <p class="text-[10px] text-slate-400 mt-1">Dapatkan token gratis di <a href="https://huggingface.co/settings/tokens" target="_blank" class="text-cyberGreen underline">huggingface.co/settings/tokens</a></p>
+        <!-- Area Input Token (Hanya perlu diisi 1x) -->
+        <div class="bg-slate-900/80 border border-islamicGold/50 p-4 rounded-xl">
+            <div class="flex justify-between items-center mb-1">
+                <label class="block text-xs text-islamicGold font-bold">API TOKEN HUGGING FACE:</label>
+                <span id="token-status" class="text-[9px] text-slate-400 bg-black px-2 py-0.5 rounded">Belum Tersimpan</span>
+            </div>
+            <input type="password" id="hf-token" placeholder="hf_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-black border border-slate-700 text-white p-2.5 rounded text-xs focus:outline-none focus:border-islamicGold">
+            <p class="text-[10px] text-slate-400 mt-2 leading-relaxed">
+                *Cukup isi 1x, token otomatis tersimpan di browser untuk kunjungan berikutnya. <br>
+                Dapatkan token gratis di <a href="https://huggingface.co/settings/tokens" target="_blank" class="text-cyberGreen underline hover:text-white">huggingface.co/settings/tokens</a>
+            </p>
         </div>
 
-        <div>
-            <label class="block text-xs text-cyberGreen mb-1">DESKRIPSI MUSIK (PROMPT):</label>
-            <textarea id="music-prompt" rows="3" placeholder="Contoh: Upbeat 80s synthwave music with energetic drums, retro synth, high tempo" class="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded text-sm focus:outline-none focus:border-cyberGreen"></textarea>
-        </div>
+        <!-- Area Input Prompt Musik -->
+        <div class="bg-black/60 border border-cyberGreen/40 p-5 rounded-xl space-y-5">
+            
+            <!-- Pilihan Genre Otomatis (Baru) -->
+            <div>
+                <label class="block text-[11px] text-cyberGreen font-bold mb-2"><i class="fa-solid fa-list mr-1"></i> PILIH GENRE CEPAT (KLIK):</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    <!-- Santai -->
+                    <button onclick="setPrompt('Lofi chillhop beat with soft electric piano, vinyl crackle, and relaxed atmosphere')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">☕ Lo-Fi Chill</button>
+                    <button onclick="setPrompt('Acoustic guitar melody with warm and soothing vibe, soft percussion, calm')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">🎸 Akustik Santai</button>
+                    <button onclick="setPrompt('Smooth jazz lounge music with saxophone solo, upright bass, and brush drums')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">🎷 Smooth Jazz</button>
+                    
+                    <!-- Elektronik -->
+                    <button onclick="setPrompt('80s retro synthwave, driving bassline, electronic drum machine, nostalgic cyberpunk')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">🏙️ Synthwave 80s</button>
+                    <button onclick="setPrompt('High energy EDM track with heavy bass drop, upbeat synthesizer, 128 bpm club music')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">🎧 EDM / Party</button>
+                    <button onclick="setPrompt('Dark trap hip hop beat with rolling hi-hats, deep 808 sub bass, melodic piano')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">🧢 Trap Hip-Hop</button>
 
-        <!-- Preset Fast Prompt -->
-        <div class="flex flex-wrap gap-2">
-            <button onclick="setPrompt('Lofi chillhop beat with soft piano and relaxed atmosphere')" class="text-[11px] bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 hover:border-cyberGreen">☕ Lo-Fi</button>
-            <button onclick="setPrompt('Cyberpunk synthwave upbeat fast electronic music')" class="text-[11px] bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 hover:border-cyberGreen">🏙️ Cyberpunk</button>
-            <button onclick="setPrompt('Cinematic epic orchestral music with heavy drums')" class="text-[11px] bg-slate-800 text-slate-300 px-2 py-1 rounded border border-slate-700 hover:border-cyberGreen">🎻 Epik Sinematik</button>
-        </div>
+                    <!-- Aksi / Band -->
+                    <button onclick="setPrompt('Epic cinematic orchestral music with massive horns, heavy taiko drums, triumphant superhero')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">🎻 Epik Sinematik</button>
+                    <button onclick="setPrompt('Upbeat pop punk rock with distorted electric guitars, fast drum beats, energetic')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">🤘 Punk Rock</button>
+                    <button onclick="setPrompt('Creepy horror ambient music, discordant violin, deep sub bass, eerie and suspenseful')" class="text-[10px] md:text-xs bg-slate-800 text-slate-300 py-2 px-1 rounded border border-slate-700 hover:border-cyberGreen hover:bg-cyberGreen/10 transition">👻 Horor / Tegang</button>
+                </div>
+            </div>
 
-        <button onclick="generateMusic()" id="btn-generate" class="w-full bg-cyberGreen text-black font-bold py-3 rounded-lg hover:bg-emerald-400 transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Buat Musik AI
-        </button>
+            <!-- Textarea Prompt -->
+            <div>
+                <label class="block text-xs text-cyberGreen mb-1">DESKRIPSI MUSIK (BISA DIEDIT LAGI):</label>
+                <textarea id="music-prompt" rows="3" placeholder="Pilih genre di atas, atau ketik manual instruksi lagu di sini (Gunakan Bahasa Inggris untuk hasil terbaik)..." class="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded text-sm focus:outline-none focus:border-cyberGreen"></textarea>
+            </div>
+
+            <button onclick="generateMusic()" id="btn-generate" class="w-full bg-cyberGreen text-black font-bold py-3 rounded-lg hover:bg-emerald-400 transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,255,102,0.3)] hover:shadow-[0_0_25px_rgba(0,255,102,0.6)]">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Buat Musik AI
+            </button>
+        </div>
     </div>
 
     <!-- Hasil Audio -->
-    <div id="result-box" class="max-w-3xl mx-auto mt-6 hidden bg-slate-900 border border-islamicGold/40 p-5 rounded-xl space-y-3">
-        <h3 class="text-sm font-bold text-islamicGold flex items-center gap-2">
+    <div id="result-box" class="max-w-3xl mx-auto mt-6 hidden bg-slate-900 border border-cyberGreen/50 p-5 rounded-xl space-y-3">
+        <h3 class="text-sm font-bold text-cyberGreen flex items-center gap-2">
             <i class="fa-solid fa-music"></i> Hasil Audio AI:
         </h3>
-        <audio id="audio-player" controls class="w-full"></audio>
-        <a id="btn-download" download="ai-music.wav" class="inline-block text-xs text-cyberGreen border border-cyberGreen/50 px-3 py-2 rounded hover:bg-cyberGreen hover:text-black transition">
-            <i class="fa-solid fa-download mr-1"></i> Download WAV
-        </a>
+        <audio id="audio-player" controls class="w-full outline-none"></audio>
+        <div class="flex gap-2">
+            <a id="btn-download" download="ai-music-studio-kecil.wav" class="inline-block text-xs bg-cyberGreen text-black font-bold px-4 py-2 rounded hover:bg-emerald-400 transition">
+                <i class="fa-solid fa-download mr-1"></i> Download WAV
+            </a>
+            <button onclick="document.getElementById('result-box').classList.add('hidden');" class="text-xs border border-slate-600 text-slate-400 px-3 py-2 rounded hover:bg-slate-800 transition">
+                Tutup
+            </button>
+        </div>
     </div>
 
     <script>
+        // Cek Token Tersimpan saat dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedToken = localStorage.getItem('sk46_hf_token');
+            if (savedToken) {
+                document.getElementById('hf-token').value = savedToken;
+                document.getElementById('token-status').innerText = 'Tersimpan ✓';
+                document.getElementById('token-status').classList.replace('text-slate-400', 'text-cyberGreen');
+            }
+        });
+
+        // Mengisi Kotak Teks dengan Prompt Bawaan
         function setPrompt(val) {
-            document.getElementById('music-prompt').value = val;
+            const promptBox = document.getElementById('music-prompt');
+            promptBox.value = val;
+            
+            // Efek berkedip saat tombol diklik agar interaktif
+            promptBox.classList.add('border-cyberGreen', 'bg-cyberGreen/10');
+            setTimeout(() => {
+                promptBox.classList.remove('border-cyberGreen', 'bg-cyberGreen/10');
+            }, 300);
         }
 
         async function generateMusic() {
-            const token = document.getElementById('hf-token').value.trim();
+            const tokenInput = document.getElementById('hf-token').value.trim();
             const prompt = document.getElementById('music-prompt').value.trim();
             const btn = document.getElementById('btn-generate');
             const resultBox = document.getElementById('result-box');
             const player = document.getElementById('audio-player');
             const downloadBtn = document.getElementById('btn-download');
 
-            if (!token) return alert('Silakan masukkan Hugging Face API Token terlebih dahulu!');
-            if (!prompt) return alert('Silakan masukkan deskripsi musik!');
+            if (!tokenInput) return alert('Silakan masukkan API Token Hugging Face terlebih dahulu!');
+            if (!prompt) return alert('Silakan pilih genre di atas atau ketik deskripsi musiknya!');
 
+            // Auto-Save Token ke Cache Browser User
+            localStorage.setItem('sk46_hf_token', tokenInput);
+            document.getElementById('token-status').innerText = 'Tersimpan ✓';
+            document.getElementById('token-status').classList.replace('text-slate-400', 'text-cyberGreen');
+
+            // UI Loading
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses Musik AI (30-60 detik)...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses AI (30 - 60 detik)...';
+            btn.classList.replace('bg-cyberGreen', 'bg-slate-600');
+            btn.classList.remove('text-black', 'shadow-[0_0_15px_rgba(0,255,102,0.3)]', 'hover:shadow-[0_0_25px_rgba(0,255,102,0.6)]');
+            btn.classList.add('text-white');
             resultBox.classList.add('hidden');
 
             try {
-                // Panggil Hugging Face Inference API (MusicGen Small Model)
+                // Proses API
                 const response = await fetch("https://api-inference.huggingface.co/models/facebook/musicgen-small", {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${tokenInput}`,
                         "Content-Type": "application/json"
                     },
                     method: "POST",
@@ -92,7 +150,10 @@
 
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
-                    throw new Error(err.error || `Gagal membuat musik (Status: ${response.status})`);
+                    if (response.status === 401) throw new Error("Token salah / tidak valid. Silakan buat ulang Token di web Hugging Face.");
+                    if (response.status === 429) throw new Error("Rate limit. Kuota token kamu sedang habis sementara.");
+                    if (response.status === 503) throw new Error("Model AI sedang dibangunkan dari tidur. Coba klik tombol Buat lagi dalam 20 detik!");
+                    throw new Error(err.error || `Status: ${response.status}`);
                 }
 
                 const blob = await response.blob();
@@ -103,10 +164,14 @@
                 resultBox.classList.remove('hidden');
 
             } catch (error) {
-                alert("Error: " + error.message);
+                alert("Gagal: " + error.message);
             } finally {
+                // Reset Tombol
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Buat Musik AI';
+                btn.classList.replace('bg-slate-600', 'bg-cyberGreen');
+                btn.classList.remove('text-white');
+                btn.classList.add('text-black', 'shadow-[0_0_15px_rgba(0,255,102,0.3)]', 'hover:shadow-[0_0_25px_rgba(0,255,102,0.6)]');
             }
         }
     </script>
