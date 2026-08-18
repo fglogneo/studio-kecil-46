@@ -306,28 +306,43 @@
             }
         }
 
+        // Sinkronisasi Live Update Teks Editor ke Preview Poster
         function liveUpdate() {
-            document.getElementById('previewArabic').innerText = document.getElementById('inputArabic').value;
-            document.getElementById('previewMainText').innerText = document.getElementById('inputMainText').value;
-            document.getElementById('previewAuthor').innerText = document.getElementById('inputAuthor').value;
-            document.getElementById('previewBadge').innerText = document.getElementById('inputBadgeText').value;
-            document.getElementById('previewHeaderBrand').innerText = document.getElementById('inputHeaderBrand').value;
-            document.getElementById('previewFooterLogo').innerText = document.getElementById('inputFooterLogo').value;
-            
-            const arabicVal = document.getElementById('inputArabic').value;
+            const badgeEl = document.getElementById('previewBadge');
+            const brandEl = document.getElementById('previewHeaderBrand');
+            const mainEl = document.getElementById('previewMainText');
+            const authorEl = document.getElementById('previewAuthor');
+            const logoEl = document.getElementById('previewFooterLogo');
             const arabicEl = document.getElementById('previewArabic');
+
+            if(badgeEl) badgeEl.innerText = document.getElementById('inputBadgeText').value;
+            if(brandEl) brandEl.innerText = document.getElementById('inputHeaderBrand').value;
+            if(mainEl) mainEl.innerText = document.getElementById('inputMainText').value;
+            if(authorEl) authorEl.innerText = document.getElementById('inputAuthor').value;
+            if(logoEl) logoEl.innerText = document.getElementById('inputFooterLogo').value;
+            
             if(arabicEl) {
+                const arabicVal = document.getElementById('inputArabic').value;
+                arabicEl.innerText = arabicVal;
                 arabicEl.style.display = arabicVal.trim() === '' ? 'none' : 'block';
             }
         }
 
-        // Pergantian Tema Lengkap dengan Template Visual & Font yang Sangat Berbeda
+        // Pergantian Tema Lengkap dengan Template Visual & Sinkronisasi Data Editor
         function switchTheme() {
             const theme = document.getElementById('themeSelect').value;
             const apiBox = document.getElementById('apiQuranBox');
             const arabicSec = document.getElementById('arabicSection');
             const posterBox = document.getElementById('posterBox');
             const container = document.getElementById('themeTemplateContainer');
+
+            // Ambil nilai saat ini dari form agar tidak hilang saat ganti tema
+            let currentBadge = document.getElementById('inputBadgeText').value;
+            let currentBrand = document.getElementById('inputHeaderBrand').value;
+            let currentMain = document.getElementById('inputMainText').value;
+            let currentAuthor = document.getElementById('inputAuthor').value;
+            let currentLogo = document.getElementById('inputFooterLogo').value;
+            let currentArabic = document.getElementById('inputArabic').value;
 
             if(theme === 'islamic') {
                 document.getElementById('inputBadgeText').value = "ISLAMIC QUOTES";
@@ -337,11 +352,10 @@
                 posterBox.style.backgroundImage = "url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80')";
                 posterBox.className = "w-full max-w-xs aspect-[9/16] border-4 border-islamicGold rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 bg-cover bg-center";
                 
-                // Template Template Islami (Classic Gold Frame + Ornament Feel)
                 container.innerHTML = `
                     <div class="flex items-center justify-between border-b border-islamicGold/30 pb-2">
-                        <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-md bg-islamicGold/20 border border-islamicGold text-islamicGold font-bold">ISLAMIC QUOTES</span>
-                        <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-islamicGold font-bold">STUDIO KECIL 46</span>
+                        <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-md bg-islamicGold/20 border border-islamicGold text-islamicGold font-bold"></span>
+                        <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-islamicGold font-bold"></span>
                     </div>
                     <div class="my-auto space-y-4 text-center px-2">
                         <div id="previewArabic" class="text-xl lg:text-2xl font-arabic text-islamicGold leading-loose" style="direction: rtl;"></div>
@@ -349,7 +363,7 @@
                     </div>
                     <div class="flex items-center justify-between pt-3 border-t border-islamicGold/30">
                         <span id="previewAuthor" class="text-[11px] font-mono-custom font-bold text-islamicGold"></span>
-                        <div id="previewFooterLogo" class="w-6 h-6 rounded-full bg-islamicGold text-black flex items-center justify-center text-[10px] font-bold">46</div>
+                        <div id="previewFooterLogo" class="w-6 h-6 rounded-full bg-islamicGold text-black flex items-center justify-center text-[10px] font-bold"></div>
                     </div>
                 `;
                 fetchQuranApi();
@@ -359,41 +373,49 @@
                 arabicSec.style.display = 'none';
 
                 if(theme === 'motivation') {
-                    document.getElementById('inputBadgeText').value = "MOTIVATION";
-                    document.getElementById('inputMainText').value = "“Jangan berhenti ketika lelah, berhentilah ketika kamu selesai.”";
-                    document.getElementById('inputAuthor').value = "@studiokecil46";
+                    if(currentBadge === "ISLAMIC QUOTES") {
+                        currentBadge = "MOTIVATION";
+                        currentMain = "“Jangan berhenti ketika lelah, berhentilah ketika kamu selesai.”";
+                        currentAuthor = "@studiokecil46";
+                    }
+                    document.getElementById('inputBadgeText').value = currentBadge;
+                    document.getElementById('inputMainText').value = currentMain;
+                    document.getElementById('inputAuthor').value = currentAuthor;
                     
                     posterBox.style.backgroundImage = "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80')";
                     posterBox.className = "w-full max-w-xs aspect-[9/16] border-2 border-cyberGreen rounded-xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 bg-cover bg-center";
                     
-                    // Template Motivasi (Cyber Neon & Poppins Bold Modern)
                     container.innerHTML = `
                         <div class="flex items-center justify-between">
-                            <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase px-2.5 py-1 rounded bg-cyberGreen text-black font-extrabold shadow-lg shadow-cyberGreen/30">MOTIVATION</span>
-                            <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-cyberGreen font-bold tracking-widest">STUDIO KECIL 46</span>
+                            <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase px-2.5 py-1 rounded bg-cyberGreen text-black font-extrabold shadow-lg shadow-cyberGreen/30"></span>
+                            <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-cyberGreen font-bold tracking-widest"></span>
                         </div>
                         <div class="my-auto space-y-3 text-left pl-2 border-l-4 border-cyberGreen">
                             <p id="previewMainText" class="text-sm lg:text-base font-poppins font-extrabold text-white leading-snug tracking-wide"></p>
                         </div>
                         <div class="flex items-center justify-between pt-2">
                             <span id="previewAuthor" class="text-[11px] font-mono-custom font-bold text-cyberGreen"></span>
-                            <div id="previewFooterLogo" class="w-6 h-6 rounded bg-cyberGreen/20 border border-cyberGreen text-cyberGreen flex items-center justify-center text-[10px] font-bold">46</div>
+                            <div id="previewFooterLogo" class="w-6 h-6 rounded bg-cyberGreen/20 border border-cyberGreen text-cyberGreen flex items-center justify-center text-[10px] font-bold"></div>
                         </div>
                     `;
 
                 } else if(theme === 'education') {
-                    document.getElementById('inputBadgeText').value = "EDUCATION";
-                    document.getElementById('inputMainText').value = "“Pendidikan adalah senjata paling mematikan di dunia, karena dengan itu Anda dapat mengubah dunia.”";
-                    document.getElementById('inputAuthor').value = "Nelson Mandela";
+                    if(currentBadge === "ISLAMIC QUOTES" || currentBadge === "MOTIVATION") {
+                        currentBadge = "EDUCATION";
+                        currentMain = "“Pendidikan adalah senjata paling mematikan di dunia, karena dengan itu Anda dapat mengubah dunia.”";
+                        currentAuthor = "Nelson Mandela";
+                    }
+                    document.getElementById('inputBadgeText').value = currentBadge;
+                    document.getElementById('inputMainText').value = currentMain;
+                    document.getElementById('inputAuthor').value = currentAuthor;
                     
                     posterBox.style.backgroundImage = "url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80')";
                     posterBox.className = "w-full max-w-xs aspect-[9/16] border border-blue-400/50 rounded-3xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 bg-cover bg-center";
                     
-                    // Template Edukasi (Academic Clean Card)
                     container.innerHTML = `
                         <div class="flex items-center justify-between bg-blue-950/60 p-2.5 rounded-xl border border-blue-400/30 backdrop-blur">
-                            <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase text-blue-400 font-bold">EDUCATION</span>
-                            <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-slate-300 font-bold">STUDIO KECIL 46</span>
+                            <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase text-blue-400 font-bold"></span>
+                            <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-slate-300 font-bold"></span>
                         </div>
                         <div class="my-auto bg-slate-900/80 p-5 rounded-2xl border border-blue-500/30 text-center shadow-xl backdrop-blur">
                             <i class="fa-solid fa-graduation-cap text-blue-400 text-xl mb-2"></i>
@@ -401,23 +423,27 @@
                         </div>
                         <div class="flex items-center justify-between pt-2">
                             <span id="previewAuthor" class="text-[11px] font-mono-custom font-bold text-blue-300"></span>
-                            <div id="previewFooterLogo" class="w-6 h-6 rounded-lg bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold">46</div>
+                            <div id="previewFooterLogo" class="w-6 h-6 rounded-lg bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold"></div>
                         </div>
                     `;
 
                 } else if(theme === 'life') {
-                    document.getElementById('inputBadgeText').value = "LIFE WISDOM";
-                    document.getElementById('inputMainText').value = "“Hiduplah seolah engkau mati besok. Belajarlah seolah engkau hidup selamanya.”";
-                    document.getElementById('inputAuthor').value = "Mahatma Gandhi";
+                    if(currentBadge === "ISLAMIC QUOTES" || currentBadge === "MOTIVATION" || currentBadge === "EDUCATION") {
+                        currentBadge = "LIFE WISDOM";
+                        currentMain = "“Hiduplah seolah engkau mati besok. Belajarlah seolah engkau hidup selamanya.”";
+                        currentAuthor = "Mahatma Gandhi";
+                    }
+                    document.getElementById('inputBadgeText').value = currentBadge;
+                    document.getElementById('inputMainText').value = currentMain;
+                    document.getElementById('inputAuthor').value = currentAuthor;
                     
                     posterBox.style.backgroundImage = "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80')";
                     posterBox.className = "w-full max-w-xs aspect-[9/16] border-2 border-amber-200/60 rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 bg-cover bg-center";
                     
-                    // Template Kehidupan (Zen / Playfair Serif Elegant)
                     container.innerHTML = `
                         <div class="flex items-center justify-between">
-                            <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-full bg-amber-100/10 border border-amber-200 text-amber-200 font-bold">LIFE WISDOM</span>
-                            <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-amber-100 font-bold">STUDIO KECIL 46</span>
+                            <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-full bg-amber-100/10 border border-amber-200 text-amber-200 font-bold"></span>
+                            <span id="previewHeaderBrand" class="text-[9px] font-mono-custom text-amber-100 font-bold"></span>
                         </div>
                         <div class="my-auto space-y-3 text-center px-3">
                             <i class="fa-solid fa-quote-left text-amber-200/50 text-3xl"></i>
@@ -425,7 +451,7 @@
                         </div>
                         <div class="flex items-center justify-between pt-3 border-t border-amber-200/20">
                             <span id="previewAuthor" class="text-[11px] font-quote font-bold text-amber-200"></span>
-                            <div id="previewFooterLogo" class="w-6 h-6 rounded-full border border-amber-200 text-amber-200 flex items-center justify-center text-[10px] font-bold">46</div>
+                            <div id="previewFooterLogo" class="w-6 h-6 rounded-full border border-amber-200 text-amber-200 flex items-center justify-center text-[10px] font-bold"></div>
                         </div>
                     `;
                 }
