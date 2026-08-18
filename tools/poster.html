@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poster & Quotes Generator - Studio Kecil 46</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -19,7 +18,6 @@
             }
         }
     </script>
-    <!-- FontAwesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -39,7 +37,7 @@
                 </a>
                 <div>
                     <h1 class="text-base font-bold text-white tracking-wide">POSTER & QUOTES GENERATOR</h1>
-                    <span class="text-[10px] text-teal-400 font-mono-custom block">STUDIO KECIL 46 // MULTI-THEME CREATOR</span>
+                    <span class="text-[10px] text-teal-400 font-mono-custom block">STUDIO KECIL 46 // API & BACKGROUND CREATOR</span>
                 </div>
             </div>
             <a href="../index.html" class="text-xs font-mono-custom text-slate-400 hover:text-white transition">
@@ -52,97 +50,115 @@
     <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
 
         <!-- PANEL KONTROL / EDITOR (5 Kolom) -->
-        <div class="lg:col-span-5 space-y-6 bg-black/60 border border-slate-800 p-6 rounded-2xl h-fit">
+        <div class="lg:col-span-5 space-y-5 bg-black/60 border border-slate-800 p-6 rounded-2xl h-fit">
             <h2 class="text-sm font-bold text-teal-400 font-mono-custom uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-sliders"></i> Panel Pengaturan Teks
+                <i class="fa-solid fa-sliders"></i> Kontrol Generator
             </h2>
 
             <!-- Pilihan Tema -->
-            <div class="space-y-2">
-                <label class="text-xs font-semibold text-slate-300">Pilih Tema Poster</label>
-                <select id="themeSelect" onchange="updateTheme()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-teal-400 focus:outline-none transition">
-                    <option value="islamic">🕌 Tema Islami / Islamic Quotes</option>
+            <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300">Pilih Kategori Poster</label>
+                <select id="themeSelect" onchange="switchTheme()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-teal-400 focus:outline-none transition">
+                    <option value="islamic">🕌 Tema Islami / Cari Ayat Al-Qur'an API</option>
                     <option value="motivation">🔥 Tema Motivasi & Semangat</option>
-                    <option value="education">📚 Tema Edukasi & Pendidikan</option>
+                    <option value="education">📚 Tema Edukasi & Pengetahuan</option>
                     <option value="life">🌱 Tema Kehidupan & Bijak</option>
                 </select>
             </div>
 
-            <!-- Khusus Input Tema Islami (Teks Arab) -->
-            <div id="arabicSection" class="space-y-2">
-                <label class="text-xs font-semibold text-slate-300 flex justify-between">
-                    <span>Teks Arab (Opsional)</span>
-                    <span class="text-[10px] text-islamicGold">Opsional untuk Ayat/Hadits</span>
+            <!-- FITUR KHUSUS: PENCARIAN AL-QUR'AN API -->
+            <div id="apiQuranBox" class="p-3.5 bg-slate-900/80 border border-islamicGold/40 rounded-xl space-y-3">
+                <label class="text-xs font-bold text-islamicGold flex items-center gap-1.5">
+                    <i class="fa-solid fa-book-quran"></i> Ambil Ayat Al-Qur'an Otomatis (API)
                 </label>
-                <textarea id="inputArabic" rows="2" oninput="liveUpdate()" placeholder="اكتب النص العربي هنا..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-right font-arabic text-islamicGold focus:border-islamicGold focus:outline-none transition"></textarea>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <span class="text-[10px] text-slate-400 block mb-1">No. Surah (1-114)</span>
+                        <input type="number" id="inputSurah" value="2" min="1" max="114" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-islamicGold focus:outline-none">
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-400 block mb-1">No. Ayat</span>
+                        <input type="number" id="inputAyat" value="255" min="1" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-islamicGold focus:outline-none">
+                    </div>
+                </div>
+                <button onclick="fetchQuranApi()" class="w-full bg-islamicGold hover:bg-amber-400 text-black font-mono-custom font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-magnifying-glass"></i> AMBIL AYAT KE POSTER
+                </button>
             </div>
 
-            <!-- Input Utama / Isi Quotes -->
-            <div class="space-y-2">
-                <label class="text-xs font-semibold text-slate-300">Teks Utama / Terjemahan / Pesan</label>
-                <textarea id="inputMainText" rows="3" oninput="liveUpdate()" placeholder="Masukkan isi quotes atau pesan poster di sini..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-teal-400 focus:outline-none transition">“Sesungguhnya bersama kesulitan itu ada kemudahan.”</textarea>
-            </div>
-
-            <!-- Penulis / Referensi -->
-            <div class="space-y-2">
-                <label class="text-xs font-semibold text-slate-300">Penulis / Sumber / Watermark</label>
-                <input type="text" id="inputAuthor" value="QS. Al-Insyirah: 6" oninput="liveUpdate()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-teal-400 focus:outline-none transition">
-            </div>
-
-            <!-- Pilihan Warna Aksen Poster -->
-            <div class="space-y-2">
-                <label class="text-xs font-semibold text-slate-300">Kombinasi Warna Tema</label>
-                <div class="grid grid-cols-4 gap-2">
-                    <button onclick="setAccent('gold')" class="h-9 rounded-lg bg-amber-500/20 border border-islamicGold text-islamicGold text-xs font-mono font-bold hover:bg-amber-500/40 transition">Gold</button>
-                    <button onclick="setAccent('green')" class="h-9 rounded-lg bg-cyberGreen/20 border border-cyberGreen text-cyberGreen text-xs font-mono font-bold hover:bg-cyberGreen/40 transition">Green</button>
-                    <button onclick="setAccent('purple')" class="h-9 rounded-lg bg-purple-500/20 border border-purple-500 text-purple-500 text-xs font-mono font-bold hover:bg-purple-500/40 transition">Purple</button>
-                    <button onclick="setAccent('cyan')" class="h-9 rounded-lg bg-teal-400/20 border border-teal-400 text-teal-400 text-xs font-mono font-bold hover:bg-teal-400/40 transition">Cyan</button>
+            <!-- Pilihan Ukuran Rasio Poster -->
+            <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300">Format Rasio Poster</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setRatio('9:16')" id="btnRasioreels" class="h-8 rounded-lg bg-teal-400/20 border border-teal-400 text-teal-400 text-[11px] font-mono font-bold transition">📱 9:16 (Story/Reels)</button>
+                    <button onclick="setRatio('1:1')" id="btnRatiosquare" class="h-8 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 text-[11px] font-mono font-bold hover:border-slate-500 transition">🖼️ 1:1 (Square)</button>
                 </div>
             </div>
 
+            <!-- Upload Latar Belakang Kustom -->
+            <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300">Upload Latar Gambar (Pinterest/Galeri)</label>
+                <input type="file" id="uploadBg" accept="image/*" onchange="handleImageUpload(event)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-400 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-teal-400/20 file:text-teal-400 hover:file:bg-teal-400/35 transition cursor-pointer">
+            </div>
+
+            <!-- Teks Arab (Bisa Diedit Manual) -->
+            <div id="arabicSection" class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300">Teks Arab</label>
+                <textarea id="inputArabic" rows="2" oninput="liveUpdate()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-right font-arabic text-islamicGold focus:border-islamicGold focus:outline-none transition"></textarea>
+            </div>
+
+            <!-- Teks Utama / Pesan -->
+            <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300">Teks Utama / Terjemahan</label>
+                <textarea id="inputMainText" rows="3" oninput="liveUpdate()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-teal-400 focus:outline-none transition">Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.</textarea>
+            </div>
+
+            <!-- Sumber / Penulis -->
+            <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300">Sumber / Watermark</label>
+                <input type="text" id="inputAuthor" value="QS. Al-Baqarah: 286" oninput="liveUpdate()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-teal-400 focus:outline-none transition">
+            </div>
+
             <!-- Tombol Aksi -->
-            <button onclick="alert('Fitur download poster siap dikembangkan atau langsung screenshot area preview di sebelah kanan!')" class="w-full bg-teal-400 hover:bg-teal-300 text-black font-mono-custom font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-teal-400/20 flex items-center justify-center gap-2">
+            <button onclick="alert('Poster siap dibagikan! Kamu bisa melakukan screenshot pada area preview poster di sebelah kanan.')" class="w-full bg-teal-400 hover:bg-teal-300 text-black font-mono-custom font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-teal-400/20 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER
             </button>
         </div>
 
         <!-- PANEL PREVIEW POSTER (7 Kolom) -->
-        <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-900/40 border border-slate-800 p-6 rounded-2xl relative min-h-[450px]">
-            <span class="absolute top-4 left-4 text-[10px] font-mono-custom text-slate-500 uppercase tracking-widest">Live Preview Area</span>
+        <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-900/40 border border-slate-800 p-6 rounded-2xl relative min-h-[550px]">
+            <span class="absolute top-4 left-4 text-[10px] font-mono-custom text-slate-500 uppercase tracking-widest">Live Preview Area (9:16 Default)</span>
 
-            <!-- KOTAK POSTER UTAMA (Rasio Instagram/Media Sosial) -->
-            <div id="posterBox" class="w-full max-w-md aspect-[4/5] bg-gradient-to-br from-slate-900 via-slate-950 to-black border-2 border-islamicGold rounded-2xl p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300">
+            <!-- KOTAK POSTER UTAMA -->
+            <div id="posterBox" class="w-full max-w-xs aspect-[9/16] bg-gradient-to-br from-slate-900 via-slate-950 to-black border-2 border-islamicGold rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 bg-cover bg-center">
                 
-                <!-- Hiasan Background Pattern / Glow -->
-                <div id="posterGlow" class="absolute -top-24 -right-24 w-48 h-48 bg-islamicGold/10 rounded-full blur-3xl pointer-events-none"></div>
+                <!-- Lapisan Gelap Transparan agar Teks Terbaca Jelas di atas Gambar -->
+                <div id="overlayDim" class="absolute inset-0 bg-black/70 z-0"></div>
 
                 <!-- Header Poster -->
                 <div class="flex items-center justify-between z-10">
-                    <span id="previewBadge" class="text-[10px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-full bg-islamicGold/10 border border-islamicGold text-islamicGold">
+                    <span id="previewBadge" class="text-[9px] font-mono-custom tracking-widest uppercase px-2.5 py-1 rounded-full bg-islamicGold/20 border border-islamicGold text-islamicGold font-bold">
                         ISLAMIC QUOTES
                     </span>
-                    <span class="text-[10px] font-mono-custom text-slate-400">STUDIO KECIL 46</span>
+                    <span class="text-[9px] font-mono-custom text-slate-300 font-bold">STUDIO KECIL 46</span>
                 </div>
 
-                <!-- Konten Teks di Tengah -->
-                <div class="my-auto space-y-6 text-center z-10">
-                    <!-- Teks Arab (Hanya tampil jika ada isi) -->
-                    <div id="previewArabic" class="text-2xl lg:text-3xl font-arabic text-islamicGold leading-loose" style="direction: rtl;">
-                        فَإِنَّ مَعَ الْعُسْرِ يُسْرًا
+                <!-- Konten Teks Tengah -->
+                <div class="my-auto space-y-4 text-center z-10">
+                    <div id="previewArabic" class="text-xl lg:text-2xl font-arabic text-islamicGold leading-loose" style="direction: rtl;">
+                        لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا
                     </div>
-                    
-                    <!-- Teks Utama -->
-                    <p id="previewMainText" class="text-sm lg:text-base font-sans text-slate-100 leading-relaxed px-2">
-                        “Sesungguhnya bersama kesulitan itu ada kemudahan.”
+                    <p id="previewMainText" class="text-xs lg:text-sm font-sans text-slate-100 leading-relaxed px-1">
+                        Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.
                     </p>
                 </div>
 
-                <!-- Footer / Sumber Quotes -->
-                <div class="flex items-center justify-between pt-4 border-t border-slate-800 z-10">
-                    <span id="previewAuthor" class="text-xs font-mono-custom font-bold text-slate-300">
-                        QS. Al-Insyirah: 6
+                <!-- Footer Poster -->
+                <div class="flex items-center justify-between pt-3 border-t border-white/20 z-10">
+                    <span id="previewAuthor" class="text-[11px] font-mono-custom font-bold text-islamicGold">
+                        QS. Al-Baqarah: 286
                     </span>
-                    <div class="w-6 h-6 rounded-full bg-black border border-slate-700 flex items-center justify-center text-[10px] text-slate-400">
+                    <div class="w-5 h-5 rounded-full bg-black border border-white/30 flex items-center justify-center text-[9px] text-white font-bold">
                         46
                     </div>
                 </div>
@@ -157,87 +173,105 @@
         &copy; 2026 Studio Kecil 46 - Creator Toolkit
     </footer>
 
-    <!-- SCRIPT INTERAKTIF -->
+    <!-- SCRIPT LOGIKA API & PREVIEW -->
     <script>
-        function liveUpdate() {
-            const arabicVal = document.getElementById('inputArabic').value;
-            const mainTextVal = document.getElementById('inputMainText').value;
-            const authorVal = document.getElementById('inputAuthor').value;
+        // Ambil Ayat Al-Qur'an dari API Publik
+        async function fetchQuranApi() {
+            const surah = document.getElementById('inputSurah').value;
+            const ayat = document.getElementById('inputAyat').value;
+            
+            try {
+                const res = await fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayat}/editions/quran-uthmani,id.indonesian`);
+                const data = await res.json();
+                
+                if(data.code === 200) {
+                    const arabicText = data.data[0].text;
+                    const indoText = data.data[1].text;
+                    const surahName = data.data[0].surah.englishName;
+                    const ayahNum = data.data[0].numberInSurah;
 
-            document.getElementById('previewArabic').innerText = arabicVal;
-            document.getElementById('previewMainText').innerText = mainTextVal;
-            document.getElementById('previewAuthor').innerText = authorVal;
-
-            // Sembunyikan elemen arab jika kosong
-            if(arabicVal.trim() === "") {
-                document.getElementById('previewArabic').style.display = 'none';
-            } else {
-                document.getElementById('previewArabic').style.display = 'block';
+                    document.getElementById('inputArabic').value = arabicText;
+                    document.getElementById('inputMainText').value = `“${indoText}”`;
+                    document.getElementById('inputAuthor').value = `QS. ${surahName}: ${ayahNum}`;
+                    
+                    liveUpdate();
+                    alert("Berhasil menarik ayat Al-Qur'an dari server!");
+                } else {
+                    alert("Ayat tidak ditemukan, periksa kembali nomor surah dan ayat.");
+                }
+            } catch (err) {
+                alert("Gagal terhubung ke API Al-Qur'an. Periksa koneksi internet.");
             }
         }
 
-        function updateTheme() {
+        function liveUpdate() {
+            document.getElementById('previewArabic').innerText = document.getElementById('inputArabic').value;
+            document.getElementById('previewMainText').innerText = document.getElementById('inputMainText').value;
+            document.getElementById('previewAuthor').innerText = document.getElementById('inputAuthor').value;
+            
+            const arabicVal = document.getElementById('inputArabic').value;
+            document.getElementById('previewArabic').style.display = arabicVal.trim() === "" ? 'none' : 'block';
+        }
+
+        function switchTheme() {
             const theme = document.getElementById('themeSelect').value;
             const badge = document.getElementById('previewBadge');
+            const apiBox = document.getElementById('apiQuranBox');
             const arabicSec = document.getElementById('arabicSection');
 
             if(theme === 'islamic') {
                 badge.innerText = "ISLAMIC QUOTES";
+                apiBox.style.display = 'block';
                 arabicSec.style.display = 'block';
-                document.getElementById('inputArabic').value = "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا";
-                document.getElementById('inputMainText').value = "“Sesungguhnya bersama kesulitan itu ada kemudahan.”";
-                document.getElementById('inputAuthor').value = "QS. Al-Insyirah: 6";
-                setAccent('gold');
-            } else if(theme === 'motivation') {
-                badge.innerText = "MOTIVATION VIBES";
+                fetchQuranApi();
+            } else {
+                apiBox.style.display = 'none';
                 arabicSec.style.display = 'none';
-                document.getElementById('inputArabic').value = "";
-                document.getElementById('inputMainText').value = "“Jangan berhenti ketika lelah, berhentilah ketika kamu selesai.”";
-                document.getElementById('inputAuthor').value = "@studiokecil46";
-                setAccent('green');
-            } else if(theme === 'education') {
-                badge.innerText = "EDU KNOWLEDGE";
-                arabicSec.style.display = 'none';
-                document.getElementById('inputArabic').value = "";
-                document.getElementById('inputMainText').value = "“Pendidikan bukan persiapan untuk hidup; pendidikan adalah hidup itu sendiri.”";
-                document.getElementById('inputAuthor').value = "John Dewey";
-                setAccent('cyan');
-            } else if(theme === 'life') {
-                badge.innerText = "LIFE WISDOM";
-                arabicSec.style.display = 'none';
-                document.getElementById('inputArabic').value = "";
-                document.getElementById('inputMainText').value = "“Hiduplah seolah engkau mati besok. Belajarlah seolah engkau hidup selamanya.”";
-                document.getElementById('inputAuthor').value = "Mahatma Gandhi";
-                setAccent('purple');
+                document.getElementById('previewArabic').style.display = 'none';
+
+                if(theme === 'motivation') {
+                    badge.innerText = "MOTIVATION";
+                    document.getElementById('inputMainText').value = "“Jangan berhenti ketika lelah, berhentilah ketika kamu selesai.”";
+                    document.getElementById('inputAuthor').value = "@studiokecil46";
+                } else if(theme === 'education') {
+                    badge.innerText = "EDUCATION";
+                    document.getElementById('inputMainText').value = "“Pendidikan adalah senjata paling mematikan di dunia, karena dengan itu Anda dapat mengubah dunia.”";
+                    document.getElementById('inputAuthor').value = "Nelson Mandela";
+                } else if(theme === 'life') {
+                    badge.innerText = "LIFE WISDOM";
+                    document.getElementById('inputMainText').value = "“Hiduplah seolah engkau mati besok. Belajarlah seolah engkau hidup selamanya.”";
+                    document.getElementById('inputAuthor').value = "Mahatma Gandhi";
+                }
+                liveUpdate();
             }
-            liveUpdate();
         }
 
-        function setAccent(color) {
+        function setRatio(ratio) {
             const posterBox = document.getElementById('posterBox');
-            const badge = document.getElementById('previewBadge');
-            const glow = document.getElementById('posterGlow');
+            const btnReels = document.getElementById('btnRasioreels');
+            const btnSquare = document.getElementById('btnRatiosquare');
 
-            // Reset classes
-            posterBox.className = "w-full max-w-md aspect-[4/5] bg-gradient-to-br from-slate-900 via-slate-950 to-black rounded-2xl p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300";
-            
-            if(color === 'gold') {
-                posterBox.classList.add('border-2', 'border-islamicGold');
-                badge.className = "text-[10px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-full bg-islamicGold/10 border border-islamicGold text-islamicGold";
-                document.getElementById('previewArabic').className = "text-2xl lg:text-3xl font-arabic text-islamicGold leading-loose";
-                glow.className = "absolute -top-24 -right-24 w-48 h-48 bg-islamicGold/10 rounded-full blur-3xl pointer-events-none";
-            } else if(color === 'green') {
-                posterBox.classList.add('border-2', 'border-cyberGreen');
-                badge.className = "text-[10px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-full bg-cyberGreen/10 border border-cyberGreen text-cyberGreen";
-                glow.className = "absolute -top-24 -right-24 w-48 h-48 bg-cyberGreen/10 rounded-full blur-3xl pointer-events-none";
-            } else if(color === 'purple') {
-                posterBox.classList.add('border-2', 'border-purple-500');
-                badge.className = "text-[10px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500 text-purple-500";
-                glow.className = "absolute -top-24 -right-24 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none";
-            } else if(color === 'cyan') {
-                posterBox.classList.add('border-2', 'border-teal-400');
-                badge.className = "text-[10px] font-mono-custom tracking-widest uppercase px-3 py-1 rounded-full bg-teal-400/10 border border-teal-400 text-teal-400";
-                glow.className = "absolute -top-24 -right-24 w-48 h-48 bg-teal-400/10 rounded-full blur-3xl pointer-events-none";
+            if(ratio === '9:16') {
+                posterBox.className = "w-full max-w-xs aspect-[9/16] bg-gradient-to-br from-slate-900 via-slate-950 to-black border-2 border-islamicGold rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 bg-cover bg-center";
+                btnReels.className = "h-8 rounded-lg bg-teal-400/20 border border-teal-400 text-teal-400 text-[11px] font-mono font-bold transition";
+                btnSquare.className = "h-8 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 text-[11px] font-mono font-bold hover:border-slate-500 transition";
+            } else {
+                posterBox.className = "w-full max-w-sm aspect-square bg-gradient-to-br from-slate-900 via-slate-950 to-black border-2 border-islamicGold rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 bg-cover bg-center";
+                btnSquare.className = "h-8 rounded-lg bg-teal-400/20 border border-teal-400 text-teal-400 text-[11px] font-mono font-bold transition";
+                btnReels.className = "h-8 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 text-[11px] font-mono font-bold hover:border-slate-500 transition";
+            }
+        }
+
+        // Upload Gambar Latar Kustom
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const posterBox = document.getElementById('posterBox');
+                    posterBox.style.backgroundImage = `url('${e.target.result}')`;
+                }
+                reader.readAsDataURL(file);
             }
         }
     </script>
