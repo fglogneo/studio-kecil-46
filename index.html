@@ -286,7 +286,7 @@
         </section>
 
        <!-- CREATOR CYBER-TOOLKIT SECTION -->
-<section id="tools" class="space-y-6 w-full relative z-10">
+<section id="tools" class="space-y-6 relative z-10">
     
     <!-- Bagian Judul -->
     <div class="border-l-4 border-cyberGreen pl-4">
@@ -294,88 +294,90 @@
         <p class="text-xs text-slate-300">Pilih tools di bawah ini untuk mengarahkan ke fitur/aplikasi pembuatan konten.</p>
     </div>
 
-    <!-- === CONTAINER GRID TOOLS (Formasi 3 Kolom Lega) === -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+    <!-- === CONTAINER GRID TOOLS (PASTI 3 KOLOM KESAMPING) === -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <!-- Tool Card 1: Al-Qur'an Digital -->
-        <a href="tools/quran.html" class="flex flex-col w-full h-full bg-black/80 border border-cyberGreen/40 hover:border-cyberGreen p-5 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-cyberGreen">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-11 h-11 rounded-lg bg-black border border-cyberGreen flex items-center justify-center text-cyberGreen text-lg flex-shrink-0">
+        <a href="tools/quran.html" class="group flex flex-col h-full bg-black/60 border border-cyberGreen/40 hover:border-cyberGreen p-6 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-cyberGreen">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-lg bg-black border border-cyberGreen flex items-center justify-center text-cyberGreen text-xl flex-shrink-0 transition-colors group-hover:bg-cyberGreen/20">
                     <i class="fa-solid fa-book-quran"></i>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold text-white leading-tight">Al-Qur'an Digital</h3>
-                    <span class="text-[10px] text-cyberGreen font-mono block mt-1">AL-QUR'AN DIGITAL</span>
+                    <span class="text-[10px] text-cyberGreen font-mono">AL-QUR'AN DIGITAL</span>
                 </div>
             </div>
-            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-5 flex-grow">
+            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-6 flex-grow">
                 Baca Al-Qur'an shahih lengkap dengan teks Arab, Latin, serta terjemahan bahasa Indonesia & Audio.
             </p>
-            <div class="w-full bg-cyberGreen/10 border border-cyberGreen text-cyberGreen py-2.5 rounded-lg text-[11px] font-mono font-bold transition-all text-center mt-auto">
+            <!-- Tombol Buka Tool dengan Efek Hover Menyala -->
+            <div class="w-full bg-cyberGreen/10 border border-cyberGreen text-cyberGreen py-2.5 rounded-lg text-xs font-mono font-bold transition-all text-center mt-auto group-hover:bg-cyberGreen group-hover:text-black">
                 BUKA TOOL <i class="fa-solid fa-arrow-right ml-1"></i>
             </div>
         </a>
 
         <!-- Tool Card 2: Audio Visualizer -->
-        <a href="tools/visualizer.html" class="flex flex-col w-full h-full bg-black/80 border border-islamicGold/40 hover:border-islamicGold p-5 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-islamicGold">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-11 h-11 rounded-lg bg-black border border-islamicGold flex items-center justify-center text-islamicGold text-lg flex-shrink-0">
+        <a href="tools/visualizer.html" class="group flex flex-col h-full bg-black/60 border border-islamicGold/40 hover:border-islamicGold p-6 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-islamicGold">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-lg bg-black border border-islamicGold flex items-center justify-center text-islamicGold text-xl flex-shrink-0 transition-colors group-hover:bg-islamicGold/20">
                     <i class="fa-solid fa-compact-disc fa-spin-slow"></i>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold text-white leading-tight">Audio Visualizer</h3>
-                    <span class="text-[10px] text-islamicGold font-mono block mt-1">AUDIO SPECTRUM</span>
+                    <span class="text-[10px] text-islamicGold font-mono">AUDIO SPECTRUM</span>
                 </div>
             </div>
-            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-5 flex-grow">
+            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-6 flex-grow">
                 Buat animasi gelombang spektrum audio dengan gambar latar kustom dan teks secara real-time.
             </p>
-            <div class="w-full bg-islamicGold/10 border border-islamicGold text-islamicGold py-2.5 rounded-lg text-[11px] font-mono font-bold transition-all text-center mt-auto">
+            <!-- Tombol Buka Tool dengan Efek Hover Menyala -->
+            <div class="w-full bg-islamicGold/10 border border-islamicGold text-islamicGold py-2.5 rounded-lg text-xs font-mono font-bold transition-all text-center mt-auto group-hover:bg-islamicGold group-hover:text-black">
                 BUKA TOOL <i class="fa-solid fa-arrow-right ml-1"></i>
             </div>
         </a>
 
         <!-- Tool Card 3: AI Instrumen Studio -->
-        <a href="tools/music.html" class="flex flex-col w-full h-full bg-black/80 border border-cyberGreen/40 hover:border-cyberGreen p-5 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-cyberGreen">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-11 h-11 rounded-lg bg-black border border-cyberGreen flex items-center justify-center text-cyberGreen text-lg flex-shrink-0">
+        <a href="tools/music.html" class="group flex flex-col h-full bg-black/60 border border-cyberGreen/40 hover:border-cyberGreen p-6 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-cyberGreen">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-lg bg-black border border-cyberGreen flex items-center justify-center text-cyberGreen text-xl flex-shrink-0 transition-colors group-hover:bg-cyberGreen/20">
                     <i class="fa-solid fa-music"></i>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold text-white leading-tight">AI Instrumen</h3>
-                    <span class="text-[10px] text-cyberGreen font-mono block mt-1">INSTRUMEN STUDIO</span>
+                    <span class="text-[10px] text-cyberGreen font-mono">INSTRUMEN STUDIO</span>
                 </div>
             </div>
-            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-5 flex-grow">
+            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-6 flex-grow">
                 Buat musik instrumen otomatis berbasis AI dari deskripsi teks (prompt).
             </p>
-            <div class="w-full bg-cyberGreen/10 border border-cyberGreen text-cyberGreen py-2.5 rounded-lg text-[11px] font-mono font-bold transition-all text-center mt-auto">
+            <!-- Tombol Buka Tool dengan Efek Hover Menyala -->
+            <div class="w-full bg-cyberGreen/10 border border-cyberGreen text-cyberGreen py-2.5 rounded-lg text-xs font-mono font-bold transition-all text-center mt-auto group-hover:bg-cyberGreen group-hover:text-black">
                 BUKA TOOL <i class="fa-solid fa-arrow-right ml-1"></i>
             </div>
         </a>
 
         <!-- Tool Card 4: Lagu Vokal (Suno AI) -->
-        <a href="tools/suno.html" class="flex flex-col w-full h-full bg-black/80 border border-purple-500/40 hover:border-purple-500 p-5 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-purple-500">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-11 h-11 rounded-lg bg-black border border-purple-500 flex items-center justify-center text-purple-500 text-lg flex-shrink-0">
+        <a href="tools/suno.html" class="group flex flex-col h-full bg-black/60 border border-purple-500/40 hover:border-purple-500 p-6 rounded-xl transition duration-300 transform hover:-translate-y-1 border-t-2 border-t-purple-500">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 rounded-lg bg-black border border-purple-500 flex items-center justify-center text-purple-500 text-xl flex-shrink-0 transition-colors group-hover:bg-purple-500/20">
                     <i class="fa-solid fa-microphone-lines"></i>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold text-white leading-tight">Suno Music AI</h3>
-                    <span class="text-[10px] text-purple-500 font-mono block mt-1">SUNO AI BRIDGE</span>
+                    <span class="text-[10px] text-purple-500 font-mono">SUNO AI BRIDGE</span>
                 </div>
             </div>
-            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-5 flex-grow">
+            <p class="text-xs text-slate-300 font-sans leading-relaxed mb-6 flex-grow">
                 Panduan & portal akses untuk membuat musik utuh beserta lirik dan suara vokal menggunakan Suno AI.
             </p>
-            <div class="w-full bg-purple-500/10 border border-purple-500 text-purple-500 py-2.5 rounded-lg text-[11px] font-mono font-bold transition-all text-center mt-auto">
+            <!-- Tombol Buka Tool dengan Efek Hover Menyala -->
+            <div class="w-full bg-purple-500/10 border border-purple-500 text-purple-500 py-2.5 rounded-lg text-xs font-mono font-bold transition-all text-center mt-auto group-hover:bg-purple-500 group-hover:text-black">
                 BUKA TOOL <i class="fa-solid fa-arrow-right ml-1"></i>
             </div>
         </a>
 
     </div>
-    <!-- === AKHIR CONTAINER GRID TOOLS === -->
-
 </section>
 
         <!-- DONASI & DUKUNG DEVELOPER SECTION -->
