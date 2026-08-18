@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suno AI Portal - Studio Kecil 46</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { cyberGreen: '#00ff66', cyberDark: '#050907', sunoPurple: '#a855f7' } } }
+        }
+    </script>
+</head>
+<body class="bg-cyberDark text-slate-200 min-h-screen p-4 md:p-8 font-mono">
+
+    <!-- Header -->
+    <div class="max-w-3xl mx-auto mb-6 flex items-center justify-between border-b border-sunoPurple/30 pb-4">
+        <a href="../index.html" class="text-xs text-sunoPurple border border-sunoPurple/50 px-3 py-1.5 rounded hover:bg-sunoPurple hover:text-black transition">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+        </a>
+        <h1 class="text-base md:text-lg font-bold text-sunoPurple">🎤 Lagu Vokal AI</h1>
+    </div>
+
+    <!-- Konten Utama -->
+    <div class="max-w-3xl mx-auto space-y-6">
+        
+        <!-- Info Alert -->
+        <div class="bg-sunoPurple/10 border border-sunoPurple/50 p-4 rounded-xl flex gap-4 items-start">
+            <i class="fa-solid fa-circle-info text-sunoPurple text-xl mt-1"></i>
+            <div>
+                <h3 class="text-sm font-bold text-white mb-1">Informasi Akses Suno AI</h3>
+                <p class="text-xs text-slate-300 leading-relaxed font-sans">
+                    Suno AI adalah mesin pembuat lagu terbaik saat ini yang dapat menghasilkan vokal manusia secara nyata. Karena fitur ini membutuhkan penyimpanan karya secara personal, <strong>kamu akan diarahkan ke website resmi Suno AI</strong> untuk proses pembuatannya.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tombol Buka Suno -->
+        <div class="bg-black/60 border border-sunoPurple/40 p-6 rounded-xl text-center space-y-4">
+            <h2 class="text-lg font-bold text-white">Siap Membuat Lagu Pertamamu?</h2>
+            <p class="text-xs text-slate-400">Pastikan kamu login menggunakan akun Google-mu untuk mendapatkan <strong>50 Kredit Gratis</strong> (Cukup untuk 10 lagu) setiap harinya.</p>
+            
+            <a href="https://suno.com" target="_blank" rel="noopener noreferrer" class="inline-block w-full md:w-auto bg-sunoPurple text-white font-bold py-3 px-8 rounded-lg hover:bg-purple-400 transition shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)]">
+                🚀 BUKA WEBSITE SUNO AI <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+        </div>
+
+        <!-- Tips & Trik Contekan (Cheat Sheet) -->
+        <div class="bg-slate-900 border border-slate-700 p-5 rounded-xl space-y-4">
+            <h3 class="text-sm font-bold text-sunoPurple flex items-center gap-2 border-b border-slate-700 pb-2">
+                <i class="fa-solid fa-lightbulb"></i> Cheat Sheet: Struktur Lagu (Meta Tags)
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-3 font-sans">
+                Gunakan tanda kurung siku <strong>[ ]</strong> di dalam kotak lirik (Custom Mode) pada Suno untuk mengatur bagian-bagian lagu. Copy-paste format di bawah ini:
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="bg-black p-3 rounded border border-slate-800">
+                    <span class="text-[10px] text-sunoPurple font-bold">1. Intro / Pembukaan</span>
+                    <p class="text-xs text-slate-400 mt-1"><code>[Intro]</code> <br><code>[Acoustic Guitar Intro]</code></p>
+                </div>
+                <div class="bg-black p-3 rounded border border-slate-800">
+                    <span class="text-[10px] text-sunoPurple font-bold">2. Bait / Cerita Utama</span>
+                    <p class="text-xs text-slate-400 mt-1"><code>[Verse 1]</code> <br><code>[Verse 2]</code></p>
+                </div>
+                <div class="bg-black p-3 rounded border border-slate-800">
+                    <span class="text-[10px] text-sunoPurple font-bold">3. Jembatan (Nada Naik)</span>
+                    <p class="text-xs text-slate-400 mt-1"><code>[Pre-Chorus]</code></p>
+                </div>
+                <div class="bg-black p-3 rounded border border-slate-800">
+                    <span class="text-[10px] text-sunoPurple font-bold">4. Reff / Inti Lagu</span>
+                    <p class="text-xs text-slate-400 mt-1"><code>[Chorus]</code> <br><code>[Catchy Chorus]</code></p>
+                </div>
+                <div class="bg-black p-3 rounded border border-slate-800">
+                    <span class="text-[10px] text-sunoPurple font-bold">5. Solo Instrumen</span>
+                    <p class="text-xs text-slate-400 mt-1"><code>[Guitar Solo]</code> <br><code>[Piano Solo]</code> <br><code>[Beat Drop]</code></p>
+                </div>
+                <div class="bg-black p-3 rounded border border-slate-800">
+                    <span class="text-[10px] text-sunoPurple font-bold">6. Penutup (Fade Out)</span>
+                    <p class="text-xs text-slate-400 mt-1"><code>[Outro]</code> <br><code>[End]</code></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
