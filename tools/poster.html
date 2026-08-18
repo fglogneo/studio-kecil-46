@@ -20,6 +20,8 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Library html2canvas untuk Download Gambar Poster -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         .font-arabic { font-family: 'Amiri', serif; }
         .font-mono-custom { font-family: 'Space Mono', monospace; }
@@ -38,7 +40,7 @@
                 </a>
                 <div>
                     <h1 class="text-base font-bold text-white tracking-wide">POSTER & QUOTES GENERATOR</h1>
-                    <span class="text-[10px] text-teal-400 font-mono-custom block">STUDIO KECIL 46 // API 114 SURAH + UNIQUE TEMPLATES</span>
+                    <span class="text-[10px] text-teal-400 font-mono-custom block">STUDIO KECIL 46 // 114 SURAH + UNIQUE TEMPLATES</span>
                 </div>
             </div>
             <a href="../index.html" class="text-xs font-mono-custom text-slate-400 hover:text-white transition">
@@ -70,12 +72,12 @@
             <!-- FITUR PENCARIAN AL-QUR'AN API 114 SURAH + AUTOCOMPLETE -->
             <div id="apiQuranBox" class="p-3 bg-slate-900/80 border border-islamicGold/40 rounded-xl space-y-2.5 relative">
                 <label class="text-xs font-bold text-islamicGold flex items-center justify-between">
-                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-book-quran"></i> Pilih Surah (114 Surah API)</span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-book-quran"></i> Pilih Surah (114 Surah)</span>
                     <span id="surahStatusLoad" class="text-[9px] text-slate-400 font-mono">Memuat data API...</span>
                 </label>
                 
                 <div class="space-y-1 relative">
-                    <span class="text-[10px] text-slate-400 block">Ketik Nama Surah (misal: kahf, yasin, mulk)</span>
+                    <span class="text-[10px] text-slate-400 block">Ketik Nama Surah (misal: kahf, yaseen, mulk)</span>
                     <input type="text" id="inputSurahQuery" value="Al-Baqarah" oninput="handleSurahSearchInput()" placeholder="Ketik nama atau nomor surah..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:border-islamicGold focus:outline-none" autocomplete="off">
                     
                     <!-- Kotak Sugesti / Autocomplete Dropdown -->
@@ -146,8 +148,8 @@
                 </div>
             </div>
 
-            <!-- Tombol Aksi -->
-            <button onclick="alert('Poster siap! Silakan screenshot area preview poster di sebelah kanan.')" class="w-full bg-teal-400 hover:bg-teal-300 text-black font-mono-custom font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-teal-400/20 flex items-center justify-center gap-2">
+            <!-- Tombol Aksi Download -->
+            <button onclick="downloadPoster()" id="btnDownload" class="w-full bg-teal-400 hover:bg-teal-300 text-black font-mono-custom font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-teal-400/20 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER
             </button>
         </div>
@@ -202,7 +204,7 @@
 
     <!-- FOOTER -->
     <footer class="border-t border-slate-800 bg-black/40 py-4 text-center text-xs text-slate-500 font-mono-custom">
-        &copy; 2026 Studio Kecil 46 - Creator Toolkit
+        &copy; 2026 Studio Kecil 46 - Creator Cyber Toolkit
     </footer>
 
     <!-- SCRIPT LOGIKA -->
@@ -336,13 +338,10 @@
             const posterBox = document.getElementById('posterBox');
             const container = document.getElementById('themeTemplateContainer');
 
-            // Ambil nilai saat ini dari form agar tidak hilang saat ganti tema
             let currentBadge = document.getElementById('inputBadgeText').value;
             let currentBrand = document.getElementById('inputHeaderBrand').value;
             let currentMain = document.getElementById('inputMainText').value;
             let currentAuthor = document.getElementById('inputAuthor').value;
-            let currentLogo = document.getElementById('inputFooterLogo').value;
-            let currentArabic = document.getElementById('inputArabic').value;
 
             if(theme === 'islamic') {
                 document.getElementById('inputBadgeText').value = "ISLAMIC QUOTES";
@@ -496,6 +495,35 @@
                 }
                 reader.readAsDataURL(file);
             }
+        }
+
+        // Fungsi Otomatis Download Poster Menggunakan html2canvas
+        function downloadPoster() {
+            const posterElement = document.getElementById('posterBox');
+            const btn = document.getElementById('btnDownload');
+            
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES POSTER...`;
+            btn.disabled = true;
+
+            html2canvas(posterElement, {
+                scale: 3, // Kualitas tinggi (HD)
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `poster-studio-kecil-46-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                btn.innerHTML = `<i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER`;
+                btn.disabled = false;
+            }).catch(err => {
+                console.error("Gagal mendownload poster:", err);
+                alert("Terjadi kesalahan saat memproses download poster.");
+                btn.innerHTML = `<i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER`;
+                btn.disabled = false;
+            });
         }
     </script>
 </body>
