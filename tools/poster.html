@@ -497,34 +497,61 @@
             }
         }
 
-        // Fungsi Otomatis Download Poster Menggunakan html2canvas
-        function downloadPoster() {
-            const posterElement = document.getElementById('posterBox');
-            const btn = document.getElementById('btnDownload');
+       // Fungsi Otomatis Download Poster Menggunakan html2canvas
+function downloadPoster() {
+    const posterElement = document.getElementById('posterBox');
+    const btn = document.getElementById('btnDownload');
+    
+    // Ubah tampilan tombol saat memproses
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES POSTER...`;
+    btn.disabled = true;
+
+    // 1. Pastikan semua font selesai dimuat oleh browser sebelum dirender
+    document.fonts.ready.then(() => {
+        
+        // 2. Trik mengunci ukuran (Fixed Size) agar border/teks tidak melenceng
+        const originalWidth = posterElement.style.width;
+        const originalHeight = posterElement.style.height;
+        const rect = posterElement.getBoundingClientRect();
+        
+        // Terapkan ukuran piksel (px) absolut sementara waktu
+        posterElement.style.width = rect.width + 'px';
+        posterElement.style.height = rect.height + 'px';
+
+        html2canvas(posterElement, {
+            scale: 3, // Kualitas tinggi (HD)
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null,
+            // 3. Mencegah elemen bergeser jika layar sedang di-scroll
+            scrollY: -window.scrollY,
+            windowWidth: document.documentElement.offsetWidth,
+            windowHeight: document.documentElement.offsetHeight
+        }).then(canvas => {
+            // Kembalikan ukuran elemen seperti semula
+            posterElement.style.width = originalWidth;
+            posterElement.style.height = originalHeight;
+
+            const link = document.createElement('a');
+            link.download = `poster-studio-kecil-46-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            // Kembalikan state tombol
+            btn.innerHTML = `<i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER`;
+            btn.disabled = false;
+        }).catch(err => {
+            // Pastikan ukuran elemen dikembalikan meskipun terjadi error
+            posterElement.style.width = originalWidth;
+            posterElement.style.height = originalHeight;
             
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES POSTER...`;
-            btn.disabled = true;
-
-            html2canvas(posterElement, {
-                scale: 3, // Kualitas tinggi (HD)
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: null
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `poster-studio-kecil-46-${Date.now()}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-
-                btn.innerHTML = `<i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER`;
-                btn.disabled = false;
-            }).catch(err => {
-                console.error("Gagal mendownload poster:", err);
-                alert("Terjadi kesalahan saat memproses download poster.");
-                btn.innerHTML = `<i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER`;
-                btn.disabled = false;
-            });
-        }
+            console.error("Gagal mendownload poster:", err);
+            alert("Terjadi kesalahan saat memproses download poster.");
+            btn.innerHTML = `<i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER`;
+            btn.disabled = false;
+        });
+    });
+}
     </script>
 </body>
 </html>
