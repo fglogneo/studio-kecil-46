@@ -1,75 +1,105 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Murottal & Shalawat - Studio Kecil 46</title>
+    <title>Murottal & Shalawat Hub - Studio Kecil 46</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyberGreen: '#00FF66',
+                        cyberDark: '#050907',
+                        cyberPanel: '#0B120F',
+                        islamicGold: '#F59E0B',
+                        cyberBorder: '#1A2E26'
+                    },
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .font-arabic { font-family: 'Amiri', serif; }
-        .font-mono { font-family: 'Fira Code', monospace; }
-        /* Custom Scrollbar untuk lirik/ayat */
+        body { background-color: #050907; color: #F1F5F9; }
+        .cyber-card {
+            background: linear-gradient(135deg, rgba(11, 18, 15, 0.95) 0%, rgba(5, 9, 7, 0.98) 100%);
+            border: 1px solid #1A2E26;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.35));
+            background-size: 100% 4px;
+        }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #050907; }
+        ::-webkit-scrollbar-thumb { background: #1A2E26; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00FF66; }
+        
+        /* Custom Audio Player Styling for Dark Mode */
+        audio { filter: invert(90%) hue-rotate(180deg); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col scanline font-sans">
 
-    <!-- Navbar Studio Kecil 46 -->
-    <nav class="bg-slate-900 text-white p-4 shadow-md">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="font-mono text-sm font-semibold tracking-wider">
-                <span class="text-emerald-400">STUDIO KECIL</span> 46 <span class="text-slate-500">//</span> TOOLS
-            </div>
-            <a href="../index.html" class="text-sm bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg transition border border-slate-700 flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+    <!-- Header / Navbar -->
+    <header class="border-b border-cyberBorder bg-[#050907]/95 backdrop-blur sticky top-0 z-40 shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="../index.html" class="text-cyberGreen hover:text-white transition-colors flex items-center gap-2 font-mono text-sm border border-cyberBorder hover:border-cyberGreen px-3 py-1.5 rounded bg-cyberPanel">
+                <i class="fa-solid fa-arrow-left"></i> Kembali
             </a>
+            <div class="flex items-center gap-2 font-mono text-lg font-bold">
+                <i class="fa-solid fa-headphones-simple text-islamicGold"></i> 
+                <span class="text-white">Murottal</span> <span class="text-islamicGold">& Shalawat</span>
+            </div>
         </div>
-    </nav>
-
-    <!-- Header Tool -->
-    <header class="bg-emerald-700 text-white py-10 px-4 text-center border-b-4 border-emerald-500">
-        <h1 class="text-3xl md:text-4xl font-bold mb-3">
-            <i class="fa-solid fa-headphones-simple text-yellow-400"></i> Murottal & Shalawat Hub
-        </h1>
-        <p class="text-emerald-100 text-sm md:text-base max-w-2xl mx-auto">
-            Akses 30 Juz Murottal dan ragam Shalawat untuk menemani proses kreatifmu. Terintegrasi API Al-Quran & Pencarian Video.
-        </p>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full">
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
         
+        <!-- Terminal Header Info -->
+        <div class="cyber-card rounded-xl p-4 md:p-6 border-l-4 border-l-islamicGold relative overflow-hidden">
+            <h2 class="text-xl font-bold text-white mb-2 font-mono">
+                > INITIALIZING AUDIO_HUB.exe ... <span class="text-islamicGold">[OK]</span>
+            </h2>
+            <p class="text-sm text-slate-400 font-sans leading-relaxed">
+                Akses 30 Juz Murottal (Al-Quran) dan cari/download Shalawat melalui jaringan pencarian terdesentralisasi. Semua data diproses secara real-time.
+            </p>
+        </div>
+
         <!-- Tab Navigasi Mode -->
-        <div class="flex flex-wrap justify-center mb-10 gap-3">
-            <button id="tabMurottal" onclick="switchTab('murottal')" class="px-6 py-3 rounded-xl font-semibold bg-emerald-600 text-white shadow-md flex items-center gap-2 transition">
-                <i class="fa-solid fa-book-quran"></i> Murottal (API)
+        <div class="flex flex-wrap border-b border-cyberBorder gap-2">
+            <button id="tabMurottal" onclick="switchTab('murottal')" class="px-6 py-3 font-mono font-bold text-sm bg-cyberGreen text-black rounded-t-lg transition">
+                [1] MUROTTAL API
             </button>
-            <button id="tabShalawat" onclick="switchTab('shalawat')" class="px-6 py-3 rounded-xl font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 shadow-sm flex items-center gap-2 transition">
-                <i class="fa-solid fa-compact-disc"></i> Cari Shalawat
+            <button id="tabShalawat" onclick="switchTab('shalawat')" class="px-6 py-3 font-mono font-bold text-sm bg-cyberPanel text-slate-400 hover:text-islamicGold border border-b-0 border-cyberBorder rounded-t-lg transition">
+                [2] SHALAWAT SEARCH
             </button>
         </div>
 
         <!-- ================= SECTION 1: MUROTTAL API ================= -->
         <section id="sectionMurottal" class="space-y-6">
             <!-- Filter & Selector -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="cyber-card p-6 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-slate-600 mb-2"><i class="fa-solid fa-list text-emerald-500"></i> Pilih Surah:</label>
-                    <select id="surahSelect" onchange="fetchSurahData()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
-                        <option value="">-- Memuat Daftar Surah... --</option>
+                    <label class="block text-xs font-mono text-cyberGreen mb-2">> SELECT_SURAH:</label>
+                    <select id="surahSelect" onchange="fetchSurahData()" class="w-full p-3 bg-cyberDark border border-cyberBorder text-white rounded-lg focus:border-cyberGreen outline-none text-sm font-sans">
+                        <option value="">-- Memuat Data Server... --</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-slate-600 mb-2"><i class="fa-solid fa-microphone-lines text-emerald-500"></i> Pilih Qari:</label>
-                    <select id="qariSelect" onchange="fetchSurahData()" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    <label class="block text-xs font-mono text-cyberGreen mb-2">> SELECT_QARI:</label>
+                    <select id="qariSelect" onchange="fetchSurahData()" class="w-full p-3 bg-cyberDark border border-cyberBorder text-white rounded-lg focus:border-cyberGreen outline-none text-sm font-sans">
                         <option value="ar.alafasy">Mishary Rashid Alafasy</option>
                         <option value="ar.sudais">Abdurrahman As-Sudais</option>
                         <option value="ar.abdulbasitmurattal">AbdulBaset AbdulSamad</option>
@@ -80,18 +110,18 @@
 
             <!-- Loading Spinner -->
             <div id="murottalLoading" class="hidden text-center py-12">
-                <i class="fa-solid fa-spinner fa-spin text-4xl text-emerald-500 mb-3"></i>
-                <p class="text-slate-500 font-mono text-sm">[SYSTEM] Mengambil data dari server API...</p>
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-cyberGreen mb-3"></i>
+                <p class="text-cyberGreen font-mono text-xs">Fetching data from Al-Quran API...</p>
             </div>
 
             <!-- Surah Info Header -->
-            <div id="surahHeader" class="hidden bg-slate-900 text-white p-6 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 shadow-lg border-l-4 border-emerald-500">
+            <div id="surahHeader" class="hidden cyber-card p-6 rounded-xl flex flex-col md:flex-row justify-between items-center gap-4 border-l-4 border-l-cyberGreen">
                 <div>
-                    <h2 id="surahTitle" class="text-2xl font-bold text-emerald-400"></h2>
-                    <p id="surahSubtitle" class="text-sm text-slate-400 mt-1"></p>
+                    <h2 id="surahTitle" class="text-2xl font-bold text-white font-arabic"></h2>
+                    <p id="surahSubtitle" class="text-sm text-slate-400 mt-1 font-mono"></p>
                 </div>
-                <a id="btnDownloadFull" href="#" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
-                    <i class="fa-solid fa-cloud-arrow-down"></i> Unduh MP3 Full
+                <a id="btnDownloadFull" href="#" target="_blank" class="bg-cyberGreen/10 border border-cyberGreen hover:bg-cyberGreen hover:text-black text-cyberGreen px-5 py-2.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i> DOWNLOAD MP3 FULL
                 </a>
             </div>
 
@@ -99,16 +129,22 @@
             <div id="ayahList" class="space-y-4"></div>
         </section>
 
-        <!-- ================= SECTION 2: SHALAWAT (Invidious API) ================= -->
+        <!-- ================= SECTION 2: SHALAWAT SEARCH ================= -->
         <section id="sectionShalawat" class="hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <label class="block text-sm font-semibold text-slate-600 mb-2"><i class="fa-solid fa-magnifying-glass text-emerald-500"></i> Cari Video/Audio Shalawat:</label>
+            <div class="cyber-card p-6 rounded-xl border-t-2 border-t-islamicGold">
+                <label class="block text-xs font-mono text-islamicGold mb-2">> ENTER_QUERY:</label>
                 <div class="flex gap-2">
-                    <input type="text" id="shalawatQuery" placeholder="Contoh: Shalawat Jibril Merdu..." class="flex-1 p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
-                    <button onclick="searchShalawat()" class="bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 transition">
-                        Cari
+                    <input type="text" id="shalawatQuery" placeholder="Cari: Shalawat Jibril, Nissa Sabyan..." class="flex-1 p-3 bg-cyberDark border border-cyberBorder text-white rounded-lg focus:border-islamicGold outline-none text-sm font-sans">
+                    <button onclick="searchShalawat()" class="bg-islamicGold/10 border border-islamicGold hover:bg-islamicGold hover:text-black text-islamicGold px-6 py-3 rounded-lg font-mono font-bold transition flex items-center gap-2">
+                        <i class="fa-solid fa-search"></i> SEARCH
                     </button>
                 </div>
+            </div>
+
+            <!-- Loading & Error Messages -->
+            <div id="shalawatLoading" class="hidden text-center py-12">
+                <i class="fa-solid fa-cog fa-spin text-4xl text-islamicGold mb-3"></i>
+                <p class="text-islamicGold font-mono text-xs">Bypassing servers... Searching media...</p>
             </div>
 
             <!-- Video/Audio Grid -->
@@ -117,14 +153,6 @@
 
     </main>
 
-    <!-- Footer Studio Kecil 46 -->
-    <footer class="bg-slate-900 text-slate-400 text-center py-8 mt-12 text-sm border-t border-slate-800">
-        <div class="max-w-4xl mx-auto px-4">
-            <p class="mb-2">© 2026 <strong class="text-white">STUDIO KECIL 46</strong> — Content Suite.</p>
-            <p class="font-mono text-xs text-emerald-500">Dibuat dengan NIAT & KODE untuk Kebaikan Ummah.</p>
-        </div>
-    </footer>
-
     <script>
         const QURAN_API_BASE = 'https://api.alquran.cloud/v1';
 
@@ -132,7 +160,7 @@
             loadSurahList();
         });
 
-        // Toggle Tabs
+        // Tab Switcher Logic
         function switchTab(type) {
             const secMurottal = document.getElementById('sectionMurottal');
             const secShalawat = document.getElementById('sectionShalawat');
@@ -142,28 +170,27 @@
             if(type === 'murottal') {
                 secMurottal.classList.remove('hidden');
                 secShalawat.classList.add('hidden');
-                btnMurottal.className = "px-6 py-3 rounded-xl font-semibold bg-emerald-600 text-white shadow-md flex items-center gap-2 transition";
-                btnShalawat.className = "px-6 py-3 rounded-xl font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 shadow-sm flex items-center gap-2 transition";
+                btnMurottal.className = "px-6 py-3 font-mono font-bold text-sm bg-cyberGreen text-black rounded-t-lg transition";
+                btnShalawat.className = "px-6 py-3 font-mono font-bold text-sm bg-cyberPanel text-slate-400 hover:text-islamicGold border border-b-0 border-cyberBorder rounded-t-lg transition";
             } else {
                 secMurottal.classList.add('hidden');
                 secShalawat.classList.remove('hidden');
-                btnShalawat.className = "px-6 py-3 rounded-xl font-semibold bg-emerald-600 text-white shadow-md flex items-center gap-2 transition";
-                btnMurottal.className = "px-6 py-3 rounded-xl font-semibold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 shadow-sm flex items-center gap-2 transition";
+                btnShalawat.className = "px-6 py-3 font-mono font-bold text-sm bg-islamicGold text-black rounded-t-lg transition";
+                btnMurottal.className = "px-6 py-3 font-mono font-bold text-sm bg-cyberPanel text-slate-400 hover:text-cyberGreen border border-b-0 border-cyberBorder rounded-t-lg transition";
                 
                 if(document.getElementById('shalawatResults').children.length === 0) {
-                    document.getElementById('shalawatQuery').value = "Shalawat Merdu";
+                    document.getElementById('shalawatQuery').value = "Shalawat Nabi Merdu";
                     searchShalawat();
                 }
             }
         }
 
-        // Fetch API Al-Quran
+        // ================= MUROTTAL API =================
         async function loadSurahList() {
             const select = document.getElementById('surahSelect');
             try {
                 const res = await fetch(`${QURAN_API_BASE}/surah`);
                 const data = await res.json();
-                
                 select.innerHTML = '';
                 data.data.forEach(surah => {
                     const opt = document.createElement('option');
@@ -171,11 +198,10 @@
                     opt.textContent = `${surah.number}. ${surah.englishName} (${surah.name})`;
                     select.appendChild(opt);
                 });
-
                 select.value = "1";
                 fetchSurahData();
             } catch (err) {
-                select.innerHTML = '<option value="">Gagal memuat API</option>';
+                select.innerHTML = '<option value="">ERROR_LOADING_API</option>';
             }
         }
 
@@ -205,24 +231,22 @@
                 const ayahsAudio = surahInfo.ayahs;
                 const ayahsTextId = idData.data.ayahs;
 
-                document.getElementById('surahTitle').textContent = `${surahInfo.englishName} (${surahInfo.name})`;
-                document.getElementById('surahSubtitle').textContent = `${surahInfo.englishNameTranslation} • ${surahInfo.numberOfAyahs} Ayat`;
+                document.getElementById('surahTitle').textContent = `${surahInfo.englishName} - ${surahInfo.name}`;
+                document.getElementById('surahSubtitle').textContent = `Ayat: ${surahInfo.numberOfAyahs} | Diturunkan: ${surahInfo.revelationType}`;
                 document.getElementById('btnDownloadFull').href = ayahsAudio[0].audio;
                 
                 surahHeader.classList.remove('hidden');
 
                 ayahsAudio.forEach((ayah, index) => {
                     const card = document.createElement('div');
-                    card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition";
+                    card.className = "cyber-card p-5 rounded-xl border-l-2 border-l-cyberBorder hover:border-l-cyberGreen transition";
                     card.innerHTML = `
                         <div class="flex justify-between items-center mb-4">
-                            <span class="w-8 h-8 rounded-full bg-slate-800 text-white font-bold text-sm flex items-center justify-center">
-                                ${ayah.numberInSurah}
-                            </span>
+                            <span class="text-xs font-mono bg-cyberBorder text-cyberGreen px-2 py-1 rounded">Ayat ${ayah.numberInSurah}</span>
                         </div>
-                        <p class="font-arabic text-right text-3xl leading-loose text-slate-800 mb-3">${ayah.text}</p>
-                        <p class="text-sm text-slate-500 italic mb-4">"${ayahsTextId[index].text}"</p>
-                        <audio controls class="w-full h-10 rounded-lg bg-slate-100">
+                        <p class="font-arabic text-right text-3xl leading-loose text-white mb-3">${ayah.text}</p>
+                        <p class="text-sm text-slate-400 italic mb-5">"${ayahsTextId[index].text}"</p>
+                        <audio controls class="w-full h-10">
                             <source src="${ayah.audio}" type="audio/mpeg">
                         </audio>
                     `;
@@ -230,53 +254,85 @@
                 });
 
             } catch (err) {
-                ayahList.innerHTML = '<div class="text-center text-red-500 py-4 font-mono">[ERROR] Gagal memuat data dari API.</div>';
+                ayahList.innerHTML = '<div class="text-red-500 font-mono text-center py-4">[SYSTEM_ERROR] Gagal memuat data dari API.</div>';
             } finally {
                 loading.classList.add('hidden');
             }
         }
 
-        // Fetch API Shalawat (Invidious / Youtube Alternative)
+        // ================= SHALAWAT API (ANTI-GAGAL) =================
         async function searchShalawat() {
             const query = document.getElementById('shalawatQuery').value.trim();
             const resultsContainer = document.getElementById('shalawatResults');
+            const loading = document.getElementById('shalawatLoading');
+            
             if(!query) return;
 
-            resultsContainer.innerHTML = `
-                <div class="col-span-full text-center py-8">
-                    <i class="fa-solid fa-spinner fa-spin text-3xl text-emerald-500 mb-3"></i>
-                    <p class="text-slate-500 text-sm font-mono">[SYSTEM] Mencari media di server...</p>
-                </div>
-            `;
+            resultsContainer.innerHTML = '';
+            loading.classList.remove('hidden');
 
-            try {
-                const res = await fetch(`https://invidious.nerdvpn.de/api/v1/search?q=${encodeURIComponent(query)}&type=video`);
-                const videos = await res.json();
+            // List Server API Publik (Jika server 1 mati, lanjut server 2)
+            const apiServers = [
+                "https://inv.tux.pizza/api/v1/search",
+                "https://invidious.lunar.icu/api/v1/search",
+                "https://invidious.privacyredirect.com/api/v1/search",
+                "https://invidious.nerdvpn.de/api/v1/search"
+            ];
 
-                resultsContainer.innerHTML = '';
-                if(!videos || videos.length === 0) throw new Error("No data");
+            let successData = null;
 
-                videos.slice(0, 6).forEach(video => {
+            // Loop untuk mencari server yang aktif
+            for (let url of apiServers) {
+                try {
+                    const res = await fetch(`${url}?q=${encodeURIComponent(query)}&type=video`, { signal: AbortSignal.timeout(5000) });
+                    if (res.ok) {
+                        successData = await res.json();
+                        break; // Berhenti loop jika berhasil
+                    }
+                } catch (err) {
+                    console.log(`Server ${url} timeout/mati, mencoba server lain...`);
+                }
+            }
+
+            loading.classList.add('hidden');
+
+            if (successData && successData.length > 0) {
+                successData.slice(0, 6).forEach(video => {
                     const card = document.createElement('div');
-                    card.className = "bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition";
+                    card.className = "cyber-card rounded-xl overflow-hidden flex flex-col border-t-2 border-t-islamicGold";
+                    
+                    // Link download menggunakan pihak ketiga yang stabil
+                    const downloadLink = `https://cobalt.tools/?v=https://youtube.com/watch?v=${video.videoId}`;
+
                     card.innerHTML = `
-                        <div class="relative aspect-video bg-slate-900">
+                        <div class="relative aspect-video bg-black">
                             <iframe class="w-full h-full" src="https://www.youtube.com/embed/${video.videoId}" title="${video.title}" frameborder="0" allowfullscreen></iframe>
                         </div>
                         <div class="p-4 flex flex-col flex-1">
-                            <h3 class="font-bold text-slate-800 line-clamp-2 text-sm mb-1">${video.title}</h3>
-                            <p class="text-xs text-slate-500 mb-4 font-mono"><i class="fa-solid fa-user text-emerald-500"></i> ${video.author}</p>
+                            <h3 class="font-bold text-slate-200 line-clamp-2 text-sm mb-2 font-sans">${video.title}</h3>
+                            <p class="text-xs text-slate-400 font-mono mb-4"><i class="fa-solid fa-user text-islamicGold"></i> ${video.author}</p>
+                            <div class="mt-auto">
+                                <a href="${downloadLink}" target="_blank" class="w-full block text-center bg-islamicGold/10 border border-islamicGold hover:bg-islamicGold hover:text-black text-islamicGold text-xs py-2.5 rounded font-mono font-bold transition">
+                                    <i class="fa-solid fa-cloud-arrow-down"></i> DOWNLOAD MP3/MP4
+                                </a>
+                            </div>
                         </div>
                     `;
                     resultsContainer.appendChild(card);
                 });
-            } catch (err) {
+            } else {
+                // Jika semua API error, tampilkan opsi Pencarian Manual + Download
                 resultsContainer.innerHTML = `
-                    <div class="col-span-full bg-slate-50 p-6 rounded-2xl border text-center">
-                        <p class="text-sm text-slate-600 mb-4">Gagal memuat API pihak ketiga. Buka pencarian untuk: <strong>"${query}"</strong></p>
-                        <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(query)}" target="_blank" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold text-sm">
-                            <i class="fa-brands fa-youtube text-red-500"></i> Buka Hasil di YouTube
-                        </a>
+                    <div class="col-span-full cyber-card p-6 rounded-xl text-center border-l-4 border-l-red-500">
+                        <p class="text-sm text-slate-300 mb-4 font-mono">[WARNING] Semua server API publik sedang sibuk.</p>
+                        <div class="flex justify-center gap-4">
+                            <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(query)}" target="_blank" class="bg-red-500/20 border border-red-500 hover:bg-red-500 text-white px-5 py-2.5 rounded font-mono text-xs transition">
+                                <i class="fa-brands fa-youtube"></i> BUKA DI YOUTUBE
+                            </a>
+                            <a href="https://cobalt.tools" target="_blank" class="bg-islamicGold/20 border border-islamicGold hover:bg-islamicGold hover:text-black text-islamicGold px-5 py-2.5 rounded font-mono text-xs transition">
+                                <i class="fa-solid fa-download"></i> WEB DOWNLOADER
+                            </a>
+                        </div>
                     </div>
                 `;
             }
