@@ -497,53 +497,34 @@
             }
         }
 
-     // Fungsi Otomatis Download Poster Menggunakan html2canvas yang Dioptimalkan
+    // Fungsi Download Poster Presisi Sesuai Preview (Tanpa Menciut)
 function downloadPoster() {
     const posterElement = document.getElementById('posterBox');
     const btn = document.getElementById('btnDownload');
     
-    // Ubah tampilan tombol saat memproses
     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES POSTER...`;
     btn.disabled = true;
 
     document.fonts.ready.then(() => {
-        // Tentukan resolusi fix berdasarkan rasio yang sedang aktif agar hasil export tajam & pas
-        let exportWidth = 1080;
-        let exportHeight = 1920; // Default 9:16
-
-        if (posterElement.classList.contains('aspect-square')) {
-            exportWidth = 1080;
-            exportHeight = 1080;
-        } else if (posterElement.classList.contains('aspect-video')) {
-            exportWidth = 1920;
-            exportHeight = 1080;
-        }
+        // Tentukan faktor kali agar hasil HD (misal target lebar 1080px)
+        const currentWidth = posterElement.offsetWidth;
+        const targetWidth = 1080; // Lebar standar HD untuk Reels/Poster
+        const scaleFactor = targetWidth / currentWidth;
 
         html2canvas(posterElement, {
-            width: exportWidth,
-            height: exportHeight,
-            scale: 2, // Skala 2 sudah sangat jernih (Full HD+) tanpa bikin memory browser crash
+            scale: scaleFactor, // Menggunakan faktor skala dari ukuran asli preview ke 1080px
             useCORS: true,
             allowTaint: true,
             backgroundColor: null,
-            windowWidth: exportWidth,
-            windowHeight: exportHeight,
-            onclone: function(clonedDoc) {
-                // Penyesuaian opsional pada elemen hasil klon jika diperlukan agar presisi saat dirender
-                const clonedBox = clonedDoc.getElementById('posterBox');
-                if (clonedBox) {
-                    clonedBox.style.width = exportWidth + 'px';
-                    clonedBox.style.height = exportHeight + 'px';
-                    clonedBox.style.maxWidth = 'none';
-                }
-            }
+            scrollY: -window.scrollY,
+            windowWidth: document.documentElement.offsetWidth,
+            windowHeight: document.documentElement.offsetHeight
         }).then(canvas => {
             const link = document.createElement('a');
             link.download = `poster-studio-kecil-46-${Date.now()}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
 
-            // Kembalikan state tombol
             btn.innerHTML = `<i class="fa-solid fa-download"></i> SIMPAN / DOWNLOAD POSTER`;
             btn.disabled = false;
         }).catch(err => {
