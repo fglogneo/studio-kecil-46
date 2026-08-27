@@ -38,9 +38,10 @@
                     <span class="text-[10px] text-amber-500 font-mono-custom block">STUDIO KECIL 46</span>
                 </div>
             </div>
-            <span class="text-xs font-mono px-3 py-1 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/30 font-bold hidden sm:block">
-                Media Center
-            </span>
+            <!-- Tombol Donasi dengan Pop-up Salin No Rek -->
+            <button onclick="openDonationModal()" class="text-xs font-mono px-3 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 border border-amber-500/30 font-bold transition flex items-center gap-1.5 shadow-lg shadow-amber-500/10">
+                <i class="fa-solid fa-hand-holding-dollar"></i> Donasi
+            </button>
         </div>
     </header>
 
@@ -57,7 +58,7 @@
             </button>
         </div>
 
-        <!-- SECTION 1: MUROTTAL -->
+        <!-- SECTION 1: MUROTTAL (TIDAK DIUBAH) -->
         <div id="sectionMurottal" class="space-y-6">
             <div class="bg-black/60 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
                 <h2 class="text-xs font-bold text-amber-400 font-mono-custom uppercase tracking-wider flex items-center gap-2">
@@ -90,7 +91,6 @@
                 </div>
             </div>
 
-            <!-- Container Hasil Ayat & Download Full -->
             <div id="containerAyat" class="space-y-3">
                 <div class="text-center py-12 text-slate-500 font-mono text-xs bg-black/40 border border-slate-800 rounded-2xl">
                     Pilih surat dan qari, lalu klik "Tampilkan".
@@ -98,34 +98,56 @@
             </div>
         </div>
 
-        <!-- SECTION 2: SHALAWAT (Video Player Resmi / Stabil) -->
+        <!-- SECTION 2: SHALAWAT (Diperbarui dengan Audio MP3 Stabil) -->
         <div id="sectionShalawat" class="hidden space-y-6">
             <div class="bg-black/60 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-2">
                 <h2 class="text-xs font-bold text-amber-400 font-mono-custom uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-video"></i> Lantunan Shalawat Pilihan
+                    <i class="fa-solid fa-music"></i> Lantunan Shalawat Pilihan
                 </h2>
-                <p class="text-xs text-slate-400">Nikmati lantunan shalawat merdu</p>
+                <p class="text-xs text-slate-400">Dengarkan dan unduh audio shalawat penyejuk hati.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <!-- Shalawat 1 -->
-                <div class="bg-black/60 border border-slate-800 p-4 rounded-xl space-y-3 shadow-lg">
-                    <h3 class="text-xs font-bold text-white flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-amber-500"></span> Shalawat Jibril Penarik Rezeki
-                    </h3>
-                    <div class="relative w-full aspect-video rounded-lg overflow-hidden bg-slate-900 border border-slate-800">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/OP9iW9q_69g" title="Shalawat Jibril" allowfullscreen></iframe>
+                <!-- Shalawat Jibril -->
+                <div class="bg-black/60 border border-slate-800 p-5 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30">Populer</span>
+                            <h3 class="text-sm font-bold text-white mt-1">Shalawat Jibril</h3>
+                        </div>
+                        <i class="fa-solid fa-headphones text-purple-400 text-lg"></i>
+                    </div>
+                    <audio controls class="w-full h-10 accent-amber-500">
+                        <source src="https://server12.mp3quran.net/sholawat/jibril.mp3" onerror="this.src='https://archive.org/download/SholawatJibrilMerdu_202012/Sholawat%20Jibril%20Merdu.mp3'" type="audio/mpeg">
+                        Browser Anda tidak mendukung pemutar audio.
+                    </audio>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] font-mono">
+                        <span class="text-slate-500">Audio MP3</span>
+                        <a href="https://archive.org/download/SholawatJibrilMerdu_202012/Sholawat%20Jibril%20Merdu.mp3" download="Shalawat_Jibril.mp3" class="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500 border border-amber-500/40 text-amber-500 hover:text-black font-bold transition">
+                            <i class="fa-solid fa-download mr-1"></i> Download
+                        </a>
                     </div>
                 </div>
 
-                <!-- Shalawat 2 -->
-                <div class="bg-black/60 border border-slate-800 p-4 rounded-xl space-y-3 shadow-lg">
-                    <h3 class="text-xs font-bold text-white flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-amber-500"></span> Shalawat Nariyah Merdu
-                    </h3>
-                    <div class="relative w-full aspect-video rounded-lg overflow-hidden bg-slate-900 border border-slate-800">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/g2J0NxbWv68" title="Shalawat Nariyah" allowfullscreen></iframe>
+                <!-- Shalawat Nariyah -->
+                <div class="bg-black/60 border border-slate-800 p-5 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">Pilihan</span>
+                            <h3 class="text-sm font-bold text-white mt-1">Shalawat Nariyah</h3>
+                        </div>
+                        <i class="fa-solid fa-headphones text-amber-400 text-lg"></i>
+                    </div>
+                    <audio controls class="w-full h-10 accent-amber-500">
+                        <source src="https://archive.org/download/SholawatNariyahMerdu/Sholawat%20Nariyah%20Merdu.mp3" type="audio/mpeg">
+                        Browser Anda tidak mendukung pemutar audio.
+                    </audio>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] font-mono">
+                        <span class="text-slate-500">Audio MP3</span>
+                        <a href="https://archive.org/download/SholawatNariyahMerdu/Sholawat%20Nariyah%20Merdu.mp3" download="Shalawat_Nariyah.mp3" class="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500 border border-amber-500/40 text-amber-500 hover:text-black font-bold transition">
+                            <i class="fa-solid fa-download mr-1"></i> Download
+                        </a>
                     </div>
                 </div>
 
@@ -134,6 +156,32 @@
 
     </main>
 
+    <!-- MODAL DONASI (Pop-up Salin No Rek) -->
+    <div id="donationModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center">
+                <h3 class="text-sm font-bold text-amber-400 font-mono-custom flex items-center gap-2">
+                    <i class="fa-solid fa-hand-holding-dollar"></i> Dukung Studio Kecil 46
+                </h3>
+                <button onclick="closeDonationModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-300">Dukungan Anda membantu pengembangan tools gratis ini. Silakan salin nomor rekening di bawah:</p>
+            
+            <div class="bg-black/60 border border-slate-800 p-3 rounded-xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] text-slate-400 font-mono block">BSI (Bank Syariah Indonesia)</span>
+                    <span id="accountNumber" class="text-sm font-bold text-white font-mono-custom tracking-wider">1234567890</span>
+                </div>
+                <button onclick="copyAccountNumber()" class="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold rounded-lg font-mono transition flex items-center gap-1">
+                    <i class="fa-solid fa-copy"></i> Salin
+                </button>
+            </div>
+            <span id="copyNotification" class="text-[10px] text-amber-400 font-mono text-center block hidden">Nomor rekening berhasil disalin!</span>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer class="border-t border-slate-800 bg-black/40 py-4 text-center text-xs text-slate-500 font-mono-custom mt-auto">
         &copy; 2026 Studio Kecil 46
@@ -141,6 +189,28 @@
 
     <!-- SCRIPT -->
     <script>
+        // Modal Donasi Functions
+        function openDonationModal() {
+            document.getElementById('donationModal').classList.remove('hidden');
+        }
+
+        function closeDonationModal() {
+            document.getElementById('donationModal').classList.add('hidden');
+            document.getElementById('copyNotification').classList.add('hidden');
+        }
+
+        function copyAccountNumber() {
+            const accNum = document.getElementById('accountNumber').innerText;
+            navigator.clipboard.writeText(accNum).then(() => {
+                const notif = document.getElementById('copyNotification');
+                notif.classList.remove('hidden');
+                setTimeout(() => {
+                    notif.classList.add('hidden');
+                }, 3000);
+            });
+        }
+
+        // Fetch Surat Murottal (Tetap)
         async function fetchSurahList() {
             const select = document.getElementById('selectSurah');
             try {
@@ -214,7 +284,6 @@
                         fullAudioUrl = `https://server13.mp3quran.net/maher/${paddedSurahNum}.mp3`;
                     }
 
-                    // Panel atas untuk Download Full & Info Surat
                     let html = `
                         <div class="bg-black/60 border border-amber-500/40 p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 shadow-lg">
                             <div>
@@ -228,7 +297,6 @@
                         <div class="text-xs font-mono text-slate-400 mb-2 px-1">Daftar Ayat (Cocok untuk Potongan Konten / Reels):</div>
                     `;
 
-                    // Render daftar ayat dengan tombol download per ayat
                     ayahs.forEach((ayah) => {
                         html += `
                             <div class="bg-black/60 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
